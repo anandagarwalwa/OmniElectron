@@ -2,6 +2,7 @@
 // import "./stylesheets/all.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import "./stylesheets/style.css";
+import "./stylesheets/responsive.css";
 
 // Small helpers you might want to keep
 import "./helpers/context_menu.js";
@@ -16,6 +17,7 @@ import jetpack from "fs-jetpack";
 import { greet } from "./hello_world/hello_world";
 import env from "env";
 import { header } from "./header/header";
+import { getDatasource } from "../app/server/controllers/datasource_controller";
 
 const app = remote.app;
 const appDir = jetpack.cwd(app.getAppPath());
@@ -30,4 +32,9 @@ const osMap = {
     linux: "Linux"
 };
 
+getDatasource().then(data => {
+    console.log(data);
+}).catch(err => {
+    console.error(err);
+});
 document.querySelector('#header').innerHTML = header();
