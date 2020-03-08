@@ -751,3 +751,209 @@ a.article:hover {
   ::-webkit-scrollbar-thumb:hover {
     background: #ccc; 
   }
+
+  
+
+/*==================Setting-Page===================*/
+.tab-section {
+    float: left;
+    width: 100%;
+    padding: 20px;
+}
+
+.tabpill-title {
+    float: left;
+    width: 100%;
+}
+
+.tabpill-title h6 {
+    font-size: 17px;
+    line-height: 17px;
+    text-transform: capitalize;
+}
+
+.tab-coman-class {
+    float: left;
+    width: 100%;
+    margin-top: 30px;
+}
+
+
+.tab-coman-class .nav-pills .nav-link.active, .tab-coman-class .nav-pills .show>.nav-link{
+    background-color: #363640;
+    border-radius: 0;
+    text-align: left;
+}
+
+.tab-coman-class .nav-link{
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.tab-one-main-section {
+    float: left;
+    width: 100%;
+}
+
+.tab-one-title {
+    float: left;
+    
+}
+.tab-one-title h6 {
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+}
+
+.tab-pic {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.tab-pic img {
+    width: 70px ;
+    height: 70px ;
+    box-shadow: 0 0 2px 0px #000 inset;
+}
+
+.tab-form-section {
+    width: 50%;
+}
+.tab-form-section label {
+    font-size: 15px;
+    line-height: 25px;
+    text-transform: capitalize;
+    color: #666;
+}
+
+.tab-btn {
+    float: left;
+    width: 100%;
+    text-align: right;
+}
+
+.tab-btn .btn,.tab-two-btn .btn {
+    width: 120px;
+    border-radius: 0;
+    font-size: 15px;
+    line-height: 15px;
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.tab-Two-main-section {
+    float: left;
+    width: 100%;
+}
+
+.tab-two-top-section {
+    float: left;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.tab-two-btn {
+    flex: 6;
+}
+
+.tab-search {
+    flex: 6;
+} 
+
+#custom-search-input {
+    margin:0;
+    margin-top: 0px;
+    padding: 0;
+}
+
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 18px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:gray;
+}
+
+.search-query:focus + button {
+    z-index: 3;   
+}
+
+.tab-two-top-section::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: -15px;
+    width: 90%;
+    height: 1px;
+    background: #ccc;
+}
+
+
+.tab-two-nav {
+    float: left;
+    width: 100%;
+    margin-top: 2rem;
+}
+.tab-ul-sec-two-main {
+    display: flex;
+}
+
+.tab-profile {
+    width: 45px;
+    margin-right: 25px;
+}
+.text-content{
+    width: 85px;
+}
+
+.text-content h6 {
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    padding-top: 15px;
+    color: #000;
+    font-weight: 400 !important;
+    text-decoration: none;
+}
+.tab-profile img{
+    width: 50px;
+    height: 45px;
+}
+
+.tab-two-nav li a:hover{
+    text-decoration: none;
+}
+
+
+.inline-text label {
+    margin-right: 15px;
+}
+

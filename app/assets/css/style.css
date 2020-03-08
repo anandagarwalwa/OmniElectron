@@ -4,6 +4,9 @@ ul li{list-style-type: none;}
 
 
 
+
+/*=======Logo=======*/
+
 #sidebarCollapse{display: none;}   
 .collapse-btn-hide {
     display: none;
@@ -48,6 +51,7 @@ ul li{list-style-type: none;}
 }
 .navigation .bg-dark {
     background-color: #363640 !important;
+    height: 54px;
 }
 
 .navigation .btn:focus{
@@ -63,7 +67,7 @@ ul li{list-style-type: none;}
     display: block !important;
     text-align: center !important;
     width: 3rem !important;
-    font-size: 25px !important;
+    font-size: 25px;
     /* line-height: 35px !important; */
 }
 
@@ -155,9 +159,9 @@ ul li{list-style-type: none;}
     margin-right: 10px;
 }
 
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #fff;
+#sidebar ul li.active>a:hover,
+a[aria-expanded="true"]:hover {
+    color: #6d7fcc;
     
 }
 
@@ -216,7 +220,7 @@ a.article:hover {
 
 #content {
     width: 100%;
-    padding: 20px 20px 0 0px;
+    padding: 20px 20px 0 20px;
     min-height: 100vh;
     transition: all 0.3s;
 }
@@ -230,7 +234,7 @@ a.article:hover {
         min-width: 52px;
         max-width: 80px;
         text-align: center;
-        margin-left: -80px !important;
+        margin-left: 0px !important;
     }
     .dropdown-toggle::after {
         top: auto;
@@ -491,6 +495,12 @@ a.article:hover {
     width: 100%;
 }
 
+.displayBlock{
+    display: block !important;
+}
+.displayNone{
+    display: none !important;
+}
 
 /*============icon-color============*/
 .co-org {
@@ -853,8 +863,6 @@ a.article:hover {
 
 
 
-
-
 /*==================Setting-Page===================*/
 .tab-section {
     float: left;
@@ -891,6 +899,7 @@ a.article:hover {
     font-size: 15px;
     line-height: 15px;
     margin-bottom: 10px;
+    color: #000;
 }
 
 .tab-one-main-section {
@@ -907,3 +916,160 @@ a.article:hover {
     line-height: 15px;
     text-transform: capitalize;
 }
+
+.tab-pic {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.tab-pic img {
+    width: 70px ;
+    height: 70px ;
+    box-shadow: 0 0 2px 0px #000 inset;
+}
+
+.tab-form-section {
+    width: 50%;
+}
+.tab-form-section label {
+    font-size: 15px;
+    line-height: 25px;
+    text-transform: capitalize;
+    color: #666;
+}
+
+.tab-btn {
+    float: left;
+    width: 100%;
+    text-align: right;
+}
+
+.tab-btn .btn,.tab-two-btn .btn {
+    width: 120px;
+    border-radius: 0;
+    font-size: 15px;
+    line-height: 15px;
+    height: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.tab-Two-main-section {
+    float: left;
+    width: 100%;
+}
+
+.tab-two-top-section {
+    float: left;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.tab-two-btn {
+    flex: 6;
+}
+
+.tab-search {
+    flex: 6;
+} 
+
+#custom-search-input {
+    margin:0;
+    margin-top: 0px;
+    padding: 0;
+}
+
+#custom-search-input .search-query {
+    padding-right: 3px;
+    padding-right: 4px \9;
+    padding-left: 18px;
+    padding-left: 4px \9;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#custom-search-input button {
+    border: 0;
+    background: none;
+    /** belows styles are working good */
+    padding: 2px 5px;
+    margin-top: 2px;
+    position: relative;
+    left: -28px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color:gray;
+}
+
+.search-query:focus + button {
+    z-index: 3;   
+}
+
+.tab-two-top-section::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: -15px;
+    width: 90%;
+    height: 1px;
+    background: #ccc;
+}
+
+
+.tab-two-nav {
+    float: left;
+    width: 100%;
+    margin-top: 2rem;
+}
+.tab-ul-sec-two-main {
+    display: flex;
+}
+
+.tab-profile {
+    width: 45px;
+    margin-right: 25px;
+}
+.text-content{
+    width: 85px;
+}
+
+.text-content h6 {
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    padding-top: 15px;
+    color: #000;
+    font-weight: 400 !important;
+    text-decoration: none;
+}
+.tab-profile img{
+    width: 50px;
+    height: 45px;
+}
+
+.tab-two-nav li a:hover{
+    text-decoration: none;
+}
+
+
+.inline-text label {
+    margin-right: 15px;
+}
+
+
+#demo-one {
+    display: none;
+}
+
+
+
