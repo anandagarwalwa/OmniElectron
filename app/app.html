@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title></title>
     <meta charset="utf-8">
@@ -14,6 +15,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-------Navigation------->
     <section class="navigation">
@@ -74,7 +76,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <!---Search-->
-                            
+
 
                             <div class="search-main-section">
                                 <div id="myOverlay" class="overlay">
@@ -102,7 +104,7 @@
                             <!-----Pic-->
                             <div class="pic-font-section">
                                 <div class="text-sention">
-                                    <h6>Robbie swaddle</h6>
+                                    <h6 id="userProfile"></h6>
                                 </div>
 
                                 <div class="text-pic">
@@ -119,15 +121,15 @@
 
                         </ul>
                     </div>
-                
-                      
-                    
+
+
+
                 </div>
             </nav>
             <!-- Header-Section-End-->
             <!-- Page Content  -->
             <div id="content">
-                
+
             </div>
         </div>
     </section>
@@ -137,38 +139,38 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/all.js"></script>
     <script src="./main.js"></script>
-    <script src="assets/js/route.js"></script>        
+    <script src="assets/js/route.js"></script>
     <script>
         var views = {
-            explore: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/explore/explore.html'
-                },
+            explore: [{
+                selector: "#content",
+                templateUrl: '../src/components/explore/explore.html'
+            },
             ],
-            add: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/add/add.html'
-                },
+            add: [{
+                selector: "#content",
+                templateUrl: '../src/components/add/add.html'
+            },
             ],
-            timeline: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/timeline/timeline.html'
-                },
+            timeline: [{
+                selector: "#content",
+                templateUrl: '../src/components/timeline/timeline.html'
+            },
             ],
-            filter: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/filter/filter.html'
-                },
+            filter: [{
+                selector: "#content",
+                templateUrl: '../src/components/filter/filter.html'
+            },
             ],
-            activity: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/activity/activity.html'
-                },
+            activity: [{
+                selector: "#content",
+                templateUrl: '../src/components/activity/activity.html'
+            },
             ],
-            setting: [ {
-                    selector: "#content",
-                    templateUrl: '../src/components/setting/setting.html'
-                },
+            setting: [{
+                selector: "#content",
+                templateUrl: '../src/components/setting/setting.html'
+            },
             ],
             defaultView: {
                 view: 'explore'
@@ -178,4 +180,5 @@
         new Route(views);
     </script>
 </body>
+
 </html>

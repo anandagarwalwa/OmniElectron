@@ -13,7 +13,8 @@ const getModelFiles = dir => fs.readdirSync(dir)
 // `const { MyModel } = require('./models')` where there is a model named
 // `MyModel` present in the exported object of gathered models.
 // const files = getModelFiles(__dirname)
-const files = getModelFiles(__dirname + '\\server\\models')
+const modelpath = __dirname.indexOf('server\\models') > -1 ? __dirname : (__dirname + '\\server\\models')
+const files = getModelFiles(`${modelpath}`)
 const models = files.reduce((modelsObj, filename) => {
     const fNameArr = filename.split('\\');
     const fName = './' + fNameArr[fNameArr.length - 1];
