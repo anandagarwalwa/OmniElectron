@@ -12,12 +12,16 @@ const getUsers = () => {
     return Users.findAll();
 }
 
-const addUser=()=>
-{
-    return Users.create();
+const addUser = (data) => {
+    return Users.create(data).then(data => {
+        console.log(data);
+    }).catch(err => {
+        console.log(err);
+    });
 }
 
 module.exports = {
     getUsers
+    , addUser
 }
 

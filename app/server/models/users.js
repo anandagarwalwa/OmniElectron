@@ -8,7 +8,7 @@ const tableName = 'users'
 const selectableProps = [
     'UserId',
     'FirstName',
-    'lastName',
+    'LastName',
     'EmailId',
     'Photo',
     'Domain',
