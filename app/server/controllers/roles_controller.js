@@ -1,23 +1,17 @@
 'use strict'
 
-const { Users } = require('../models')
+const { Roles } = require('../models')
 const {
     createError,
     BAD_REQUEST,
     UNAUTHORIZED
 } = require('../helpers/error_helper')
 
-const getUsers = () => {
+const getRoles = () => {
     // return Users.find({ UserId: 1});
-    return Users.findAll();
-}
-
-const AddUser=()=>
-{
-    
+    return Roles.findAll();
 }
 
 module.exports = {
-    getUsers
+    getRoles
 }
-
