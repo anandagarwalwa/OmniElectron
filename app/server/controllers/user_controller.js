@@ -12,9 +12,9 @@ const getUsers = () => {
     return Users.findAll();
 }
 
-const AddUser=()=>
+const addUser=()=>
 {
-    
+    return Users.create();
 }
 
 module.exports = {
