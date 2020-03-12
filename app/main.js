@@ -4,7 +4,6 @@
 
 
 
-
 $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');
@@ -31,6 +30,11 @@ $(document).ready(function () {
         $(".main-sidebar").removeClass("displayNone");
         $(".main-sidebar").addClass("displayBlock");       
       }
+  });
+  var selector = "#sidebar li";
+  $(selector).on("click", function() {    
+    $(selector).removeClass("active");
+    $(this).addClass("active");
   });
 
 });

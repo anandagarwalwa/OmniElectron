@@ -4,7 +4,9 @@ ul li{list-style-type: none;}
 
 
 
-
+.form-control:focus{
+    box-shadow: none !important;
+}
 
 
 /*===============Modal==Popup==============*/
@@ -171,7 +173,8 @@ ul li{list-style-type: none;}
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    /* color: #7386D5; */
+    cursor: pointer;
     
     text-decoration: none;
 }
@@ -184,11 +187,11 @@ ul li{list-style-type: none;}
     margin-right: 10px;
 }
 
-#sidebar ul li.active>a:hover,
+/* #sidebar ul li.active>a:hover,
 a[aria-expanded="true"]:hover {
     color: #6d7fcc;
     
-}
+} */
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -528,11 +531,12 @@ a.article:hover {
 } */
 
 .pic-font-section img {
-    width: 40px;
-    height: 38px;
+    width: 35px;
+    height: 35px;
 }
 .pic-font-section .dropdown-toggle {
     color: #fff;
+    font-size: 14px;
 }
 .pic-font-section .dropdown-toggle::after{
     display: none;
@@ -708,12 +712,14 @@ a.article:hover {
     
 }
 
+
 .main-explore-section .form-control {
-    border-radius: 0;
-    
+    border-radius: 25px;
     position: relative;
-    background: #fff;
-    color: #000;
+    background: #938897;
+    color: #fff;
+    padding: 0px 15px;
+    height: 45px;
 }
 
 .btn-popup-section {
@@ -768,8 +774,9 @@ a.article:hover {
 
 .modal-header .modal-title {
     text-transform: capitalize;
-    font-size: 15px;
+    font-size: 18px;
     line-height: 25px;
+    font-weight: 400;    
 }
 
 
@@ -1210,28 +1217,15 @@ a.article:hover {
 .upload-image-section img {
     width: 60px;
     height: 60px;
-    border: 1px solid #000;
+    border: 2px solid #c5c5c5;
     display: block;
-    margin-left: auto;
-}
-
-.upload-text {
-    float: left;
-    width: 100%;
-    text-align: right;
-}
-
-.upload-text h6 {
-    font-size: 12px;
-    line-height: 20px;
-    text-transform: capitalize;
+ 
 }
 
 .member-form-section {
     float: left;
     width: 100%;
 }
-
 
 .Form-Tab-Two-Check {
     position: relative;
@@ -1243,3 +1237,137 @@ a.article:hover {
     margin-left: 0 !important;
 }
 .Form-Tab-Two-Check .form-check{padding-left: 0px;}
+
+
+/* Checkbox code  */
+
+.mt-checkbox span {
+    border: 1px solid #cccccc;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    border-radius: 4px;
+    height: 18px;
+    width: 18px;
+    background: #ffffff;
+}
+
+.mt-checkbox>span:after {
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #848484;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.mt-checkbox {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #6a6868;
+    font-weight: 500;
+}
+
+.mt-checkbox>input,
+.mt-radio>input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    filter: alpha(opacity=0)
+}
+
+.mt-checkbox>span:after,
+.mt-radio>span:after {
+    content: '';
+    position: absolute;
+    display: none
+}
+
+.input-icon>i,
+.mt-checkbox-list .mt-checkbox,
+.mt-checkbox-list .mt-radio,
+.mt-checkbox>input:checked~span:after,
+.mt-radio-list .mt-checkbox {
+    display: block
+}
+
+.modal-header{
+    background-color: #ececec;
+    color: #000;
+}
+
+.navbar-brand{
+    position: absolute;
+    left: 20px;
+}
+
+.active{
+    background-color: rgba(255,255,255,0.2);
+}
+
+
+
+.searchBox {
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:  translate(-50%,50%); */
+    background: #363640;
+    height: 40px;
+    border-radius: 0px;
+    /* padding: 10px; */
+    margin-top: 6px;    
+
+}
+
+.searchBox:hover > .searchInput {
+    width: 240px;
+    padding: 0 15px;
+}
+
+.searchBox:hover > .searchButton {
+  background: white;
+  color : #2f3640;
+}
+
+.searchButton {
+    color: #ffffff;
+    float: right;
+    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2f3640;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.4s;
+    margin-top: 4px;
+}
+
+.searchInput {
+    border: none;
+    background: none;
+    outline: none;
+    float: left;
+    padding: 0;
+    background-color: #ffffff;
+    color: white;
+    font-size: 14px;
+    transition: 0.4s;
+    line-height: 30px;
+    margin-top: 4px;
+    width: 0px;
+    border-radius: 50px;
+
+}
+
+@media screen and (max-width: 620px) {
+.searchBox:hover > .searchInput {
+    width: 150px;
+    padding: 0 6px;
+}
+}
