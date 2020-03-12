@@ -153,7 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-two-nav">
-                                    <ul>
+                                    <ul id="userList">
                                         <li><a href="#">
                                             <div class="tab-ul-sec-two-main">
                                                 <div class="tab-profile tab-pic">
@@ -165,13 +165,13 @@
                                             </div>
                                         </a></li>
                                         
-                                        <li><a href="#">
+                                        <li  rv-each-item="items"><a href="#">
                                             <div class="tab-ul-sec-two-main">
                                                 <div class="tab-profile tab-pic">
-                                                    <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                    <img rv-src="item.Photo"  class="img-fluid rounded-circle">
                                                 </div>
                                                  <div class="text-content">
-                                                     <h6>john doe</h6>
+                                                     <h6>{item.FirstName}</h6>
                                                  </div>     
                                             </div>
                                         </a></li>
@@ -311,3 +311,4 @@
     </div>
 </div>
 <script src="../src/components/setting/setting.js"></script>
+<script src="../node_modules/tinybind/dist/tinybind.js"></script>

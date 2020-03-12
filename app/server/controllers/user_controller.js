@@ -20,8 +20,16 @@ const addUser = (data) => {
     });
 }
 
+const userLogin = (data) =>{
+    return Users.findOne(data).catch(err => {
+        console.log(err);
+    });
+}
+
+
+
 module.exports = {
     getUsers
-    , addUser
+    , addUser,userLogin
 }
 

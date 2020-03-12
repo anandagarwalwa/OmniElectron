@@ -36,7 +36,8 @@
         "jquery": "^3.4.1",
         "knex": "^0.20.10",
         "mysql": "^2.18.1",
-        "popper.js": "^1.14.3"
+        "popper.js": "^1.14.3",
+        "tinybind": "^1.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.5.5",
