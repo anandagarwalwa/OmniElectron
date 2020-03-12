@@ -10,6 +10,7 @@
                         <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">my account</a>
                         <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">members</a>
                         <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">workspace</a>
+                        <a class="nav-link" id="v-pills-team-tab" data-toggle="pill" href="#v-pills-team" role="tab" aria-controls="v-pills-team" aria-selected="false">Teams</a>
                         
                     </div>
                       <div class="tab-content col-xl-10 col-lg-9 col-md-9 col-12" id="v-pills-tabContent">
@@ -46,7 +47,109 @@
                             <div class="tab-Two-main-section">
                                 <div class="tab-two-top-section">
                                     <div class="tab-two-btn">
-                                        <a href="#" id="btnAddMember" class="btn btn-group-lg btn-primary">Add Member</a>
+                                        <a href="#" class="btn btn-group-lg btn-primary" data-toggle="modal" data-target="#myModal">Add Member</a>
+                                    </div>
+                                    <div class="tab-two-btn-content">
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="myModal">
+                                            <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                            
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                <h4 class="modal-title">Add Member</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                
+                                                <!-- Modal body -->
+                                                <div class="modal-body modal-my-content">
+                                                    <div class="upload-pic">
+                                                        <div class="upload-image-section">
+                                                            <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                        </div>
+                                                        <div class="upload-text">
+                                                            <h6>Upload Photo</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="member-form-section">
+                                                        <form>
+                                                            <div class="form-group row">
+                                                              <label for="inputname" class="col-sm-3 col-form-label" >First name</label>
+                                                              <div class="col-sm-9">
+                                                                <input type="text" class="form-control" id="inputname" placeholder="First name">
+                                                              </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label for="inputname" class="col-sm-3 col-form-label" >Last name</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="text" class="form-control" id="inputname" placeholder="Last name">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputEmail1" class="col-sm-3 col-form-label" >Email</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Phone</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="number" class="form-control" id="exampleInputNumber1" placeholder="Enter number">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Team</label>
+                                                                <div class="col-sm-9">
+                                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                      </select>
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Roles</label>
+                                                                <div class="col-sm-9">
+                                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                      </select>
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group Form-Tab-Two-Check">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label" for="radio1">
+                                                                        Is Active
+                                                                      <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1">
+                                                                    </label>
+                                                                  </div>
+                                                              </div>
+                                                             
+                                                          </form>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger col-xl-6" data-dismiss="modal">Save</button>
+                                                <button type="button" class="btn btn-primary col-xl-6" data-dismiss="modal">Close</button>
+                                                </div>
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="tab-search">
                                         <div id="custom-search-input">
@@ -116,6 +219,157 @@
                             </div>
                         </div>
                         
+
+
+                        <div class="tab-pane fade" id="v-pills-team" role="tabpanel" aria-labelledby="v-pills-team-tab">
+                            <div class="tab-Two-main-section">
+                                <div class="tab-two-top-section">
+                                    <div class="tab-two-btn">
+                                        <a href="#" class="btn btn-group-lg btn-primary" data-toggle="modal" data-target="#myModals">Add Teams</a>
+                                    </div>
+                                    <div class="tab-two-btn-content">
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="myModals">
+                                            <div class="modal-dialog modal-md">
+                                            <div class="modal-content">
+                                            
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                <h4 class="modal-title">Add Teams</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                
+                                                <!-- Modal body -->
+                                                <div class="modal-body modal-my-content">
+                                                    <div class="upload-pic">
+                                                        <div class="upload-image-section">
+                                                            <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                        </div>
+                                                        <div class="upload-text">
+                                                            <h6>Upload Photo</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="member-form-section">
+                                                        <form>
+                                                            <div class="form-group row">
+                                                              <label for="inputname" class="col-sm-3 col-form-label" >First name</label>
+                                                              <div class="col-sm-9">
+                                                                <input type="text" class="form-control" id="inputname" placeholder="First name">
+                                                              </div>
+                                                            </div>
+
+                                                            <div class="form-group row">
+                                                                <label for="inputname" class="col-sm-3 col-form-label" >Last name</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="text" class="form-control" id="inputname" placeholder="Last name">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputEmail1" class="col-sm-3 col-form-label" >Email</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Phone</label>
+                                                                <div class="col-sm-9">
+                                                                  <input type="number" class="form-control" id="exampleInputNumber1" placeholder="Enter number">
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Team</label>
+                                                                <div class="col-sm-9">
+                                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                      </select>
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group row">
+                                                                <label for="exampleInputNumber1" class="col-sm-3 col-form-label" >Roles</label>
+                                                                <div class="col-sm-9">
+                                                                    <select class="form-control" id="exampleFormControlSelect1">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                      </select>
+                                                                </div>
+                                                              </div>
+
+                                                              <div class="form-group Form-Tab-Two-Check">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label" for="radio1">
+                                                                        Is Active
+                                                                      <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1">
+                                                                    </label>
+                                                                  </div>
+                                                              </div>
+                                                             
+                                                          </form>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger col-xl-6" data-dismiss="modal">Save</button>
+                                                <button type="button" class="btn btn-primary col-xl-6" data-dismiss="modal">Close</button>
+                                                </div>
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-search">
+                                        <div id="custom-search-input">
+                                            <div class="input-group col-md-11 col-lg-9 col-11">
+                                                <input type="text" class="  search-query form-control" placeholder="Search">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button">
+                                                        <span class=" fa fa-search"></span>
+                                                    </button>
+                                                </span>                                                   
+                                            </div>
+                                           </div>
+                                    </div>
+                                </div>
+                                <div class="tab-two-nav">
+                                    <ul>
+                                        <li><a href="#">
+                                            <div class="tab-ul-sec-two-main">
+                                                <div class="tab-profile tab-pic">
+                                                    <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                </div>
+                                                 <div class="text-content">
+                                                     <h6>john doe</h6>
+                                                 </div>     
+                                            </div>
+                                        </a></li>
+                                        
+                                        <li><a href="#">
+                                            <div class="tab-ul-sec-two-main">
+                                                <div class="tab-profile tab-pic">
+                                                    <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                </div>
+                                                 <div class="text-content">
+                                                     <h6>john doe</h6>
+                                                 </div>     
+                                            </div>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                       </div>
                 </div>
             </div>
