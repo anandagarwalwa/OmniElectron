@@ -13,6 +13,7 @@
         #main-side {
             display: block;
         }
+
         .timeline-ico img.img-fluid {
             width: 37px;
             display: block;
@@ -61,7 +62,6 @@
                             Activity
                         </a>
                     </li>
-
                     <li class="setting">
                         <a route-link route-href="setting">
                             <i class="fas fa-cog"></i>
@@ -70,9 +70,9 @@
                     </li>
                 </ul>
             </nav>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <nav id="headerbar" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#"><img src="assets/images/logo.png"></a> 
+                    <a class="navbar-brand" href="#"><img src="assets/images/logo.png"></a>
                     <button type="button" id="sidebarCollapse" class="btn ">
                         <i class="fas fa-align-left"></i>
                     </button>
@@ -82,40 +82,31 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <!---Search-->
-
-                           
-        <div class="searchBox">
-
-            <input class="searchInput"type="text" name="" placeholder="Search...">
-            <button class="searchButton" href="#">
-                <i class="material-icons">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </i>
-            </button>
-        </div>
-
-                            
+                            <div class="searchBox">
+                                <input class="searchInput" type="text" name="" placeholder="Search...">
+                                <button class="searchButton" href="#">
+                                    <i class="material-icons">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </i>
+                                </button>
+                            </div>
                             <!----bell-icon-->
                             <div class="dropdown-notification dropdown">
-                            <button  type="button" class="bell-icon-main btn btn-group-lg dropdown-toggle"
-                            
-                            data-toggle="dropdown">
-                                <div class="bell-icon">
-                                    <i class="fas fa-bell"></i>
+                                <button type="button" class="bell-icon-main btn btn-group-lg dropdown-toggle"
+                                    data-toggle="dropdown">
+                                    <div class="bell-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div class="badge-section">
+                                        <span class="badge badge-danger">2</span>
+                                    </div>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Link 1</a>
+                                    <a class="dropdown-item" href="#">Link 2</a>
+                                    <a class="dropdown-item" href="#">Link 3</a>
                                 </div>
-                                <div class="badge-section">
-                                    <span class="badge badge-danger">2</span>
-                                </div>
-                               
-                                
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Messages</a>
-                                <a class="dropdown-item" href="#">Events</a>
-                                <a class="dropdown-item" href="#">System</a>
-                              </div>
                             </div>
-
                             <!-----Pic-->
                             <div class="pic-font-section ">
                                 <!-- <div class="text-sention">
@@ -127,26 +118,28 @@
                                 </div> -->
 
                                 <div class="dropdown">
-                                    <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
-                                        Robbie swaddle <img src="assets/images/40306.jpg" class="rounded-circle img-fluid">
-        
+                                    <button type="button" id="usernameid" class="btn  dropdown-toggle"
+                                        data-toggle="dropdown" style="margin-top: 9px;">
                                     </button>
-                                    <div class="dropdown-menu">
-                                      <a class="dropdown-item" href="#">
-                                        <div class="drop-down-btn">
-                                            <button type="button" class="btn btn-group-lg btn-primary">Profile</button>
-                                            
-                                        </div>
-                                      </a>
-                                      <a class="dropdown-item" href="../src/components/login/login.html">
-                                        <div class="drop-down-btn">
-                                            <button type="button" class="btn btn-group-lg btn-danger">Logout</button>
-                                            
-                                        </div>
-                                      </a>
-                                    </div>
-                                  </div>                                 
+                                    <img src="assets/images/40306.jpg" class="rounded-circle img-fluid">
 
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">
+                                            <div class="drop-down-btn">
+                                                <button type="button"
+                                                    class="btn btn-group-lg btn-primary">Profile</button>
+
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" route-link route-href="login">
+                                            <div class="drop-down-btn">
+                                                <button type="button" id="userlogout"
+                                                    class="btn btn-group-lg btn-danger">Logout</button>
+
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
 
                             <!---Collapse-Btn-->
@@ -158,9 +151,6 @@
 
                         </ul>
                     </div>
-
-
-
                 </div>
             </nav>
             <!-- Header-Section-End-->
@@ -177,6 +167,7 @@
     <script src="assets/js/all.js"></script>
     <script src="./main.js"></script>
     <script src="assets/js/route.js"></script>
+    <script src="../src/components/explore/explore.js"></script>
     <script>
         var views = {
             explore: [{
@@ -207,6 +198,11 @@
             setting: [{
                 selector: "#content",
                 templateUrl: '../src/components/setting/setting.html'
+            },
+            ],
+            login: [{
+                selector: "#content",
+                templateUrl: '../src/components/login/login.html'
             },
             ],
             defaultView: {

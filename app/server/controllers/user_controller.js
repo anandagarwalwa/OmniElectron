@@ -20,16 +20,26 @@ const addUser = (data) => {
     });
 }
 
-const userLogin = (data) =>{
+const userLogin = (data) => {
     return Users.findOne(data).catch(err => {
         console.log(err);
     });
 }
 
+const getUsersById = (id) => {
+    return Users.find({ UserId: id }).catch(err => {
+        console.log(err);
+    });
+}
 
+const updateUserById = (userid, data) => {
+    return Users.update(userid, data).catch(err => {
+        console.log(err);
+    });
+}
 
 module.exports = {
     getUsers
-    , addUser,userLogin
+    , addUser, userLogin, getUsersById, updateUserById
 }
 

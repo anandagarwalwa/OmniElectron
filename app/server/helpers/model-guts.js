@@ -45,12 +45,13 @@ module.exports = ({
     .where({ id })
     .timeout(timeout)
 
-  const update = (id, props) => {
-    delete props.id // not allowed to set `id`
+  const update = (UserId, props) => {
+    debugger;
+    delete props.UserId // not allowed to set `id`
 
     return knex.update(props)
       .from(tableName)
-      .where({ id })
+      .where({ UserId })
       .returning(selectableProps)
       .timeout(timeout)
   }

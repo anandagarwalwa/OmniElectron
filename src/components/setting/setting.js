@@ -1,7 +1,6 @@
 'use strict';
-var { getUsers,addUser,userLogin  } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var { getUsers, addUser, userLogin, getUsersById, updateUserById } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
-
 getUsers().then(data => {
     var model = {
         items: data
@@ -17,9 +16,6 @@ getUsers().then(data => {
 }).catch(err => {
     console.error(err);
 });
-
-
-
 
 $("#BtnAddMember").click(function () {
     addUser(
@@ -39,14 +35,38 @@ $("#BtnAddMember").click(function () {
 
 });
 
-$("#btnAddMember").click(function(){
+$("#btnAddMember").click(function () {
     userLogin({
-        'EmailId':"admin@gmail.com",
-        'Password':"Admin@123"   
-    }).then(data=>{
-        debugger;
+        'EmailId': "admin@gmail.com",
+        'Password': "Admin@123"
+    }).then(data => {
         console.log(data)
-    }).catch(err=>{
+    }).catch(err => {
         console.error(err);
     });
+});
+
+// Get User Login Data
+getUsersById(parseInt(localStorage.getItem("UserId"))
+).then(data => {
+    if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
+    $("#exampleInputEmail").val(data[0].EmailId)
+    $("#exampleInputFirstName").val(data[0].FirstName)
+}).catch(err => {
+    console.error(err);
+});
+
+// Update User
+$("#updatebtn").click(function () {
+    updateUserById(parseInt(localStorage.getItem("UserId")),
+        {
+            'EmailId': $("#exampleInputEmail").val(),
+            'FirstName': $("#exampleInputFirstName").val()
+        }).then(data => {
+            if (data == 1) {
+                console.log(data);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
 });
