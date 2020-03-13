@@ -23,6 +23,7 @@ ul li{list-style-type: none;}
     min-width: 15rem;
     left: inherit !important;
     border-radius: 0;
+    top: 38px;
 }
 
 
@@ -104,8 +105,8 @@ ul li{list-style-type: none;}
 }*/
 
 #sidebar {
-    min-width: 70px;
-    max-width: 70px;
+    min-width: 68px;
+    max-width: 68px;
     text-align: center;
     background: #363640;
     color: #fff;
@@ -259,7 +260,7 @@ a.article:hover {
 
 @media (max-width: 768px) {
     #sidebar {
-        min-width: 52px;
+        min-width: 49px;
         max-width: 80px;
         text-align: center;
         margin-left: 0px !important;
@@ -415,6 +416,7 @@ a.article:hover {
 .pic-font-section .dropdown-menu{
     left: 0px;
     border-radius: 0;
+    top: 43px;
 } 
 .pic-font-section .dropdown-item{
     padding: .25rem 5px;
@@ -545,10 +547,10 @@ a.article:hover {
 .pic-font-section .dropdown.show::before{
     position: absolute;
     content: "";
-    right: -6px;
-    top: 44px;
-    width: 10px;
-    height: 10px;
+    right: 15px;
+    top: 39px;
+    width: 7px;
+    height: 7px;
     background: #fff;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
@@ -558,10 +560,10 @@ a.article:hover {
 .dropdown-notification.show::before{
     position: absolute;
     content: "";
-    right: 10px;
-    top: 40px;
-    width: 10px;
-    height: 10px;
+    right: 13px;
+    top: 34px;
+    width: 7px;
+    height: 7px;
     background: #fff;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
@@ -1368,7 +1370,9 @@ a.article:hover {
 
 @media screen and (max-width: 620px) {
 .searchBox:hover > .searchInput {
-    width: 150px;
+    width: 109px;
     padding: 0 6px;
 }
 }
+
+
