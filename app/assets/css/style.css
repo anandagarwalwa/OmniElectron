@@ -1354,14 +1354,15 @@ a.article:hover {
     outline: none;
     float: left;
     padding: 0;
-    background-color: #ffffff;
+    background-color: transparent;
     color: white;
     font-size: 14px;
     transition: 0.4s;
     line-height: 30px;
     margin-top: 4px;
     width: 0px;
-    border-radius: 50px;
+    /* border-radius: 50px; */
+    border-bottom: 1px solid;
 
 }
 
