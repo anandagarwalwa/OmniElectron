@@ -1375,4 +1375,17 @@ a.article:hover {
 }
 }
 
+label.error
+{
+    color: red;
+}
 
+
+.btn-add-member-action{
+    padding: 6px 15px;
+    height: 35px;
+    border-radius: 0px;
+    margin-right: 5px;
+    margin-top: 5px;
+    font-size: 14px;
+}

@@ -63,45 +63,46 @@
                                                 
                                                 <!-- Modal body -->
                                                 <div class="modal-body modal-my-content">
+                                                    <form id="addMemberForm" method="post"> 
                                                    <div class="row">
+                                                   
                                                     <div class="col-md-3">
                                                         <div class="upload-pic">
-                                                            <div class="upload-image-section">
-                                                                <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                            <div class="upload-image-section" >
+                                                                <img src="assets/images/40306.jpg" id="addUserImage"  class="img-fluid rounded-circle">
                                                             </div>                                                        
                                                         </div>
                                                        </div>
-                                                       
                                                        <div class="col-md-7">
-                                                        <form>
                                                             <div class="form-group">
                                                               <label for="exampleFormControlFile1">Upload photo</label>
-                                                              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                                                              <input type="file" class="form-control-file" name="uploadPhoto" id="uploadPhoto" onchange="encodeImageFileAsURL(this)"  accept="image/x-png,image/gif,image/jpeg">
                                                             </div>
-                                                          </form>
                                                        </div>
                                                    </div>
-                                                    <div class="member-form-section">
-                                                        <form>                                                           
-                                                            <form>
+                                                    <div class="member-form-section">                                                 
                                                                 <div class="form-group">
                                                                   <label for="exampleInputEmail1">First Name</label>
-                                                                  <input type="text" class="form-control" id="#" aria-describedby="emailHelp" placeholder="">                                                                  
+                                                                  <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="">                                                                  
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                   <label for="exampleInputPassword1">Last Name</label>
-                                                                  <input type="text" class="form-control" id="#" placeholder="">
+                                                                  <input type="text" class="form-control" id="lastName" name="lastName" placeholder="">
                                                                 </div> 
                                                                 
                                                                 <div class="form-group">
-                                                                    <label for="exampleInputPassword1">Contact Number </label>
-                                                                    <input type="number" class="form-control" id="#" placeholder="">
+                                                                    <label for="exampleInputPassword1">Email</label>
+                                                                    <input type="email" class="form-control" id="emailId" name="emailId" placeholder="">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputPassword1">Domain</label>
+                                                                    <input type="text" class="form-control" id="domain" name="domain" placeholder="">
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="exampleFormControlSelect1">Team</label>
-                                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                                      <option>Select</option>
+                                                                    <select class="form-control" id="teamId" name="teamId">
+                                                                      <option value="">Select</option>
                                                                       <option>1</option>
                                                                       <option>2</option>
                                                                       <option>3</option>
@@ -110,10 +111,10 @@
                                                                     </select>
                                                                   </div> 
                                                                   <div class="form-group">
-                                                                    <label for="exampleFormControlSelect1">Roles</label>
-                                                                    <select class="form-control" id="exampleFormControlSelect1">
-                                                                      <option>Select</option>
-                                                                      <option>1</option>
+                                                                    <label for="exampleFormControlSelect1">Role</label>
+                                                                    <select class="form-control" id="roleId" name="roleId">
+                                                                      <option value="">Select</option>
+                                                                      <option >1</option>
                                                                       <option>2</option>
                                                                       <option>3</option>
                                                                       <option>4</option>
@@ -121,16 +122,16 @@
                                                                     </select>
                                                                   </div>  
                                                                   <div class="form-group">
-                                                                    <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label> Is Active
+                                                                    <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" id="isActive" value="1"> <span></span>&nbsp;</label> Is Active
                                                                   </div>                                                              
-                                                              </form>  
-                                                          </form>
+                                                          
                                                     </div>
+                                                </form> 
                                                 </div>
                                                 
                                                 <!-- Modal footer -->
                                                 <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary col-xl-6" data-dismiss="modal">Save</button>
+                                                <button type="button" id="btnAddMember"  class="btn btn-primary col-xl-6" >Save</button>
                                                 <button type="button" class="btn btn-danger col-xl-6" data-dismiss="modal">Close</button>
                                                 </div>
                                                 
@@ -154,25 +155,30 @@
                                 </div>
                                 <div class="tab-two-nav">
                                     <ul id="userList">
-                                        <li><a href="#">
+                                        <li><a href="#" class="d-flex">
                                             <div class="tab-ul-sec-two-main">
                                                 <div class="tab-profile tab-pic">
                                                     <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
                                                 </div>
                                                  <div class="text-content">
                                                      <h6>john doe</h6>
-                                                 </div>     
+                                                 </div>  
+                                                 <a href="#" class="btn-add-member-action btn-primary">Edit</a> 
+                                                 <a href="#" class="btn-add-member-action btn-primary">Delete</a>
                                             </div>
                                         </a></li>
                                         
-                                        <li  rv-each-item="items"><a href="#">
+                                        <li  rv-each-item="items"><a href="#" class="d-flex">
                                             <div class="tab-ul-sec-two-main">
                                                 <div class="tab-profile tab-pic">
                                                     <img rv-src="item.Photo"  class="img-fluid rounded-circle">
                                                 </div>
                                                  <div class="text-content">
                                                      <h6>{item.FirstName}</h6>
-                                                 </div>     
+                                                </div>
+                                                <a href="#" class="btn-add-member-action btn-primary">Edit</a> 
+                                                <a href="#" class="btn-add-member-action btn-primary">Delete</a>
+                                                </div> 
                                             </div>
                                         </a></li>
                                     </ul>
@@ -200,7 +206,7 @@
                                         </div>
                                         
                                         <div class="tab-btn">
-                                            <a href="#" class="btn btn-group-lg btn-primary">Update</a>
+                                            <a href="#"  class="btn btn-group-lg btn-primary">Update</a>
                                         </div>
                                       </form>
                                 </div>
