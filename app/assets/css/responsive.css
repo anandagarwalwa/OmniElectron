@@ -1,6 +1,6 @@
 
 @media(min-width:1440px) and (max-width:1440px){
-  .login-section{margin-bottom: 10rem !important;}
+  
 }
 
 
@@ -160,7 +160,9 @@
   }
   .tab-section .d-flex {
     display: block !important;
+    flex-direction:column;
   }
+  .tab-section{padding: 3px !important;}
   .tab-one-main-section .tab-form-section {
     width: 100%;
   }
@@ -192,7 +194,7 @@
     
   }
   .login-main-section{padding: 10px !important;}
-  .mt-10{margin-top: 3rem !important;}
+  
 }
 @media all and (max-width: 768px) {
   #demo-one {
@@ -205,6 +207,10 @@
   .form-section .col-xl-6 {
     padding-right: 0;
 }
+.tab-section .d-flex{
+  display: flex !important;
+}
+.timeline-ico img.img-fluid{width: 30px !important;}
 }
 
 @media(min-width:375px) and (max-width:375px){
@@ -223,6 +229,7 @@
 
 @media(min-width:768px) and (max-width:768px){
   .navbar-brand{margin-left: 0;}
-  .login-section{margin-bottom: 1rem !important;}
-  .mt-10{margin-top: 3rem !important;}
+  .tab-section .d-flex{
+    display: flex !important;
+  }
 }

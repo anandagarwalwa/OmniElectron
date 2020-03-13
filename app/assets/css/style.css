@@ -1464,6 +1464,7 @@ a.article:hover {
     width: 100%;
     margin-left: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .login-btn .btn {
@@ -1475,6 +1476,24 @@ a.article:hover {
     text-transform: capitalize;
     z-index: 1;
     overflow: hidden;
+    position: relative;
+}
+
+.login-btn .btn::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 1px #000 inset;
+    border-radius: 20px;
+    transition: all 600ms ease 0s;
+    z-index: -1;
+}
+
+.login-btn .btn:hover::before{
+    box-shadow: 0 0 0 2em #000 inset;
 }
 
 
