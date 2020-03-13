@@ -5,6 +5,8 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.dropdown.css">
     <link rel="stylesheet" type="text/css" href="assets/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
@@ -13,6 +15,11 @@
     <style>
         #main-side {
             display: block;
+        }
+        .timeline-ico img.img-fluid {
+            width: 37px;
+            display: block;
+            margin: auto;
         }
     </style>
 </head>
@@ -38,9 +45,10 @@
                             Add
                         </a>
                     </li>
-                    <li>
+                    <li class="timeline-ico">
                         <a route-link route-href="timeline">
-                            <i class="fas fa-business-time"></i>
+                            <!-- <i class="fas fa-business-time"></i> -->
+                            <img src="assets/images/Hnet.com-image.svg" class="img-fluid">
                             Timeline
                         </a>
                     </li>
@@ -105,9 +113,9 @@
                                 
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Link 1</a>
-                                <a class="dropdown-item" href="#">Link 2</a>
-                                <a class="dropdown-item" href="#">Link 3</a>
+                                <a class="dropdown-item" href="#">Messages</a>
+                                <a class="dropdown-item" href="#">Events</a>
+                                <a class="dropdown-item" href="#">System</a>
                               </div>
                             </div>
 
@@ -133,7 +141,7 @@
                                             
                                         </div>
                                       </a>
-                                      <a class="dropdown-item" href="#">
+                                      <a class="dropdown-item" href="../src/components/login/login.html">
                                         <div class="drop-down-btn">
                                             <button type="button" class="btn btn-group-lg btn-danger">Logout</button>
                                             
@@ -166,6 +174,7 @@
         </div>
     </section>
     
+   
     <script src="./assets/js/jquery-3.4.1.slim.min.js"></script>
     <script src="./assets/js/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/jquery.validate.min.js"></script>
@@ -174,6 +183,9 @@
     <script src="assets/js/all.js"></script>
     <script src="./main.js"></script>
     <script src="assets/js/route.js"></script>
+    
+
+
     <script>
         var views = {
             explore: [{

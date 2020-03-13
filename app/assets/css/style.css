@@ -161,13 +161,16 @@ ul li{list-style-type: none;}
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
-    position: fixed;
-    
+    padding: 6px 0;
+    position: fixed; 
+}
+
+.setting a{
+    padding: 20px 10px !important;
 }
 
 #sidebar ul li a {
-    padding: 20px 10px;
+    padding: 20px 8px;
    font-size: 0.85em;
     display: block;
     text-align: center;
@@ -181,7 +184,7 @@ ul li{list-style-type: none;}
 }
 
 #sidebar ul li a:focus,#sidebar ul li a:active{
-    background-color: rgba(255,255,255,0.2);
+    background-color:#54545f;
 }
 
 #sidebar ul li a i {
@@ -574,7 +577,7 @@ a.article:hover {
     position: fixed;
     z-index: 1;
     top: 45px;
-    left: 70px;
+    left: 68px;
     background: #54545f;
     overflow-x: hidden;
     padding: 8px 0;
@@ -1389,3 +1392,138 @@ label.error
     margin-top: 5px;
     font-size: 14px;
 }
+.combo-label {margin-bottom:.5em;}
+
+
+
+/*=====MultiSelect=================*/
+
+
+/*============Login===========*/
+.login-section {
+    float: left;
+    width: 100%;
+}
+
+.login-section-main {
+    float: left;
+    width: 100%;
+    display: flex;
+    box-shadow: 0 0 1px;
+    border-radius: 10px;
+}
+
+.login-pic {
+    float: left;
+    width: 100%;
+    padding: 30px 0;
+}
+
+
+.login-main-section {
+    float: left;
+    width: 100%;
+    padding: 30px;
+}
+
+.login-title {
+    float: left;
+    width: 100%;
+}
+
+.login-title h4 {
+    text-transform: capitalize;
+    font-size: 30px;
+    line-height: 30px;
+}
+
+.login-form-section {
+    width: 100%;
+    padding-top: 30px !important;
+    float: left;
+}
+
+
+.user-name,.user-password {
+    position: relative;
+}
+
+
+.user-name .user-icon {
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    background: #363640;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 50%;
+}
+.user-password .user-pass {
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    background: #363640;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 50%;
+}
+
+.login-form-section .form-control{
+    padding: .375rem 50px;
+    border-radius: 20px;
+}
+
+.login-form-section .form-group{
+    margin-bottom: 2rem;
+}
+
+.login-btn {
+    float: left;
+    width: 100%;
+    margin-left: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.login-btn .btn {
+    width: 150px;
+    font-size: 15px;
+    line-height: 15px;
+    height: 35px;
+    border-radius: 20px;
+    text-transform: capitalize;
+    z-index: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.login-btn .btn::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 1px #007bff inset;
+    border-radius: 20px;
+    transition: all 600ms ease 0s;
+    z-index: -1;
+}
+
+.login-btn .btn:hover::before{
+    box-shadow: 0 0 0 2em #363640 inset;
+    border-color: #363640 !important;
+}
+
+
+/*----Margin----*/
+.mt-10{
+    margin-top: 10rem;
+}
+
+
+
