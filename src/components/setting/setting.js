@@ -169,6 +169,9 @@ $("#btnAddMember").click(function () {
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
+    if(data == undefined){
+        return false;
+    }
     if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
     $("#exampleInputEmail").val(data[0].EmailId)
     $("#exampleInputFirstName").val(data[0].FirstName)

@@ -75,7 +75,7 @@
         text-align: center;
     }
 </style>
-<div id="loader"></div> 
+<div id="loader"></div>
 <div class="container-fluid" id="mainsettingpage">
     <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 mt-5 col-12">
@@ -264,20 +264,6 @@
                                 </div>
                                 <div class="tab-two-nav">
                                     <ul id="userList">
-                                        <li><a href="#" class="d-flex">
-                                                <div class="tab-ul-sec-two-main">
-                                                    <div class="tab-profile tab-pic">
-                                                        <img src="assets/images/40306.jpg"
-                                                            class="img-fluid rounded-circle">
-                                                    </div>
-                                                    <div class="text-content">
-                                                        <h6>john doe</h6>
-                                                    </div>
-                                                    <a href="#" class="btn-add-member-action btn-primary">Edit</a>
-                                                    <a href="#" class="btn-add-member-action btn-primary">Delete</a>
-                                                </div>
-                                            </a></li>
-
                                         <li rv-each-item="items"><a href="#" class="d-flex">
                                                 <div class="tab-ul-sec-two-main">
                                                     <div class="tab-profile tab-pic">
@@ -286,72 +272,72 @@
                                                     <div class="text-content">
                                                         <h6>{item.FirstName}</h6>
                                                     </div>
-                                                    <a href="#" class="btn-add-member-action btn-primary">Edit</a>
-                                                    <a href="#" class="btn-add-member-action btn-primary">Delete</a>
+                                                    <a href="#" data-id={item.UserId} class="btn-add-member-action btn-primary">Edit</a>
+                                                    <a href="#" data-id={item.UserId} class="btn-add-member-action btn-primary">Delete</a>
                                                 </div>
+                                            </a></li>                                            
+                                    </ul>
                                 </div>
-                                </a></li>
-                                </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-                        aria-labelledby="v-pills-messages-tab">
-                        <div class="tab-one-main-section">
-                            <div class="tab-one-title d-none">
-                                <h6>photo</h6>
-                            </div>
+                        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+                            aria-labelledby="v-pills-messages-tab">
+                            <div class="tab-one-main-section">
+                                <div class="tab-one-title d-none">
+                                    <h6>photo</h6>
+                                </div>
 
 
-                            <div class="tab-form-section">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" placeholder="Workspace Name">
+                                <div class="tab-form-section">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Name</label>
+                                            <input type="text" class="form-control" id="exampleInputEmail1"
+                                                aria-describedby="emailHelp" placeholder="Workspace Name">
 
-                                    </div>
-                                    <label class="lab-text">Domain:</label>
-                                    <div class="form-group form-inline inline-text">
-                                        <label for="exampleInputPassword1">www.webaddress@</label>
-                                        <input type="email" class="form-control" id="exampleInputPassword1"
-                                            placeholder="">
-                                    </div>
+                                        </div>
+                                        <label class="lab-text">Domain:</label>
+                                        <div class="form-group form-inline inline-text">
+                                            <label for="exampleInputPassword1">www.webaddress@</label>
+                                            <input type="email" class="form-control" id="exampleInputPassword1"
+                                                placeholder="">
+                                        </div>
 
-                                    <div class="tab-btn">
-                                        <a href="#" id="btnAddMember" class="btn btn-group-lg btn-primary">Update</a>
-                                        <a href="#" class="btn btn-group-lg btn-primary">Update</a>
-                                    </div>
-                                </form>
+                                        <div class="tab-btn">
+                                            <a href="#" id="btnAddMember"
+                                                class="btn btn-group-lg btn-primary">Update</a>
+                                            <a href="#" class="btn btn-group-lg btn-primary">Update</a>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
 
 
-                    <div class="tab-pane fade" id="v-pills-team" role="tabpanel" aria-labelledby="v-pills-team-tab">
-                        <div class="tab-Two-main-section">
-                            <div class="tab-two-top-section">
-                                <div class="tab-two-btn">
-                                    <button href="#" class="btn btn-group-lg btn-primary" id="addteams"
-                                        data-toggle="modal" data-target="#myModals">Add Teams</button>
-                                </div>
-                                <div class="tab-two-btn-content">
-                                    <!-- The Modal -->
-                                    <div class="modal fade" id="myModals">
-                                        <div class="modal-dialog modal-md">
-                                            <div class="modal-content">
+                        <div class="tab-pane fade" id="v-pills-team" role="tabpanel" aria-labelledby="v-pills-team-tab">
+                            <div class="tab-Two-main-section">
+                                <div class="tab-two-top-section">
+                                    <div class="tab-two-btn">
+                                        <button href="#" class="btn btn-group-lg btn-primary" id="addteams"
+                                            data-toggle="modal" data-target="#myModals">Add Teams</button>
+                                    </div>
+                                    <div class="tab-two-btn-content">
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="myModals">
+                                            <div class="modal-dialog modal-md">
+                                                <div class="modal-content">
 
-                                                <!-- Modal Header -->
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Add Teams</h4>
-                                                    <button type="button" class="close"
-                                                        data-dismiss="modal">&times;</button>
-                                                </div>
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Add Teams</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
 
-                                                <!-- Modal body -->
-                                                <div class="modal-body modal-my-content">
-                                                    <!-- <div class="upload-pic">
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body modal-my-content">
+                                                        <!-- <div class="upload-pic">
                                                         <div class="upload-image-section">
                                                             <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
                                                         </div>
@@ -359,102 +345,106 @@
                                                             <h6>Upload Photo</h6>
                                                         </div>
                                                     </div> -->
-                                                    <div class="member-form-section">
-                                                        <form>
+                                                        <div class="member-form-section">
+                                                            <form>
 
-                                                            <div class="form-group">
-                                                                <label for="exampleInputEmail1">Team Name</label>
-                                                                <input type="text" class="form-control" id="#"
-                                                                    aria-describedby="emailHelp" placeholder="">
-                                                            </div>
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Team Name</label>
+                                                                    <input type="text" class="form-control" id="#"
+                                                                        aria-describedby="emailHelp" placeholder="">
+                                                                </div>
 
-                                                            <div class="form-group">
-                                                                <label
-                                                                    class="rememberme mt-checkbox mt-checkbox-outline mb-0">
-                                                                    <input type="checkbox" name="remember" value="1">
-                                                                    <span></span>&nbsp;</label> Is Active
-                                                            </div>
+                                                                <div class="form-group">
+                                                                    <label
+                                                                        class="rememberme mt-checkbox mt-checkbox-outline mb-0">
+                                                                        <input type="checkbox" name="remember"
+                                                                            value="1">
+                                                                        <span></span>&nbsp;</label> Is Active
+                                                                </div>
 
-                                                            <!----Dropdown--->
+                                                                <!----Dropdown--->
 
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlSelect1">Teams
-                                                                    select</label>
-                                                                <select class="form-control"
-                                                                    id="exampleFormControlSelect1">
-                                                                    <option>1</option>
-                                                                    <option>2</option>
-                                                                    <option>3</option>
-                                                                    <option>4</option>
-                                                                    <option>5</option>
-                                                                </select>
-                                                            </div>
+                                                                <div class="form-group">
+                                                                    <label for="exampleFormControlSelect1">Teams
+                                                                        select</label>
+                                                                    <select class="form-control"
+                                                                        id="exampleFormControlSelect1">
+                                                                        <option>1</option>
+                                                                        <option>2</option>
+                                                                        <option>3</option>
+                                                                        <option>4</option>
+                                                                        <option>5</option>
+                                                                    </select>
+                                                                </div>
 
 
-                                                        </form>
+                                                            </form>
 
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-primary col-xl-6"
+                                                            data-dismiss="modal">Add</button>
+                                                        <button type="button" class="btn btn-danger col-xl-6"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-search">
+                                        <div id="custom-search-input">
+                                            <div class="input-group col-md-11 col-lg-9 col-11">
+                                                <input type="text" class="  search-query form-control"
+                                                    placeholder="Search">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button">
+                                                        <span class=" fa fa-search"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-two-nav">
+                                    <ul>
+                                        <li><a href="#">
+                                                <div class="tab-ul-sec-two-main">
+                                                    <div class="tab-profile tab-pic">
+                                                        <img src="assets/images/40306.jpg"
+                                                            class="img-fluid rounded-circle">
+                                                    </div>
+                                                    <div class="text-content">
+                                                        <h6>john doe</h6>
                                                     </div>
                                                 </div>
+                                            </a></li>
 
-                                                <!-- Modal footer -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary col-xl-6"
-                                                        data-dismiss="modal">Add</button>
-                                                    <button type="button" class="btn btn-danger col-xl-6"
-                                                        data-dismiss="modal">Close</button>
+                                        <li><a href="#">
+                                                <div class="tab-ul-sec-two-main">
+                                                    <div class="tab-profile tab-pic">
+                                                        <img src="assets/images/40306.jpg"
+                                                            class="img-fluid rounded-circle">
+                                                    </div>
+                                                    <div class="text-content">
+                                                        <h6>john doe</h6>
+                                                    </div>
                                                 </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                            </a></li>
+                                    </ul>
                                 </div>
-                                <div class="tab-search">
-                                    <div id="custom-search-input">
-                                        <div class="input-group col-md-11 col-lg-9 col-11">
-                                            <input type="text" class="  search-query form-control" placeholder="Search">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-danger" type="button">
-                                                    <span class=" fa fa-search"></span>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-two-nav">
-                                <ul>
-                                    <li><a href="#">
-                                            <div class="tab-ul-sec-two-main">
-                                                <div class="tab-profile tab-pic">
-                                                    <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="text-content">
-                                                    <h6>john doe</h6>
-                                                </div>
-                                            </div>
-                                        </a></li>
-
-                                    <li><a href="#">
-                                            <div class="tab-ul-sec-two-main">
-                                                <div class="tab-profile tab-pic">
-                                                    <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="text-content">
-                                                    <h6>john doe</h6>
-                                                </div>
-                                            </div>
-                                        </a></li>
-                                </ul>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script src="../src/components/setting/setting.js"></script>
 <script src="../node_modules/tinybind/dist/tinybind.js"></script>

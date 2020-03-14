@@ -12,6 +12,9 @@ $("#userlogout").click(function () {
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
+    if(data == undefined){
+        return false;
+    }
     $("#usernameid").text(data[0].FirstName)
 }).catch(err => {
     console.error(err);
