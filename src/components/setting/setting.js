@@ -1,24 +1,57 @@
 'use strict';
-var { getUsers, addUser, userLogin, getUsersById, updateUserById } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var { getUsers, addUser, userLogin, getUsersById, updateUserById, deleteUser } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
+var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
+var { getTeams } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { addTeamUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
+
+
 var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
 document.getElementById("loader").style.display = "none";
-getUsers().then(data => {
-    var model = {
-        items: data
-    }
-    tinybind.binders.src = function (el, value) {
-        // value = 'data:image/jpeg;base64,' + value;
-        el.setAttribute('src', value);
-    }
-    tinybind.bind($('#userList'), model);
-    $('#exampleInputEmail').val(data[0].EmailId);
-    $('#exampleInputFirstName').val(data[0].FirstName);
-    $('#userProfile').html(data[0].FirstName);
+function BindUser() {
+    getUsers().then(data => {
+        var model = {
+            items: data
+        }
+        tinybind.binders.src = function (el, value) {
+            // value = 'data:image/jpeg;base64,' + value;
+            el.setAttribute('src', value);
+        }
+        tinybind.bind($('#userList'), model);
+        $('#exampleInputEmail').val(data[0].EmailId);
+        $('#exampleInputFirstName').val(data[0].FirstName);
+        $('#userProfile').html(data[0].FirstName);
+    }).catch(err => {
+        console.error(err);
+    });
+}
+BindUser();
+//Roles Binding
+getRoles().then(data => {
+    $('#ddlRoles').empty();
+    $('#ddlRoles').append($('<option>').attr('value', "").html("Select"));
+    $.each(data, function (key, val) {
+        debugger;
+        var option = $('<option>').attr('value', val.RoleId).html(val.RoleName);
+        $('#ddlRoles').append(option);
+    });
 }).catch(err => {
     console.error(err);
 });
+//End Roles Binding
 
+//Teams Binding
+getTeams().then(data => {
+    $('#ddlTeams').empty();
+    $('#ddlTeams').append($('<option>').attr('value', "").html("Select"));
+    $.each(data, function (key, val) {
+        var option = $('<option>').attr('value', val.TeamId).html(val.TeamName);
+        $('#ddlTeams').append(option);
+    });
+}).catch(err => {
+    console.error(err);
+});
+//End Teams Binding
 
 var imagebase64 = "";
 
@@ -31,7 +64,6 @@ function encodeImageFileAsURL(element) {
         // $("#addUserImage").html("<img src="+imagebase64+" class='img-fluid rounded-circle'>");  
     }
     reader.readAsDataURL(file);
-
 }
 
 
@@ -55,16 +87,16 @@ jQuery.validator.addMethod("domainValidation", function (value, element) {
 $("#addMemberForm").validate({
     ignore: [],
     rules: {
-        uploadPhoto: 'required',
+        //uploadPhoto: 'required',
         firstName: { lettersonly: true, required: true },
         lastName: { lettersonly: true, required: true },
         emailId: { emailValidation: true, required: true },
         domain: { domainValidation: true, required: true },
-        teamId: 'required',
-        roleId: 'required'
+        // ddlTeams: 'required',
+        ddlRoles: 'required'
     },
     messages: {
-        uploadPhoto: 'this field is required',
+        //uploadPhoto: 'this field is required',
         firstName: {
             lettersonly: "Please enter characters only.",
             required: "This field is required"
@@ -75,71 +107,104 @@ $("#addMemberForm").validate({
         },
         emailId: { emailValidation: "Please enter a valid email address.", required: 'This field is required' },
         domain: { domainValidation: "Please enter a valid domain.", required: 'This field is required' },
-        teamId: 'This field is required',
-        roleId: 'This field is required'
+        // ddlTeams: 'This field is required',
+        ddlRoles: 'This field is required'
     },
 });
 
-
-
-
-
 $("#btnAddMember").click(function () {
     var addMemberdetails = $('form[id="addMemberForm"]').valid();
-
     if (addMemberdetails == true) {
-        addUser(
-            {
+        if ($("#hdnUserId").val() != 0 || $("#hdnUserId").val() != "") {
+            updateUserById($("#hdnUserId").val(), {
                 'FirstName': $("#firstName").val(),
                 'LastName': $("#lastName").val(),
                 'EmailId': $("#emailId").val(),
                 'Photo': imagebase64,
                 'Domain': $("#domain").val(),
                 'CreatedBy': 1,
-                'UpdatedBy': 1,
-                'RoleId': $("#roleId").val(),
-                'IsActive': isActive
+                'RoleId': $("#ddlRoles").val(),
+                'IsActive': isActive,
+                'UserId': $("#hdnUserId").val()
                 // $("#teamId").val()
+            }).then(data => {
+                // addTeamUserMapping({
+                //     'TeamId': $("#ddlTeams").val(),
+                //     'UserId':data[0],
+                //     'CreatedBy': 1
+                // });
+                $("#userModal").modal('hide');
+                BindUser();
+                $.toast({
+                    text: "Member details updated Successfully.", // Text that is to be shown in the toast
+                    heading: 'Success Message', // Optional heading to be shown on the toast
+                    icon: 'success', // Type of toast icon
+                    showHideTransition: 'fade', // fade, slide or plain
+                    allowToastClose: true, // Boolean value true or false
+                    hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                    stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                    textAlign: 'left',  // Text alignment i.e. left, right or center
+                    loader: false,  // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600',  // Background color of the toast loader
+                    beforeShow: function () { }, // will be triggered before the toast is shown
+                    afterShown: function () { }, // will be triggered after the toat has been shown
+                    beforeHide: function () { }, // will be triggered before the toast gets hidden
+                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                });
+                resetUserModel();
+            })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+        else {
+            addUser(
+                {
+                    'FirstName': $("#firstName").val(),
+                    'LastName': $("#lastName").val(),
+                    'EmailId': $("#emailId").val(),
+                    'Photo': imagebase64,
+                    'Domain': $("#domain").val(),
+                    'CreatedBy': 1,
+                    'RoleId': $("#ddlRoles").val(),
+                    'IsActive': isActive
+                    // $("#teamId").val()
 
-            }
-        ).catch(err => {
-            console.error(err);
-
-
-        });
-
-        $.toast({
-            text: "Member details save Successfully.", // Text that is to be shown in the toast
-            heading: 'Success Message', // Optional heading to be shown on the toast
-            icon: 'success', // Type of toast icon
-            showHideTransition: 'fade', // fade, slide or plain
-            allowToastClose: true, // Boolean value true or false
-            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-            textAlign: 'left',  // Text alignment i.e. left, right or center
-            loader: false,  // Whether to show loader or not. True by default
-            loaderBg: '#9EC600',  // Background color of the toast loader
-            beforeShow: function () { }, // will be triggered before the toast is shown
-            afterShown: function () { }, // will be triggered after the toat has been shown
-            beforeHide: function () { }, // will be triggered before the toast gets hidden
-            afterHidden: function () { }  // will be triggered after the toast has been hidden
-        });
-
-
-
-
-        imagebase64 = "";
-        control.val('')
-        $("#uploadPhoto").replaceWith($("#uploadPhoto").val('').clone(true));
-        $("#addUserImage").attr('src', 'assets/images/40306.jpg');
-        $("#firstName").val('');
-        $("#lastName").val('');
-        $("#emailId").val('');
-        $("#domain").val('');
-        $("#roleId").val('');
-        $("#teamId").val('');
-        isActive = "";
+                }
+            ).then(data => {
+                // addTeamUserMapping({
+                //     'TeamId': $("#ddlTeams").val(),
+                //     'UserId':data[0],
+                //     'CreatedBy': 1
+                // });
+                $("#userModal").modal('hide');
+                BindUser();
+                $.toast({
+                    text: "Member details save Successfully.", // Text that is to be shown in the toast
+                    heading: 'Success Message', // Optional heading to be shown on the toast
+                    icon: 'success', // Type of toast icon
+                    showHideTransition: 'fade', // fade, slide or plain
+                    allowToastClose: true, // Boolean value true or false
+                    hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                    stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                    textAlign: 'left',  // Text alignment i.e. left, right or center
+                    loader: false,  // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600',  // Background color of the toast loader
+                    beforeShow: function () { }, // will be triggered before the toast is shown
+                    afterShown: function () { }, // will be triggered after the toat has been shown
+                    beforeHide: function () { }, // will be triggered before the toast gets hidden
+                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                });
+                resetUserModel();
+            })
+                .catch(err => {
+                    debugger;
+                    console.error(err);
+                    resetUserModel();
+                });
+        }
 
 
     }
@@ -162,15 +227,97 @@ $("#btnAddMember").click(function () {
             afterHidden: function () { }  // will be triggered after the toast has been hidden
         });
     }
-
-
-
 });
+
+function deleteUserClick(obj) {
+    $.confirm({
+        title: 'Delete Confirmation?',
+        content: 'Are you sure you want to delete this user?',
+        type: 'green',
+        buttons: {
+            ok: {
+                text: "Yes",
+                btnClass: 'btn-primary',
+                keys: ['enter'],
+                action: function () {
+                    deleteUser(obj.dataset.categoryId).then(data => {
+                        $.toast({
+                            text: "Member deleted Successfully.", // Text that is to be shown in the toast
+                            heading: 'Success Message', // Optional heading to be shown on the toast
+                            icon: 'success', // Type of toast icon
+                            showHideTransition: 'fade', // fade, slide or plain
+                            allowToastClose: true, // Boolean value true or false
+                            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                            textAlign: 'left',  // Text alignment i.e. left, right or center
+                            loader: false,  // Whether to show loader or not. True by default
+                            loaderBg: '#9EC600',  // Background color of the toast loader
+                            beforeShow: function () { }, // will be triggered before the toast is shown
+                            afterShown: function () { }, // will be triggered after the toat has been shown
+                            beforeHide: function () { }, // will be triggered before the toast gets hidden
+                            afterHidden: function () { }  // will be triggered after the toast has been hidden
+                        });
+                    });
+                    console.log('the user clicked confirm');
+                }
+            },
+            cancel: function () {
+
+            }
+        }
+    });
+}
+
+function editUser(obj) {
+    //obj.dataset.categoryId
+    getUsersById(parseInt(obj.dataset.categoryId)
+    ).then(data => {
+        if (data == undefined) {
+            return false;
+        }
+        if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
+        $("#addUserImage").attr('src', data[0].Photo);
+        $("#firstName").val(data[0].FirstName);
+        $("#lastName").val(data[0].LastName);
+        $("#emailId").val(data[0].EmailId);
+        $("#domain").val(data[0].Domain);
+        $("#ddlRoles").val(data[0].RoleId);
+        $("#hdnUserId").val(data[0].UserId);
+        imagebase64 = data[0].Photo.toString();
+        if (IsActive.readUIntLE() == 1)
+            $('#isActive').prop('checked', true);
+        else
+            $('#isActive').prop('checked', false);
+        //$("#ddlTeams").val(data[0].RoleId);
+        $("#userModal").modal('show');
+
+    }).catch(err => {
+        console.error(err);
+    });
+}
+
+function resetUserModel() {
+    imagebase64 = "";
+    //control.val('')
+    $("#uploadPhoto").replaceWith($("#uploadPhoto").val('').clone(true));
+    $("#addUserImage").attr('src', 'assets/images/40306.jpg');
+    $("#firstName").val('');
+    $("#lastName").val('');
+    $("#emailId").val('');
+    $("#domain").val('');
+    $("#ddlRoles").val('');
+    $("#ddlTeams").val('');
+    isActive = "";
+}
 
 // Get User Login Data
 
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
+    if (data == undefined) {
+        return false;
+    }
     if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
     if (data.length > 0) {
         $("#exampleInputEmail").val(data[0].EmailId);

@@ -18,7 +18,7 @@ module.exports = ({
     delete props.id // not allowed to set `id`
 
     return knex.insert(props)
-      // .returning(selectableProps)
+      .returning(selectableProps)
       .into(tableName)
       .timeout(timeout)
   }
@@ -55,9 +55,9 @@ module.exports = ({
       .timeout(timeout)
   }
 
-  const destroy = id => knex.del()
+  const destroy = props => knex.del()
     .from(tableName)
-    .where({ id })
+    .where(props)
     .timeout(timeout)
 
   return {

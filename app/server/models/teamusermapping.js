@@ -2,7 +2,7 @@
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'Teamusermapping'
+const name = 'TeamUserMapping'
 const tableName = 'teamusermapping'
 
 const selectableProps = [
