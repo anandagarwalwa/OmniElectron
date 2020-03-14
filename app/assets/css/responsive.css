@@ -7,7 +7,9 @@
 @media(min-width:1032px) and (max-width:1056px){
   .main-sidebar .sidenav{width: 155px !important;}
 }
-
+@media all and (max-width: 1024px) {
+  body{overflow-y: scroll !important;}
+}
 @media(min-width:856px) and (max-width:930px){
   .main-sidebar .sidenav{width: 130px !important;}
 }
@@ -15,6 +17,7 @@
 @media(min-width:768px) and (max-width:1024px){
   .login-section{margin-bottom: 10rem !important;}
 }
+
 
 @media (min-width: 320px) and (max-width: 991px) {
   .navigation .navbar-nav {
@@ -44,7 +47,7 @@
 
 @media (min-width: 852px) and (max-width: 991px) {
   .main-sidebar .sidenav {
-    width: 130px !important;
+    width: 150px !important;
   }
   .main-sidebar .sidenav a {
     padding: 10px 8px 10px 10px !important;
@@ -70,7 +73,7 @@
 }
 @media (min-width: 768px) and (max-width: 850px) {
   .main-sidebar .sidenav {
-    width: 120px !important;
+    width: 145px !important;
   }
   .search-main input[type="text"] {
     padding: 3px 19px 3px 30px !important;
@@ -214,6 +217,7 @@
   
 }
 @media all and (max-width: 768px) {
+
   #demo-one {
     margin-left: 36px;
   }
