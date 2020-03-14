@@ -1,5 +1,9 @@
 
 
+
+
+
+
 @media(min-width:1025px) and (max-width:1220px){
   .main-sidebar .sidenav{width: 171px !important;}
 }
@@ -7,9 +11,7 @@
 @media(min-width:1032px) and (max-width:1056px){
   .main-sidebar .sidenav{width: 155px !important;}
 }
-@media all and (max-width: 1024px) {
-  body{overflow-y: scroll !important;}
-}
+
 @media(min-width:856px) and (max-width:930px){
   .main-sidebar .sidenav{width: 130px !important;}
 }
@@ -158,13 +160,23 @@
   }
 }
 
+
+@media(min-width:771px) and (max-width:848px){
+  #sidebar ul li a{padding: 10px 10px !important;}
+}
+
 @media(min-width:576px) and (max-width:666px){
   .login-section-main{flex-direction: column !important;}
 }
 @media (min-width: 481px) and (max-width: 575px) {
   .responsive-section .d-flex {
     display: block !important;
+    
   }
+  .tab-section .d-flex{
+    flex-direction: column !important;
+  }
+  .tab-form-section{width: 80% !important;}
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
