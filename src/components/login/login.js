@@ -7,12 +7,17 @@ $("#headerbar").css("display", "none");
 
 // User Login
 $("#userlogin").click(function () {
+    document.getElementById("loader").style.display = "block";
     var EmailId = $("#usr").val();
     var Password = $("#pwd").val();
     userLogin({
         'EmailId': EmailId,
         'Password': Password
     }).then(data => {
+        setTimeout(showPage, 500);
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+        }
         if (data) {
             localStorage.setItem("UserId", data.UserId);
             $("#sidebar").css("display", "block");

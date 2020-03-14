@@ -33,7 +33,7 @@ const getUsersById = (id) => {
 }
 
 const updateUserById = (userid, data) => {
-    return Users.update(userid, data).catch(err => {
+    return Users.update({ UserId: userid }, data).catch(err => {
         console.log(err);
     });
 }

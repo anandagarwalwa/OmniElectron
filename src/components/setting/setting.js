@@ -1,5 +1,6 @@
 'use strict';
 var { getUsers, addUser, userLogin, getUsersById, updateUserById } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
 document.getElementById("loader").style.display = "none";
 getUsers().then(data => {
@@ -167,14 +168,25 @@ $("#btnAddMember").click(function () {
 });
 
 // Get User Login Data
+
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
-    if(data == undefined){
-        return false;
-    }
     if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
-    $("#exampleInputEmail").val(data[0].EmailId)
-    $("#exampleInputFirstName").val(data[0].FirstName)
+    if (data.length > 0) {
+        $("#exampleInputEmail").val(data[0].EmailId);
+        $("#exampleInputFirstName").val(data[0].FirstName);
+    }
+}).catch(err => {
+    console.error(err);
+});
+
+// Get Worekspace By logged User
+getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
+).then(data => {
+    if (data.length > 0) {
+        $("#workspacename").val(data[0].Name);
+        $("#workspacedomain").val(data[0].Domain);
+    }
 }).catch(err => {
     console.error(err);
 });
@@ -189,10 +201,8 @@ $("#updatebtn").click(function () {
             'FirstName': $("#exampleInputFirstName").val()
         }).then(data => {
             setTimeout(showPage, 500);
-            function showPage() {
-                document.getElementById("loader").style.display = "none";
-                document.getElementById("mainsettingpage").style.display = "block";
-            }
+            document.getElementById("mainsettingpage").style.display = "block";
+
             if (data == 1) {
                 $.toast({
                     text: "Member details update Successfully.", // Text that is to be shown in the toast
@@ -235,3 +245,154 @@ $("#updatebtn").click(function () {
             console.error(err);
         });
 });
+
+// Add/Update Workspace
+
+$("#btnworkspace").click(function () {
+    debugger;
+    var workSpaceObj = {
+        Name: $("#workspacename").val(),
+        Domain: $("#workspacedomain").val(),
+        CreatedBy: parseInt(localStorage.getItem("UserId")),
+        CreatedDate: new Date()
+    }
+
+    if ($("#workspacename").val() == '' || $("#workspacedomain").val() == '') {
+        $.toast({
+            text: "Please Fillup all Details!", // Text that is to be shown in the toast
+            heading: 'Error Message', // Optional heading to be shown on the toast
+            icon: 'error', // Type of toast icon
+            showHideTransition: 'fade', // fade, slide or plain
+            allowToastClose: true, // Boolean value true or false
+            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+            textAlign: 'left',  // Text alignment i.e. left, right or center
+            loader: false,  // Whether to show loader or not. True by default
+            loaderBg: '#9EC600',  // Background color of the toast loader
+            beforeShow: function () { }, // will be triggered before the toast is shown
+            afterShown: function () { }, // will be triggered after the toat has been shown
+            beforeHide: function () { }, // will be triggered before the toast gets hidden
+            afterHidden: function () { }  // will be triggered after the toast has been hidden
+        });
+        return;
+    }
+    document.getElementById("mainsettingpage").style.display = "none";
+    document.getElementById("loader").style.display = "block";
+
+    // Get Worekspace By logged User
+    getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
+    ).then(data => {
+        setTimeout(showPage, 500);
+        document.getElementById("mainsettingpage").style.display = "block";
+        if (data.length > 0) {
+            // Update Workspace by id
+            updateWorkspaceById(data[0].Id,
+                {
+                    'Name': $("#workspacename").val(),
+                    'Domain': $("#workspacedomain").val()
+                }).then(data => {
+                    setTimeout(showPage, 500);
+                    document.getElementById("mainsettingpage").style.display = "block";
+
+                    if (data == 1) {
+                        $.toast({
+                            text: "Workspace update Successfully.", // Text that is to be shown in the toast
+                            heading: 'Success Message', // Optional heading to be shown on the toast
+                            icon: 'success', // Type of toast icon
+                            showHideTransition: 'fade', // fade, slide or plain
+                            allowToastClose: true, // Boolean value true or false
+                            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                            textAlign: 'left',  // Text alignment i.e. left, right or center
+                            loader: false,  // Whether to show loader or not. True by default
+                            loaderBg: '#9EC600',  // Background color of the toast loader
+                            beforeShow: function () { }, // will be triggered before the toast is shown
+                            afterShown: function () { }, // will be triggered after the toat has been shown
+                            beforeHide: function () { }, // will be triggered before the toast gets hidden
+                            afterHidden: function () { }  // will be triggered after the toast has been hidden
+                        });
+                        $("#workspacename").val(workSpaceObj.Name);
+                        $("#workspacedomain").val(workSpaceObj.Domain);
+                    } else {
+                        $.toast({
+                            text: "Please Fillup all Details!", // Text that is to be shown in the toast
+                            heading: 'Error Message', // Optional heading to be shown on the toast
+                            icon: 'error', // Type of toast icon
+                            showHideTransition: 'fade', // fade, slide or plain
+                            allowToastClose: true, // Boolean value true or false
+                            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                            textAlign: 'left',  // Text alignment i.e. left, right or center
+                            loader: false,  // Whether to show loader or not. True by default
+                            loaderBg: '#9EC600',  // Background color of the toast loader
+                            beforeShow: function () { }, // will be triggered before the toast is shown
+                            afterShown: function () { }, // will be triggered after the toat has been shown
+                            beforeHide: function () { }, // will be triggered before the toast gets hidden
+                            afterHidden: function () { }  // will be triggered after the toast has been hidden
+                        });
+                    }
+                }).catch(err => {
+                    console.error(err);
+                });
+
+        } else {
+            // Add New workspace
+            addWorkspace(workSpaceObj).then(data => {
+                setTimeout(showPage, 500);
+                document.getElementById("mainsettingpage").style.display = "block";
+                if (data[0]) {
+                    $("#workspacename").val(workSpaceObj.Name);
+                    $("#workspacedomain").val(workSpaceObj.Domain);
+                    $.toast({
+                        text: "Workspace add Successfully.", // Text that is to be shown in the toast
+                        heading: 'Success Message', // Optional heading to be shown on the toast
+                        icon: 'success', // Type of toast icon
+                        showHideTransition: 'fade', // fade, slide or plain
+                        allowToastClose: true, // Boolean value true or false
+                        hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                        stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                        position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                        textAlign: 'left',  // Text alignment i.e. left, right or center
+                        loader: false,  // Whether to show loader or not. True by default
+                        loaderBg: '#9EC600',  // Background color of the toast loader
+                        beforeShow: function () { }, // will be triggered before the toast is shown
+                        afterShown: function () { }, // will be triggered after the toat has been shown
+                        beforeHide: function () { }, // will be triggered before the toast gets hidden
+                        afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    });
+                } else {
+                    $.toast({
+                        text: "Please Fillup all Details!", // Text that is to be shown in the toast
+                        heading: 'Error Message', // Optional heading to be shown on the toast
+                        icon: 'error', // Type of toast icon
+                        showHideTransition: 'fade', // fade, slide or plain
+                        allowToastClose: true, // Boolean value true or false
+                        hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                        stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                        position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                        textAlign: 'left',  // Text alignment i.e. left, right or center
+                        loader: false,  // Whether to show loader or not. True by default
+                        loaderBg: '#9EC600',  // Background color of the toast loader
+                        beforeShow: function () { }, // will be triggered before the toast is shown
+                        afterShown: function () { }, // will be triggered after the toat has been shown
+                        beforeHide: function () { }, // will be triggered before the toast gets hidden
+                        afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    });
+                }
+            }).catch(err => {
+                console.error(err);
+            });
+        }
+    }).catch(err => {
+        console.error(err);
+    });
+
+});
+
+// Loader
+function showPage() {
+    document.getElementById("loader").style.display = "none";
+}
