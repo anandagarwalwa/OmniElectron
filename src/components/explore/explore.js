@@ -15,7 +15,7 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
     if(data == undefined){
         return false;
     }
-    debugger;
+    // debugger;
     $("#usernameid").text(data[0].FirstName)
     $("#userimage").attr('src',data[0].userimage);
 }).catch(err => {

@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div class="form-section mb-5">
+    <div id="addDataPointForm" class="form-section mb-5">
         <div class="row justify-content-center">
             <div class="col-xl-6">
                 <div class="coman-form-section box-content">
@@ -123,26 +123,26 @@
                                 <div class="form-check ">
                                     <label class="form-check-label" for="radio1">
                                   Data link
-                                <input type="radio" class="form-check-input" id="radio1" name="optradio" value="option1">
+                                <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="dataLink">
                               </label>
                                 </div>
                                 <div class="form-check">
                                     <label class="form-check-label" for="radio2">
                                   Analysis
-                                <input type="radio" class="form-check-input" id="radio2" name="optradio" value="option2">
+                                <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="analysis">
                               </label>
                                 </div>
                                 <div class="form-check">
-                                    <label class="form-check-label">
+                                    <label class="form-check-label"  for="radio3">
                                   Test
-                                <input type="radio" class="form-check-input">
+                                <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="test">
                               </label>
                                 </div>
                             </div>
 
                             <div class="submit-btn">
                                 <!-- <a href="addlink.html" class="btn btn-primary mt-3 float-right">publish</a> -->
-                                <a href="add-data-link.html" class="btn btn-primary mt-3 float-right">publish</a>
+                                <a  id="btnPublish" class="btn btn-primary mt-3 float-right">publish</a>
                             </div>
                         </form>
                     </div>
@@ -438,7 +438,7 @@
 
 
                         <div class="submit-btn">
-                            <a href="AddLink-Two.html" class="btn btn-primary mt-3 float-right">publish</a>
+                            <a href="AddLink-Two.html"  class="btn btn-primary mt-3 float-right">publish</a>
                         </div>
                     </form>
                 </div>
