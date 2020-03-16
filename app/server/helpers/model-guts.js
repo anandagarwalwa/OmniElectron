@@ -46,7 +46,8 @@ module.exports = ({
     .timeout(timeout)
 
   const update = (updateProps, props) => {
-    delete props.UserId // not allowed to set `id`
+    if (props.UserId)
+      delete props.UserId // not allowed to set `id`
 
     return knex.update(props)
       .from(tableName)
@@ -54,12 +55,32 @@ module.exports = ({
       .returning(selectableProps)
       .timeout(timeout)
   }
-
   const destroy = props => knex.del()
     .from(tableName)
     .where(props)
     .timeout(timeout)
 
+  const bulkSave = rows => {
+    for (var props in rows) {
+      if (props.id)
+        delete props.id // not allowed to set `id`
+    }
+
+    return knex.insert(rows)
+      .returning(selectableProps)
+      .into(tableName)
+      .timeout(timeout)
+  }
+  const updateTeams = (TeamId, props) => {
+    if (props.TeamId)
+      delete props.TeamId // not allowed to set `id`
+
+    return knex.update(props)
+      .from(tableName)
+      .where({ TeamId })
+      .returning(selectableProps)
+      .timeout(timeout)
+  }
   return {
     name,
     tableName,
@@ -71,6 +92,8 @@ module.exports = ({
     findOne,
     findById,
     update,
-    destroy
+    destroy,
+    bulkSave,
+    updateTeams
   }
 }

@@ -62,7 +62,8 @@
                                     </div>
                                     <div class="tab-two-btn-content">
                                         <!-- The Modal -->
-                                        <div class="modal fade" tabindex="-1" aria-labelledby="userModal" aria-hidden="true" id="userModal"  role="dialog">
+                                        <div class="modal fade" tabindex="-1" aria-labelledby="userModal"
+                                            aria-hidden="true" id="userModal" role="dialog">
                                             <div class="modal-dialog modal-md">
                                                 <div class="modal-content">
 
@@ -127,14 +128,14 @@
                                                                     <label for="exampleFormControlSelect1">Team</label>
                                                                     <select class="form-control" id="ddlTeams"
                                                                         name="teamId">
-                                                                        <option value="">Select</option>                                                                        
+                                                                        <option value="">Select</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="exampleFormControlSelect1">Role</label>
                                                                     <select class="form-control" id="ddlRoles"
                                                                         name="roleId">
-                                                                        <option value="">Select</option>                                                                                                                                                
+                                                                        <option value="">Select</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="form-group">
@@ -176,25 +177,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-two-nav">                                    
+                                <div class="tab-two-nav">
                                     <ul id="userList">
                                         <li rv-each-item="items">
                                             <div class="col-md-12 pt-2">
                                                 <div class="row">
                                                     <div class="col-md-1">
-                                                        <div class="tab-profile tab-pic">                                                           
+                                                        <div class="tab-profile tab-pic">
                                                             <img rv-src="item.Photo" class="img-fluid rounded-circle">
                                                         </div>
-                                                    </div>                                                    
+                                                    </div>
                                                     <div class="col-md-7">
                                                         <h6>{item.FirstName}</h6>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <a href="javascript:void(0)" rv-data-category-id=item.UserId
-                                                            class="btn-add-member-action btn-primary" id="addmember" data-toggle="modal"
-                                                            data-target="#userModal" onclick="editUser(this)" >Edit</a>
+                                                            class="btn-add-member-action btn-primary" id="addmember"
+                                                            data-toggle="modal" data-target="#userModal"
+                                                            onclick="editUser(this)">Edit</a>
                                                         <a href="javascript:void(0)" rv-data-category-id=item.UserId
-                                                            class="btn-add-member-action btn-primary" onclick="deleteUserClick(this)">Delete</a>
+                                                            class="btn-add-member-action btn-primary"
+                                                            onclick="deleteUserClick(this)">Delete</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -244,7 +247,8 @@
                                         </div>
 
                                         <div class="tab-btn">
-                                            <a class="btn btn-group-lg btn-primary" id="btnworkspace" style="cursor: pointer;color: white;">Update</a>
+                                            <a class="btn btn-group-lg btn-primary" id="btnworkspace"
+                                                style="cursor: pointer;color: white;">Update</a>
                                         </div>
                                     </form>
                                 </div>
@@ -258,11 +262,13 @@
                                 <div class="tab-two-top-section">
                                     <div class="tab-two-btn">
                                         <button href="#" class="btn btn-group-lg btn-primary" id="addteams"
-                                            data-toggle="modal" data-target="#myModals">Add Teams</button>
+                                            data-toggle="modal" data-target="#TeamsModals"  onclick="AddTeams(this)" >Add Teams</button>
                                     </div>
                                     <div class="tab-two-btn-content">
                                         <!-- The Modal -->
-                                        <div class="modal fade" id="myModals">
+                                        <div class="modal fade" id="TeamsModals" tabindex="-1" role="dialog"
+                                            aria-labelledby="TeamsModals" aria-hidden="true">
+
                                             <div class="modal-dialog modal-md">
                                                 <div class="modal-content">
 
@@ -276,63 +282,52 @@
                                                     <!-- Modal body -->
                                                     <div class="modal-body modal-my-content">
                                                         <!-- <div class="upload-pic">
-                                                        <div class="upload-image-section">
-                                                            <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
-                                                        </div>
-                                                        <div class="upload-text">
-                                                            <h6>Upload Photo</h6>
-                                                        </div>
-                                                    </div> -->
+                                                    <div class="upload-image-section">
+                                                        <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                                                    </div>
+                                                    <div class="upload-text">
+                                                        <h6>Upload Photo</h6>
+                                                    </div>
+                                                </div> -->
                                                         <div class="member-form-section">
                                                             <form>
 
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">Team Name</label>
-                                                                    <input type="text" class="form-control" id="#"
-                                                                        aria-describedby="emailHelp" placeholder="">
+                                                                    <input type="text" class="form-control"
+                                                                        id="Teamname" aria-describedby="emailHelp"
+                                                                        placeholder="Team Name">
+                                                                    <input type="hidden" id="TeamID" name="TeamID"
+                                                                        value="0">
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label
                                                                         class="rememberme mt-checkbox mt-checkbox-outline mb-0">
                                                                         <input type="checkbox" name="remember"
-                                                                            value="1">
+                                                                            id="TeamsIsActive" value="1">
                                                                         <span></span>&nbsp;</label> Is Active
                                                                 </div>
 
                                                                 <!----Dropdown--->
 
-                                                                <!-- <div class="form-group">
-                                                                    <label for="exampleFormControlSelect1">Teams
+                                                                <div class="form-group">
+                                                                    <label for="exampleFormControlSelect1">User
                                                                         select</label>
-                                                                    <select class="form-control"
-                                                                        id="exampleFormControlSelect1">
+                                                                    <select class="form-control" id="TeamsUserSelect">
                                                                         <option>1</option>
                                                                         <option>2</option>
                                                                         <option>3</option>
                                                                         <option>4</option>
                                                                         <option>5</option>
                                                                     </select>
-                                                                </div> -->
-                                                                <div class="team-section-dropdown">
-                                                                    <div class="multiselect" id="countries" multiple="multiple" data-target="multi-0">
-                                                                        <div class="title noselect">
-                                                                            <span class="text">Select Teams</span>
-                                                                            <span class="close-icon">&times;</span>
-                                                                            <span class="expand-icon">&plus;</span>
-                                                                        </div>
-                                                                        <div class="container">
-                                                                            <option value="USA">USA</option>
-                                                                            <option value="France">France</option>
-                                                                            <option value="Greece">Greece</option>
-                                                                            <option value="United Kingdom">United Kingdom</option>
-                                                                            <option value="Germany">Germany</option>
-                                                                            <option value="Spain">Spain</option>
-                                                                            <option value="Italy">Italy</option>
-                                                                            <option value="China">China</option>
-                                                                            <option value="Japan">Japan</option>
-                                                                        </div>
-                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="TeamDescription">Description</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="TeamDescription"
+                                                                        aria-describedby="emailHelp"
+                                                                        placeholder="Description">
                                                                 </div>
 
                                                             </form>
@@ -343,7 +338,7 @@
                                                     <!-- Modal footer -->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-primary col-xl-6"
-                                                            data-dismiss="modal">Add</button>
+                                                            data-dismiss="modal" id="IdAddteams">Add</button>
                                                         <button type="button" class="btn btn-danger col-xl-6"
                                                             data-dismiss="modal">Close</button>
                                                     </div>
@@ -368,30 +363,27 @@
                                     </div>
                                 </div>
                                 <div class="tab-two-nav">
-                                    <ul>
-                                        <li><a href="#">
-                                                <div class="tab-ul-sec-two-main">
-                                                    <div class="tab-profile tab-pic">
-                                                        <img src="assets/images/40306.jpg"
-                                                            class="img-fluid rounded-circle">
+                                    <ul id="TeamList">
+                                        <!-- <li rv-each-item="items">
+                                            <div class="col-md-12 pt-2">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <h6>{item.TeamName}</h6>
                                                     </div>
-                                                    <div class="text-content">
-                                                        <h6>john doe</h6>
+                                                    <div class="col-md-4">
+                                                        <h6>{item.IsActiveStatus}</h6>
                                                     </div>
-                                                </div>
-                                            </a></li>
-
-                                        <li><a href="#">
-                                                <div class="tab-ul-sec-two-main">
-                                                    <div class="tab-profile tab-pic">
-                                                        <img src="assets/images/40306.jpg"
-                                                            class="img-fluid rounded-circle">
-                                                    </div>
-                                                    <div class="text-content">
-                                                        <h6>john doe</h6>
+                                                    <div class="col-md-4">
+                                                        <a rv-data-category-TeamId=item.TeamId
+                                                            class="btn-add-member-action btn-primary" id="EditTeams"
+                                                            onclick="EditTeams(this)">Edit</a>
+                                                            <a href="javascript:void(0)" rv-data-category-TeamId=item.TeamId
+                                                            class="btn-add-member-action btn-primary"
+                                                            onclick="deleteTeamsClick(this)">Delete</a>
                                                     </div>
                                                 </div>
-                                            </a></li>
+                                            </div>
+                                        </li> -->
                                     </ul>
                                 </div>
                             </div>
