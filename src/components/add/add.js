@@ -1,7 +1,8 @@
+'use strict';
 $(document).ready(function() {
     $("#btnPublish").click(function(){
+        debugger
         if($("input[type='radio'].radioBtnClass").is(':checked')) {
-            debugger
             var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
             if(radioBtnClass_type == "dataLink")
             {
