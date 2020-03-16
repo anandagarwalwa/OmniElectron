@@ -9,22 +9,17 @@ var { addTeams, AddTeamusermapping, GetTeamsList, GetTeamsByID, GetTeamusermappi
 var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
 document.getElementById("loader").style.display = "none";
 function BindUser() {
-    debugger
     getUsers().then(data => {
         var model = {
             items: data
         }
-        tinybind.binders.src = function (el, value) {
-            // value = 'data:image/jpeg;base64,' + value;
-            el.setAttribute('src', value);
-        }
-        tinybind.bind($('#userList'), model);
         $('#exampleInputEmail').val(data[0].EmailId);
         $('#exampleInputFirstName').val(data[0].FirstName);
         $('#userProfile').html(data[0].FirstName);
         if (model.items && model.items.length > 0) {
-            debugger
             $("#TeamsUserSelect").html("");
+            $("#userList").html("");
+            var htmlUserList = "";
             var html = '<option value=' + 0 + '>Select User</option>';
             for (var u = 0; u < model.items.length; u++) {
                 var UserData = model.items[u];
@@ -34,20 +29,50 @@ function BindUser() {
                 } else {
                     html = '<option value=' + UserData.UserId + '>' + Name + '</option>';
                 }
+                //Start Preparing User List
+                htmlUserList += getUserListHtml(UserData);
             }
             $("#TeamsUserSelect").html(html);
+            $("#userList").html(htmlUserList);
         }
     }).catch(err => {
         console.error(err);
     });
 }
+
+function getUserListHtml(objUserData) {
+    var html = '<li>'
+    html += '    <div class="col-md-12 pt-2">'
+    html += '        <div class="row">'
+    html += '            <div class="col-md-1">'
+    html += '                <div class="tab-profile tab-pic">'
+    html += '                    <img src="' + objUserData.Photo + '" class="img-fluid rounded-circle">'
+    html += '                </div>'
+    html += '            </div>'
+    html += '            <div class="col-md-7">'
+    html += '                <h6 class="username">' + objUserData.FirstName + ' ' + objUserData.LastName + ' </h6>'
+    html += '            </div>'
+    html += '            <div class="col-md-4">'
+    html += '                <a href="javascript:void(0)" category-id=' + objUserData.UserId
+    html += '                    class="btn-add-member-action btn-primary" id="addmember"'
+    html += '                    data-toggle="modal" data-target="#userModal"'
+    html += '                    onclick="editUser(this)">Edit</a>'
+    html += '                <a href="javascript:void(0)" category-id=' + objUserData.UserId
+    html += '                    class="btn-add-member-action btn-primary"'
+    html += '                    onclick="deleteUserClick(this)">Delete</a>'
+    html += '            </div>'
+    html += '        </div>'
+    html += '    </div>'
+    html += '</li>';
+    return html;
+}
+
 BindUser();
 //Roles Binding
 getRoles().then(data => {
     $('#ddlRoles').empty();
     $('#ddlRoles').append($('<option>').attr('value', "").html("Select"));
     $.each(data, function (key, val) {
-        debugger;
         var option = $('<option>').attr('value', val.RoleId).html(val.RoleName);
         $('#ddlRoles').append(option);
     });
@@ -205,7 +230,6 @@ $("#btnAddMember").click(function () {
                 resetUserModel();
             })
                 .catch(err => {
-                    debugger;
                     console.error(err);
                     resetUserModel();
                 });
@@ -237,7 +261,7 @@ $("#btnAddMember").click(function () {
 function deleteUserClick(obj) {
     $.confirm({
         title: 'Delete Confirmation?',
-        content: 'Are you sure you want to delete this user?',
+        content: 'Are you sure you want to delete ' + $(obj.parentElement.parentElement).find(".username").html() + ' user?',
         type: 'green',
         buttons: {
             ok: {
@@ -245,7 +269,8 @@ function deleteUserClick(obj) {
                 btnClass: 'btn-primary',
                 keys: ['enter'],
                 action: function () {
-                    deleteUser(obj.dataset.categoryId).then(data => {
+                    deleteUser(obj.getAttribute("category-id")).then(data => {
+                        BindUser();
                         $.toast({
                             text: "Member deleted Successfully.", // Text that is to be shown in the toast
                             heading: 'Success Message', // Optional heading to be shown on the toast
@@ -275,8 +300,7 @@ function deleteUserClick(obj) {
 }
 
 function editUser(obj) {
-    //obj.dataset.categoryId
-    getUsersById(parseInt(obj.dataset.categoryId)
+    getUsersById(parseInt(obj.getAttribute("category-id"))
     ).then(data => {
         if (data == undefined) {
             return false;
@@ -290,7 +314,7 @@ function editUser(obj) {
         $("#ddlRoles").val(data[0].RoleId);
         $("#hdnUserId").val(data[0].UserId);
         imagebase64 = data[0].Photo.toString();
-        if (IsActive.readUIntLE() == 1)
+        if (data[0].IsActive.readUIntLE() == 1)
             $('#isActive').prop('checked', true);
         else
             $('#isActive').prop('checked', false);
@@ -401,7 +425,6 @@ $("#updatebtn").click(function () {
 // Add/Update Workspace
 
 $("#btnworkspace").click(function () {
-    debugger;
     var workSpaceObj = {
         Name: $("#workspacename").val(),
         Domain: $("#workspacedomain").val(),
@@ -665,7 +688,6 @@ function AddTeams(Teamsobj) {
 
 }
 function EditTeams(Teamsobj) {
-    debugger
     $('#TeamsModals').modal('show');
     //var id = Teamsobj.dataset.categoryTeamid;
     var id = $(Teamsobj).attr("data-teamid");
@@ -701,7 +723,6 @@ function SetTeamsValue(TeamData, TeamUserMapping) {
     $("#TeamDescription").val(TeamData.Description);
 }
 function RebindTeamList() {
-    debugger
     GetTeamsList().then(ResponseTeamList => {
         var html = "";
         $("#TeamList").html("");
@@ -735,16 +756,6 @@ function RebindTeamList() {
                 + ' </li>'
         }
         $("#TeamList").html(html);
-        // var model = {
-        //     items: ResponseTeamList
-        // }
-        // // tinybind.binders.src = function (el, value) {
-        // //     // value = 'data:image/jpeg;base64,' + value;
-        // //     
-        // //     el.setAttribute('src', value);
-        // // }        
-        // tinybind.bind($('#TeamList'), model);
-
     }).catch(error => {
 
     });
@@ -764,7 +775,6 @@ function deleteTeamsClick(obj) {
                 keys: ['enter'],
                 action: function () {
                     deleteTeamsUserMapping(id).then(teamsResponse => {
-                        debugger
                         DeleteTeamsbyid(id).then(data => {
                             if (data && teamsResponse && data > 0 && teamsResponse > 0) {
                                 Showtoast_Message(true, "Member deleted Successfully.");
