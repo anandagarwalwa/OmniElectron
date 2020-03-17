@@ -34,6 +34,10 @@
   .navigation .navbar {
     padding: 0.5rem 0rem !important;
   }
+  .login-section{
+    margin-top: 5rem !important;
+    margin-bottom: 1rem !important;
+  }
 }
 
 @media(min-width:1024px) and (max-width:1024px){

@@ -1,5 +1,6 @@
 {
     "name": "omni",
+    "author": "Webashlar",
     "productName": "Omni",
     "description": "omni",
     "version": "0.0.0",
@@ -26,7 +27,9 @@
         "e2e": "mocha temp/e2e.js --require source-map-support/register",
         "test": "npm run unit && npm run e2e",
         "start": "node build/start.js",
-        "release": "npm test && webpack --config=build/webpack.app.config.js --env=production && electron-builder"
+        "release": "npm test && webpack --config=build/webpack.app.config.js --env=production && electron-builder",
+        "build": "electron-packager . omni --platform win32 --arch x64 --out dist/",
+        "setup": "electron-installer-windows --src dist/omni-win32-x64/ --dest dist/installers/"
     },
     "dependencies": {
         "babel-preset-es2015": "^6.24.1",
