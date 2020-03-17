@@ -42,6 +42,17 @@ const getUsersById = (id) => {
     });
 }
 
+// const getUsersByEmailId = (emailId) => {   
+//     return Users.find({ EmailId: emailId });
+// }
+const getUsersByEmailId = async (emailId) => { 
+    var res = undefined;  
+    await Users.find({ EmailId: emailId }).then(data=>{
+        res=data;
+    });
+    return res;
+}
+
 const updateUserById = (userid, data) => {
     return Users.update({ UserId: userid }, data);
 }
@@ -59,6 +70,6 @@ const insertOrUpdate = (tableName, rows) => {
 
 module.exports = {
     getUsers
-    , addUser, userLogin, getUsersById, updateUserById,insertOrUpdate, deleteUser
+    , addUser, userLogin, getUsersById, updateUserById,insertOrUpdate, deleteUser,getUsersByEmailId
 }
 
