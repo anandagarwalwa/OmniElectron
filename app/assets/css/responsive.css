@@ -34,10 +34,10 @@
   .navigation .navbar {
     padding: 0.5rem 0rem !important;
   }
-  .login-section{
+	.login-section{
     margin-top: 5rem !important;
     margin-bottom: 1rem !important;
-  }
+  }			 
 }
 
 @media(min-width:1024px) and (max-width:1024px){
@@ -48,12 +48,19 @@
   .main-sidebar .sidenav {
     width: 155px !important;
   }
+  .tags-section{width: 100% !important;}
   
+}
+
+@media(max-width:810px){
+  .table-section-main .table td, .table-section-main .table th{
+    padding: .5rem !important;
+  }
 }
 
 @media (min-width: 852px) and (max-width: 991px) {
   .main-sidebar .sidenav {
-    width: 150px !important;
+    width: 140px !important;
   }
   .main-sidebar .sidenav a {
     padding: 10px 8px 10px 10px !important;
@@ -76,10 +83,17 @@
     width: 63% !important;
   }
   .timeline-ico img.img-fluid{width: 25px !important;}
+  .tags-section{width: 100% !important;}
+  .Onear-section h6{
+    font-size: 13px !important;
+  }
+  .table-title h6{font-size: 13px !important;}
+
+
 }
 @media (min-width: 768px) and (max-width: 850px) {
   .main-sidebar .sidenav {
-    width: 145px !important;
+    width: 135px !important;
   }
   .search-main input[type="text"] {
     padding: 3px 19px 3px 30px !important;
@@ -115,6 +129,9 @@
   .dropdown-notification .dropdown-menu {
     position: absolute;
   }
+  .pic-font-section .dropdown.show::before{
+    right: 58px !important;
+  }
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
@@ -135,7 +152,7 @@
     left: 10px !important;
   }
   .main-sidebar .sidenav {
-    left: 52px !important;
+    left: 50px !important;
   }
   #sidebar ul li a {
     padding: 10px 0 !important;
@@ -160,13 +177,16 @@
     position: absolute;
   }
   .pic-font-section .dropdown.show::before {
-    right: 53px !important;
+    right: 59px !important;
   }
 }
 
 
 @media(min-width:771px) and (max-width:848px){
   #sidebar ul li a{padding: 10px 10px !important;}
+  .tags-section{width: 100% !important;}
+  .table-title h6{font-size: 13px !important;}
+  .Onear-section h6{font-size: 13px !important;}
 }
 
 @media(min-width:576px) and (max-width:666px){
@@ -248,6 +268,14 @@
   display: flex !important;
 }
 .timeline-ico img.img-fluid{width: 30px !important;}
+.table-title h6{
+  font-size: 12px !important;
+}
+.tags-section{width: 85% !important;}
+.Onear-section h6{font-size: 13px !important;}
+.responsive-activity {
+  max-width: 100% !important;
+}
 }
 
 @media(min-width:375px) and (max-width:375px){
@@ -264,9 +292,17 @@
 }
 
 
+
+
 @media(min-width:768px) and (max-width:768px){
   .navbar-brand{margin-left: 0;}
   .tab-section .d-flex{
     display: flex !important;
+  }
+}
+
+@media(max-width:725px){
+  .table-section-main .table td, .table-section-main .table th{
+    padding: .1rem !important;
   }
 }
