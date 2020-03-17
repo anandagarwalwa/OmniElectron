@@ -14,4 +14,4 @@ const getDatacategory = () => {
 
 module.exports = {
     getDatacategory
-}
+} 

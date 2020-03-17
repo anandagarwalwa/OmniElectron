@@ -9,7 +9,7 @@ const selectableProps = [
     'Id',
     'Name',
     'IsActive'
-]
+] 
 
 module.exports = knex => {
     const guts = createGuts({
