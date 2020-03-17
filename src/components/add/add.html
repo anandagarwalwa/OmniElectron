@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-xl-12 pr-0 mt-5">
             <div class="coman-drop-down d-flex mx-auto justify-content-center">
-                <div class="col-xl-6">
+                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
                     <div class="main-explore-section">
                         <form>
                             <div class="form-group">
@@ -18,7 +18,7 @@
 
 
                 <!---DropDown-Two-->
-                <div class="col-xl-6">
+                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
                     <div class="main-explore-section">
                         <form>
                             <div class="form-group">
@@ -169,45 +169,54 @@
                     <h6>Add Link</h6>
                 </div>
                 <div class="form-main-section">
-                    <form>
+                    <form id="addDataLinkForm" method="post">
+                        <input id="hdnDataLinkId" type="hidden">
                         <div class="form-group">
-                            <label for="text">Description</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <label for="text" for="linkdesc">Description</label>
+                            <input type="text" class="form-control" name="linkdesc" placeholder="" id="linkdesc">
                         </div>
 
                         <div class="form-group">
                             <label for="text">Owner</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <select class="form-control" name="DataLinkUserSelect" id="DataLinkUserSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="text">Team</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <select class="form-control" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="text">Data Source</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <select class="form-control" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="text">Location</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <input type="text" class="form-control" placeholder="" name="datalinkLocation" id="datalinkLocation">
                         </div>
 
                         <div class="form-group">
                             <label for="text">Channel</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                             <select class="form-control" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="text">Links To</label>
-                            <input type="text" class="form-control" placeholder="" id="text">
+                            <select class="form-control" name="DataLinkToSelect" id="DataLinkToSelect">
+                                <option value="0">No record</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="text">Links From</label>
-                            <input type="text" class="form-control" placeholder="" id="text">
+                            <select class="form-control" name="DataLinkFromSelect" id="DataLinkFromSelect">
+                                <option value="0">No record</option>
+                            </select>
                         </div>
 
                         <div class="confluge-title">
@@ -218,19 +227,19 @@
                                 <!-- <label class="form-check-label" for="check2">
                                   <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                 </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>No
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" name="Confluence" value="0"> <span></span>&nbsp;</label>No
                             </div>
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label">
                                   <input type="checkbox" class="form-check-input">Yes
                                 </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>Yes
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceYes" name="Confluence" gr value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
 
                         <div class="submit-btn">
-                            <button type="button" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                            <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right">previous</button>
+                            <button type="button" id="btnDataLink" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                            <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right">previous</button>                            
                         </div>
                     </form>
                 </div>
