@@ -2,8 +2,8 @@
 var { getUsers, addUser, getUsersById, updateUserById, deleteUser, getUsersByEmailId } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
-var { addTeamUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
-var { addTeams, AddTeamusermapping, GetTeamsList, GetTeamsByID, GetTeamusermappingByID, UpdateTeamsbyid, UpdateTeamusermapping, deleteTeamsUserMapping, DeleteTeamsbyid } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { getTeamUserMappingByID,addBulkTeamUserMapping,updateTeamUserMapping ,deleteTeamsUserMapping} = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
+var { addTeams, getTeamsList, getTeamsByID,  updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var defaultImgUrl = "assets/images/40306.jpg";
 
 // var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
@@ -614,7 +614,7 @@ $("#IdAddteams").click(function () {
         IsActive: $("#TeamsIsActive").prop("checked")
     }
     if (Temansobj.TeamId > 0) {
-        UpdateTeamsbyid(Temansobj).then(data => {
+        updateTeamsById(Temansobj).then(data => {
 
             var SelectedUserList = [];
             var SelectedTeamUser = $("#TeamsUserSelect option:selected").val();
@@ -630,9 +630,9 @@ $("#IdAddteams").click(function () {
                 // for (var tu = 0; tu < SelectedUserList.length; tu++) {
                 //     SelectedUserList[tu].TeamId = data[0];
                 // }
-                UpdateTeamusermapping(SelectedUserList[0].TeamId, SelectedUserList).then(TeamUserMappingResponseData => {
+                updateTeamUserMapping(SelectedUserList[0].TeamId, SelectedUserList).then(TeamUserMappingResponseData => {
 
-                    AddTeamusermapping(SelectedUserList).then(TeamUserMappingResponseData => {
+                    addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
 
                         if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
                             Showtoast_Message(true);
@@ -680,7 +680,7 @@ $("#IdAddteams").click(function () {
                 for (var tu = 0; tu < SelectedUserList.length; tu++) {
                     SelectedUserList[tu].TeamId = data[0];
                 }
-                AddTeamusermapping(SelectedUserList).then(TeamUserMappingResponseData => {
+                addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
 
                     if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
                         Showtoast_Message(true);
@@ -721,8 +721,8 @@ function EditTeams(Teamsobj) {
     $('#TeamsModals').modal('show');
     //var id = Teamsobj.dataset.categoryTeamid;
     var id = $(Teamsobj).attr("data-teamid");
-    GetTeamsByID(id).then(ResponseTeams => {
-        GetTeamusermappingByID(id).then(ResponseTeamsUserMapping => {
+    getTeamsByID(id).then(ResponseTeams => {
+        getTeamUserMappingByID(id).then(ResponseTeamsUserMapping => {
 
             SetTeamsValue(ResponseTeams, ResponseTeamsUserMapping);
         }).catch(error => {
@@ -753,7 +753,7 @@ function SetTeamsValue(TeamData, TeamUserMapping) {
     $("#TeamDescription").val(TeamData.Description);
 }
 function RebindTeamList() {
-    GetTeamsList().then(ResponseTeamList => {
+    getTeamsList().then(ResponseTeamList => {
         var html = "";
         $("#TeamList").html("");
         for (var t = 0; t < ResponseTeamList.length; t++) {
@@ -805,7 +805,7 @@ function deleteTeamsClick(obj) {
                 keys: ['enter'],
                 action: function () {
                     deleteTeamsUserMapping(id).then(teamsResponse => {
-                        DeleteTeamsbyid(id).then(data => {
+                        deleteTeamsbyId(id).then(data => {
                             if (data && teamsResponse && data > 0 && teamsResponse > 0) {
                                 Showtoast_Message(true, "Member deleted Successfully.");
                                 RebindTeamList();
