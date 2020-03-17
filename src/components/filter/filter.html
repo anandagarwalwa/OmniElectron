@@ -1,50 +1,100 @@
-<div class="login-section mt-10">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mx-auto my-auto">
-                <div class="login-section-main">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-                        <div class="login-pic">
-                            <img src="assets/images/authentic.png" class="img-fluid"
-                            onmouseover="this.src='assets/images/play_bx2d.png'"
-                            onmouseout="this.src='assets/images/authentic.png'">
-                        </div>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-xl-2 col-lg-2 col-md-2">
+            <!-- <div class="collapse-btn-hide">
+                <button type="button" id="demo-one" class="btn">
+                    <i class="fas fa-align-justify text-white"></i>
+                </button>
+            </div> -->
+
+            <div class="main-sidebar collapse" id="main-side">
+                <div class="sidenav">
+                    <div class="search-main">
+                        <form>
+                            <input type="text" name="search" placeholder="Search..">
+                            <i class="fas fa-search"></i>
+                        </form>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12">
-                        <div class="login-main-section">
-                            <div class="login-title">
-                                <h4>Log in</h4>
+                    <a href="#"> <i class="fas fa-circle co-org"></i> Tablequ</a>
+                    <a href="#"> <i class="fas fa-circle co-pink"></i> SQL</a>
+                    <a href="#"> <i class="fas fa-circle co-blue"></i> Excel</a>
+                    <a href="#"> <i class="fas fa-circle co-green"></i> Power BI</a>
+                    <a href="#"> <i class="fas fa-circle col-yellow"></i> Partner UI</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-10 col-lg-10 col-12 col-md-10  pl-0 pr-0 mt-5 responsive-section">
+            <div class="coman-drop-down d-flex mx-auto justify-content-center">
+                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
+                    <div class="main-explore-section">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Filter</label>
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Display</option>
+                                <option>Display</option>
+                                <option>Display</option>
+                                <option>Display</option>
+                                <option>Display</option>
+                                </select>
                             </div>
-                            <div class="login-form-section">
-                                <form action="/action_page.php">
-                                    <div class="form-group user-name">
-                                       <div class="user-icon">
-                                        <i class="far fa-user"></i>
-                                       </div> 
-                                      <input type="text" class="form-control" id="usr" name="username" placeholder="Your name">
-                                    </div>
-                                    <div class="form-group user-password">
-                                      <div class="user-pass">
-                                        <i class="fas fa-unlock-alt"></i>
-                                      </div>
-                                      <input type="password" class="form-control" id="pwd" name="password" placeholder="password">
-                                    </div>
-                                    <div class="form-group form-check">
-                                        <label class="form-check-label">
-                                          <!-- <input class="form-check-input" type="checkbox"> Remember me -->
-                                          <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label> Remember me
-                                        </label>
-                                      </div>
-                                    
-                                  </form>
-                                  <div class="login-btn">
-                                    <button type="submit" class="btn btn-primary">Login</button>
-                                </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!---DropDown-Two-->
+                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
+                    <div class="main-explore-section">
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Breakdown</label>
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Data Tool</option>
+                                <option>Data Tool</option>
+                                <option>Data Tool</option>
+                                <option>Data Tool</option>
+                                <option>Data Tool</option>
+                                </select>
                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-section mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-xl-6">
+                        <div class="coman-form-section box-content">
+                            <div class="form-title">
+                                <h5>MYSQL Details</h5>
+                            </div>
+
+                            <div class="form-main-section pt-2">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="text">Username</label>
+                                        <input type="text" class="form-control" id="#" placeholder="">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="text">Password</label>
+                                        <input type="password" class="form-control" id="#" placeholder="">
+                                    </div>
+
+                                    <div class="submit-btn">
+                                        <a route-link route-href="filterResult" class="btn btn-primary submit-btn mt-3 float-right">Next</a>
+                                    </div>
+                                </form>
+                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

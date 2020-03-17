@@ -1,9 +1,10 @@
 'use strict';
-var { getUsers, addUser, userLogin } = require(__dirname + '\\server\\controllers\\user_controller.js');
-var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
+// var { userLogin } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var { userLogin } = require('../../../app/server/controllers//user_controller.js');
 
 $("#sidebar").css("display", "none");
 $("#headerbar").css("display", "none");
+$("#loader").css("display", "none");
 
 // User Login
 $("#userlogin").click(function () {
@@ -22,7 +23,7 @@ $("#userlogin").click(function () {
             localStorage.setItem("UserId", data.UserId);
             $("#sidebar").css("display", "block");
             $("#headerbar").css("display", "flex");
-            window.location.href = "app.html";
+            window.location.href = "../../../app/app.html";
             $.toast({
                 text: "Login Successfully.", // Text that is to be shown in the toast
                 heading: 'Success Message', // Optional heading to be shown on the toast

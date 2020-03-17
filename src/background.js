@@ -40,7 +40,7 @@ app.on("ready", () => {
 
   mainWindow.loadURL(
     url.format({
-      pathname: path.join(__dirname, "app.html"),
+      pathname: path.join(__dirname, "../src/components/login/login.html"),//"app.html"
       protocol: "file:",
       slashes: true
     })

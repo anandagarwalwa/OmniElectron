@@ -1,12 +1,12 @@
 'use strict';
-var { getUsers, addUser, userLogin, getUsersById, updateUserById, deleteUser } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var { getUsers, addUser, getUsersById, updateUserById, deleteUser, getUsersByEmailId } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
 var { addTeamUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
 var { addTeams, AddTeamusermapping, GetTeamsList, GetTeamsByID, GetTeamusermappingByID, UpdateTeamsbyid, UpdateTeamusermapping, deleteTeamsUserMapping, DeleteTeamsbyid } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var defaultImgUrl = "assets/images/40306.jpg";
 
-
-var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
+// var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
 document.getElementById("loader").style.display = "none";
 function BindUser() {
     getUsers().then(data => {
@@ -41,12 +41,13 @@ function BindUser() {
 }
 
 function getUserListHtml(objUserData) {
+
     var html = '<li>'
     html += '    <div class="col-md-12 pt-2">'
     html += '        <div class="row">'
     html += '            <div class="col-md-1">'
     html += '                <div class="tab-profile tab-pic">'
-    html += '                    <img src="' + objUserData.Photo + '" class="img-fluid rounded-circle">'
+    html += '                    <img src="' + objUserData.Photo + '" class="img-fluid rounded-circle" onerror="this.onerror=null;this.src=\'' + defaultImgUrl + '\';">'
     html += '                </div>'
     html += '            </div>'
     html += '            <div class="col-md-7">'
@@ -113,6 +114,20 @@ jQuery.validator.addMethod("emailValidation", function (value, element) {
 jQuery.validator.addMethod("domainValidation", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
 });
+// jQuery.validator.addMethod("isEmailIdExist", function (value, element) {
+//    getUsersByEmailId(value).then(data => {
+//         if (data == undefined || data.length <= 0) {
+//             return false;
+//         }
+//         else {
+//             return true;
+//         }
+//     });
+   
+//     debugger;
+//     // var res = getUsersByEmailId(value);
+//     // return res;
+// });
 
 $("#addMemberForm").validate({
     ignore: [],
@@ -120,7 +135,7 @@ $("#addMemberForm").validate({
         //uploadPhoto: 'required',
         firstName: { lettersonly: true, required: true },
         lastName: { lettersonly: true, required: true },
-        emailId: { emailValidation: true, required: true },
+        emailId: { emailValidation: true, required: true },//, isEmailIdExist: true
         domain: { domainValidation: true, required: true },
         // ddlTeams: 'required',
         ddlRoles: 'required'
@@ -135,16 +150,26 @@ $("#addMemberForm").validate({
             lettersonly: "Please enter characters only.",
             required: "This field is required"
         },
-        emailId: { emailValidation: "Please enter a valid email address.", required: 'This field is required' },
+        emailId: {
+            emailValidation: "Please enter a valid email address.",
+            required: 'This field is required',
+            //isEmailIdExist: 'This emailid already exist. Please try another one'
+        },
         domain: { domainValidation: "Please enter a valid domain.", required: 'This field is required' },
         // ddlTeams: 'This field is required',
         ddlRoles: 'This field is required'
     },
 });
 
+$("#addnewmember").click(function () {
+    resetUserModel();
+});
+
 $("#btnAddMember").click(function () {
     var addMemberdetails = $('form[id="addMemberForm"]').valid();
     if (addMemberdetails == true) {
+        // getUsersByEmailId($("#emailId").val()).then(data => {
+        //     if (data == undefined || data.length <= 0) {
         if ($("#hdnUserId").val() != 0 || $("#hdnUserId").val() != "") {
             updateUserById($("#hdnUserId").val(), {
                 'FirstName': $("#firstName").val(),
@@ -234,6 +259,11 @@ $("#btnAddMember").click(function () {
                     resetUserModel();
                 });
         }
+        //}
+
+        //});
+        debugger;
+
 
 
     }
@@ -305,8 +335,8 @@ function editUser(obj) {
         if (data == undefined) {
             return false;
         }
-        if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
         $("#addUserImage").attr('src', data[0].Photo);
+        $("#addUserImage").attr('onerror', "this.onerror=null;this.src='" + defaultImgUrl + "';");
         $("#firstName").val(data[0].FirstName);
         $("#lastName").val(data[0].LastName);
         $("#emailId").val(data[0].EmailId);

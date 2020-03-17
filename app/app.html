@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" type="text/css" href="assets/css/jquery.dropdown.css">
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/jquery.dropdown.css"> -->
     <link rel="stylesheet" type="text/css" href="assets/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
@@ -98,6 +98,13 @@
         #myDiv {
             display: none;
             text-align: center;
+        }
+
+        /* For Jquery Validation */
+        label.error {
+            color: red;
+            font-style: oblique;
+            font-size: smaller;
         }
     </style>
 </head>
@@ -202,7 +209,9 @@
                                     <button type="button" id="usernameid" class="btn  dropdown-toggle"
                                         data-toggle="dropdown" style="margin-top: 9px;">
                                     </button>
-                                    <img id="userimage" src="assets/images/40306.jpg" class="rounded-circle img-fluid">
+                                    <img id="userimage" src="assets/images/40306.jpg"
+                                        class="rounded-circle img-fluid dropdown-toggle" style="cursor: pointer;"
+                                        data-toggle="dropdown">
 
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">
@@ -212,7 +221,7 @@
 
                                             </div>
                                         </a>
-                                        <a class="dropdown-item" route-link route-href="login">
+                                        <a class="dropdown-item" href="../src/components/login/login.html">
                                             <div class="drop-down-btn">
                                                 <button type="button" id="userlogout"
                                                     class="btn btn-group-lg btn-danger">Logout</button>
@@ -298,6 +307,13 @@
         };
 
         new Route(views);
+
+        // User Logout
+        $("#userlogout").click(function () {
+            $("#sidebar").css("display", "none");
+            $("#headerbar").css("display", "none");
+            localStorage.clear();
+        });
     </script>
     <script type="text/javascript" src="assets/js/jquery.toast.js"></script>
 

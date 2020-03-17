@@ -108,27 +108,19 @@
                         <h6>Add data point</h6>
                     </div>
                     <div class="form-main-section">
-                        <form id="addDataPoint" method="post">
+                        <form>
                             <div class="form-group">
-                                <input id="hdnNodeId" type="hidden">
                                 <label for="text">description:</label>
-                                <input type="text" class="form-control" name="description" placeholder="Enter description" id="description">
+                                <input type="text" class="form-control" placeholder="Enter description" id="text">
                             </div>
 
                             <div class="form-group">
                                 <label for="text">owner:</label>
-                                <select class="form-control ownerId" name="listOwner" id="selectOwner">
-                                </select>
+                                <input type="text" class="form-control">
                             </div>
 
-                            <div class="check-coman dataCategoryList">
-                                <!-- <div class="form-check" >
-                                    <label class="form-check-label" for="radio1">
-                                  Data link
-                                <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="dataLink">
-                              </label>
-                                </div> -->
-                                <!-- <div class="form-check ">
+                            <div class="check-coman">
+                                <div class="form-check ">
                                     <label class="form-check-label" for="radio1">
                                   Data link
                                 <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="dataLink">
@@ -145,7 +137,7 @@
                                   Test
                                 <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="test">
                               </label>
-                                </div> -->
+                                </div>
                             </div>
 
                             <div class="submit-btn">
@@ -238,8 +230,7 @@
                         </div>
 
                         <div class="submit-btn">
-                            <button type="button" id="btnDataLink" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                            <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right">previous</button>                            
+                            <button type="button" id="btnDataLink" class="btn btn-primary mt-3 float-right">publish</button>
                         </div>
                     </form>
                 </div>
@@ -337,8 +328,7 @@
                 </div>
 
                 <div class="submit-btn">
-                    <button type="button" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                    <button type="button" href="#" id="btnPreviousAnalysisBlock" class="btn btn-primary mr-1 mt-3 float-right">previous</button>
+                    <a href="#" class="btn btn-primary mt-3 float-right">publish</a>
                 </div>
                 </form>
             </div>
@@ -456,8 +446,7 @@
 
 
                         <div class="submit-btn">
-                            <button type="button" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                            <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right">previous</button>
+                            <a href="AddLink-Two.html"  class="btn btn-primary mt-3 float-right">publish</a>
                         </div>
                     </form>
                 </div>
