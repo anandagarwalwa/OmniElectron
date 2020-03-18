@@ -1,6 +1,6 @@
 'use strict';
 var { getUsers } = require(__dirname + '\\server\\controllers\\user_controller.js');
-var { GetTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { getChannels } = require(__dirname + '\\server\\controllers\\channels_controller.js');
 var { getLinks, updateLinksbyid, addLinks } = require(__dirname + '\\server\\controllers\\links_controller.js');
@@ -35,7 +35,7 @@ getUsers().then(data => {
 });
 
 // Get Team List
-GetTeamsList().then(data => {
+getTeamsList().then(data => {
     var model = {
         items: data
     }
