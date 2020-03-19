@@ -18,6 +18,11 @@
 
 @media(min-width:768px) and (max-width:1024px){
   .login-section{margin-bottom: 10rem !important;}
+  .confluge-title h6{font-size: 14px !important;}
+  .submit-btn {
+    float: left;
+    width: 100%;
+}
 }
 
 
@@ -276,6 +281,7 @@
 .responsive-activity {
   max-width: 100% !important;
 }
+
 }
 
 @media(min-width:375px) and (max-width:375px){
@@ -289,6 +295,7 @@
     padding-right: 0;
 }
 #demo-one{margin-left: 0;}
+.alert-check-box .form-check{width: 210px !important;}
 }
 
 
