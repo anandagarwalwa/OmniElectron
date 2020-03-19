@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-xl-12 pr-0 mt-5">
             <div class="coman-drop-down d-flex mx-auto justify-content-center">
-                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
+                <div class="col-xl-2 col-12 col-sm-3 col-md-3 col-lg-3 mr-auto p-0">
                     <div class="main-explore-section">
                         <form>
                             <div class="form-group">
@@ -18,7 +18,7 @@
 
 
                 <!---DropDown-Two-->
-                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
+                <div class="col-xl-2 col-12 col-sm-3 col-md-3 col-lg-3 ml-auto p-0">
                     <div class="main-explore-section">
                         <form>
                             <div class="form-group">
@@ -161,65 +161,65 @@
 </div>
 
 <!---Add-Link-1.1-->
-<div class="form-section d-none mb-5" id="dataLinkBlock">
+<div class="form-section d-none mb-4" id="dataLinkBlock">
     <div class="row justify-content-center">
         <div class="col-xl-6">
             <div class="coman-form-section box-content">
                 <div class="form-title">
                     <h6>Add Link</h6>
                 </div>
-                <div class="form-main-section">
+                <div class="form-main-section add-link-form">
                     <form id="addDataLinkForm" method="post">
                         <input id="hdnDataLinkId" type="hidden">
                         <div class="form-group">
-                            <label for="text" for="linkdesc">Description</label>
-                            <input type="text" class="form-control" name="linkdesc" placeholder="" id="linkdesc">
+                            <label class="col-xl-3 pl-0"  for="text" for="linkdesc">Description</label>
+                            <input type="text" class="form-control  col-xl-7" name="linkdesc" placeholder="" id="linkdesc">
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Owner</label>
-                            <select class="form-control" name="DataLinkUserSelect" id="DataLinkUserSelect">
+                            <label for="text" class="col-xl-3 pl-0" >Owner</label>
+                            <select class="form-control col-xl-7" name="DataLinkUserSelect" id="DataLinkUserSelect">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Team</label>
-                            <select class="form-control" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
+                            <label for="text" class="col-xl-3 pl-0">Team</label>
+                            <select class="form-control  col-xl-7" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Data Source</label>
-                            <select class="form-control" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
+                            <label for="text" class="col-xl-3 pl-0">Data Source</label>
+                            <select class="form-control col-xl-7" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Location</label>
-                            <input type="text" class="form-control" placeholder="" name="datalinkLocation" id="datalinkLocation">
+                            <label for="text" class="col-xl-3 pl-0">Location</label>
+                            <input type="text" class="form-control col-xl-7" placeholder="" name="datalinkLocation" id="datalinkLocation">
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Channel</label>
-                             <select class="form-control" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect">
+                            <label for="text" class="col-xl-3 pl-0" >Channel</label>
+                             <select class="form-control col-xl-7" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect">
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Links To</label>
-                            <select class="form-control" name="DataLinkToSelect" id="DataLinkToSelect">
+                            <label for="text" class="col-xl-3 pl-0">Links To</label>
+                            <select class="form-control col-xl-7" name="DataLinkToSelect" id="DataLinkToSelect">
                                 <option value="0">No record</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="text">Links From</label>
-                            <select class="form-control" name="DataLinkFromSelect" id="DataLinkFromSelect">
+                            <label for="text" class="col-xl-3 pl-0">Links From</label>
+                            <select class="form-control col-xl-7" name="DataLinkFromSelect" id="DataLinkFromSelect">
                                 <option value="0">No record</option>
                             </select>
                         </div>
 
-                        <div class="confluge-title">
+                        <div class="confluge-title col-xl-3 pl-0">
                             <h6>Confluence Page</h6>
                         </div>
                         <div class="check-box-btn">
@@ -227,7 +227,7 @@
                                 <!-- <label class="form-check-label" for="check2">
                                   <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                 </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" name="Confluence" value="0"> <span></span>&nbsp;</label>No
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" checked name="Confluence" value="0"> <span></span>&nbsp;</label>No
                             </div>
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label">
@@ -259,66 +259,50 @@
                 <div class="form-title">
                     <h6>Add Analysis</h6>
                 </div>
-                <div class="form-main-section">
-                    <form>
+                <div class="form-main-section add-link-form">
+                    <form id="addAnalysisForm" method="post">
+                        <input id="hdnAnalysisId" type="hidden">
                         <div class="form-group">
-                            <label for="email">Description:</label>
-                            <input type="text" id="#" class="form-control" placeholder="">
+                            <label for="email" class="col-xl-3 pl-0">Description:</label>
+                            <input type="text" id="analysisDescription" class="form-control col-xl-7" placeholder="" name="analysisDescription">
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Owner:</label>
-                            <input type="text" id="#" class="form-control" placeholder="">
+                            <label for="email" class="col-xl-3 pl-0">Owner:</label>
+                            <select class="form-control col-xl-7" name="analysisUserSelect" id="analysisUserSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Team</label>
-                            <select class="form-control" id="#">
-                              <option>Select</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                           </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Team</label>
+                            <select class="form-control col-xl-7" name="analysisTeamSelect" id="analysisTeamSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Channel</label>
-                            <select class="form-control" id="#">
-                                <option>Select</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                             </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Channel</label>
+                            <select class="form-control col-xl-7" name="analysisChannelsSelect" id="analysisChannelsSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Locale</label>
-                            <select class="form-control" id="#">
-                              <option>Select</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                           </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Locale</label>
+                            <select class="form-control col-xl-7" name="analysisLocalesSelect" id="analysisLocalesSelect">
+                            </select>
                         </div>
 
                         <div class="date-picker-sec">
                             <div class="form-group">
-                                <label for="sel1">Date</label>
+                                <label for="sel1" class="col-xl-3 pl-0">Date</label>
                                 <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="date" value="12-02-2012">
+                                    <input class="span2 col-xl-12" size="16" type="date" id="analysisDate" name="analysisDate">
                                     <!-- <i class="fas fa-calendar-alt"></i> -->
                                 </div>
                             </div>
                         </div>
                 </div>
 
-                <div class="confluge-title pt-1">
+                <div class="confluge-title pt-1 col-xl-3 pl-0">
                     <h6>Confluence page</h6>
                 </div>
                 <div class="check-box-btn">
@@ -326,18 +310,18 @@
                         <!-- <label class="form-check-label" for="check2">
                                   <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                 </label> -->
-                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>No
-                    </div>
+                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceNO" checked name="rBtnConfluence" value="0"> <span></span>&nbsp;</label>No
+                    </div>                                                                                                        
                     <div class="form-check-inline">
                         <!-- <label class="form-check-label">
                                   <input type="checkbox" class="form-check-input" checked>Yes
                                 </label> -->
-                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>Yes
+                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceYes" name="rBtnConfluence" value="1"> <span></span>&nbsp;</label>Yes
                     </div>
                 </div>
 
                 <div class="submit-btn">
-                    <button type="button" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                    <button type="button" href="#" id="btnAnalysis" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
                     <button type="button" href="#" id="btnPreviousAnalysisBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
                 </div>
                 </form>
@@ -357,14 +341,15 @@
                 <div class="form-title">
                     <h6>Add Test</h6>
                 </div>
-                <div class="form-main-section">
-                    <form>
+                <div class="form-main-section add-link-form">
+                    <form id="addTestForm" method="post">
+                        <input id="hdnTestId" type="hidden">
                         <div class="form-group">
-                            <label for="text">Description:</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <label for="text" class="col-xl-3 pl-0">Description:</label>
+                            <input type="text" class="form-control col-xl-7" placeholder="" id="testDescription" name="testDescription">
                         </div>
 
-                        <div class="confluge-title">
+                        <div class="confluge-title col-xl-3 pl-0">
                             <h6>Did Test Win</h6>
                         </div>
                         <div class="check-box-btn pb-3">
@@ -372,69 +357,52 @@
                                 <!-- <label class="form-check-label" for="check2">
                                 <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                               </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>No
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinNO" name="didTestWin" checked value="0"> <span></span>&nbsp;</label>No
                             </div>
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input">Yes
                               </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>Yes
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinYes" name="didTestWin" value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
 
 
                         <div class="form-group">
-                            <label for="text">Owner</label>
-                            <input type="text" class="form-control" placeholder="" id="#">
+                            <label for="text" class="col-xl-3 pl-0">Owner</label>
+                            <select class="form-control col-xl-7" name="testUserSelect" id="testUserSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Team</label>
-                            <select class="form-control" id="#">
-                            <option>Select</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                         </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Team</label>
+                            <select class="form-control col-xl-7" name="testTeamSelect" id="testTeamSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Channel</label>
-                            <select class="form-control" id="#">
-                              <option>Select</option>
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                           </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Channel</label>
+                            <select class="form-control col-xl-7" name="testChannelsSelect" id="testChannelsSelect">
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Locale</label>
-                            <select class="form-control" id="#">
-                            <option>Select</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                         </select>
+                            <label for="exampleFormControlSelect1" class="col-xl-3 pl-0">Locale</label>
+                            <select class="form-control col-xl-7" name="testLocalesSelect" id="testLocalesSelect">
+                            </select>
                         </div>
 
                         <div class="date-picker-sec">
                             <div class="form-group">
-                                <label for="sel1">Date</label>
-                                <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="date" value="12-02-2012">
+                                <label for="sel1" class="col-xl-3 pl-0">Date</label>
+                                <div class="input-append date col-xl-7 p-0" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                    <input class="span2" size="16" type="date" id="testDate" name="testDate">
                                     <!-- <i class="fas fa-calendar-alt"></i> -->
                                 </div>
                             </div>
                         </div>
 
-                        <div class="confluge-title pt-1">
+                        <div class="confluge-title pt-1 col-xl-3 pl-0">
                             <h6>Confluence page</h6>
                         </div>
                         <div class="check-box-btn">
@@ -442,13 +410,13 @@
                                 <!-- <label class="form-check-label" for="check2">
                                         <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                       </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>No
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceNO" name="testConfluence" checked value="0"> <span></span>&nbsp;</label>No
                             </div>
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label">
                                         <input type="checkbox" class="form-check-input" checked>Yes
                                       </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="checkbox" name="remember" value="1"> <span></span>&nbsp;</label>Yes
+                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceYES" name="testConfluence" value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
 
@@ -456,7 +424,7 @@
 
 
                         <div class="submit-btn">
-                            <button type="button" href="#" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                            <button type="button" href="#" id="btnTest" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
                             <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
                         </div>
                     </form>

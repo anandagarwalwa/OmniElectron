@@ -8,7 +8,7 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
     if(data == undefined){
         return false;
     }   
-    $("#usernameid").text(data[0].FirstName)
+    $("#usernameid").text(data[0].FirstName + " " + data[0].LastName )
     $("#userimage").attr('src',data[0].userimage);
 }).catch(err => {
     console.error(err);
