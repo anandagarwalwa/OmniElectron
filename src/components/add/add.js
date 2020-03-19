@@ -5,7 +5,7 @@ var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_c
 var { getChannels } = require(__dirname + '\\server\\controllers\\channels_controller.js');
 var { getLinks, updateLinksbyid, addLinks } = require(__dirname + '\\server\\controllers\\links_controller.js');
 var { getDatacategory } = require(__dirname + '\\server\\controllers\\datacategory_controller.js');
-var { addNodes, updateNodesbyid, getNodes } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
+var { addNodes, updateNodesbyid, getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\controllers\\analysis_controller.js');
 var { getLocales } = require(__dirname + '\\server\\controllers\\locales_controller.js');
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
@@ -166,8 +166,9 @@ getChannels().then(data => {
     console.error(err);
 });
 
-// Get Links To List
-getNodes().then(data => {
+// Get Links To List 
+// 1 - For Data Link
+getNodesByDataCategoryId(1).then(data => {
     var model = {
         items: data
     }
