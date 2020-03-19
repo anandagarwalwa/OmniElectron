@@ -14,6 +14,9 @@ const getNodes = () => {
     return Nodes.findAll();
 }
 
+const getNodesByDataCategoryId = (dataCategoryId) => {
+    return Nodes.find({ DataCategoryId: dataCategoryId });
+}
 
 const getNodesByID = (id) => {
     return Nodes.find({ Id: id });
@@ -53,5 +56,6 @@ module.exports = {
     getNodesByID,
     addNodes,
     updateNodesbyid,
-    deleteNodesbyid
+    deleteNodesbyid,
+    getNodesByDataCategoryId
 }
