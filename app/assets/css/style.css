@@ -103,6 +103,13 @@ ul li{list-style-type: none;}
     color: #fff;
     transition: all 0.3s;
 }*/
+#usernameid {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    width: 200px !important;
+    text-overflow: ellipsis !important;
+}
+
 
 #sidebar {
     min-width: 68px;
@@ -419,7 +426,7 @@ a.article:hover {
 .pic-font-section .dropdown-menu{
     left: 0px;
     border-radius: 0;
-    top: 43px;
+    top: 44px;
 } 
 .pic-font-section .dropdown-item{
     padding: .25rem 5px;
@@ -561,8 +568,8 @@ a.article:hover {
 .pic-font-section .dropdown.show::before{
     position: absolute;
     content: "";
-    right: 15px;
-    top: 39px;
+    right: 50px;
+    top: 40px;
     width: 7px;
     height: 7px;
     background: #fff;
@@ -924,6 +931,9 @@ a.article:hover {
 
 
   /*============Add====Page============*/
+  .username {
+    padding-top: 10px;
+}
   .form-section {
     float: left;
     width: 100%;
@@ -932,7 +942,8 @@ a.article:hover {
 .coman-form-section {
     float: left;
     width: 100%;
-    padding: 20px;
+    padding: 10px;
+    
 }
 
 .form-title {

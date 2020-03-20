@@ -17,7 +17,29 @@
 }
 
 @media(min-width:768px) and (max-width:1024px){
-  .login-section{margin-bottom: 10rem !important;}
+  .login-section{
+    margin-bottom: 10rem !important;
+    margin-top: 7rem !important;;
+  }
+  .confluge-title h6{font-size: 14px !important;}
+  .submit-btn {
+    float: left;
+    width: 100%;
+}
+
+}
+
+@media(min-width:576px) and (max-width:767px){
+  .username {
+    font-size: 15px !important;
+}
+.btn-add-member-action{padding: 6px 10px !important;}
+.nav-link {
+  display: block;
+  padding: .5rem 5px;
+  font-size: 13px !important;
+}
+
 }
 
 
@@ -35,9 +57,10 @@
     padding: 0.5rem 0rem !important;
   }
 	.login-section{
-    margin-top: 5rem !important;
+    margin-top: 8rem !important;
     margin-bottom: 1rem !important;
-  }			 
+  }	
+
 }
 
 @media(min-width:1024px) and (max-width:1024px){
@@ -188,10 +211,11 @@
   .table-title h6{font-size: 13px !important;}
   .Onear-section h6{font-size: 13px !important;}
 }
-
+/* 
 @media(min-width:576px) and (max-width:666px){
   .login-section-main{flex-direction: column !important;}
-}
+} */
+
 @media (min-width: 481px) and (max-width: 575px) {
   .responsive-section .d-flex {
     display: block !important;
@@ -201,6 +225,7 @@
     flex-direction: column !important;
   }
   .tab-form-section{width: 80% !important;}
+  .login-section-main{flex-direction: column !important;}
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
@@ -238,6 +263,7 @@
     right: -44px !important;
     min-width: 10rem !important;
   }
+  .login-section-main{flex-direction: column !important;}
 }
 
 @media (min-width: 320px) and (max-width: 425px) {
@@ -276,6 +302,11 @@
 .responsive-activity {
   max-width: 100% !important;
 }
+#TeamList h6 {
+  font-size: 13px;
+  line-height: 13px;
+}
+
 }
 
 @media(min-width:375px) and (max-width:375px){
@@ -289,6 +320,7 @@
     padding-right: 0;
 }
 #demo-one{margin-left: 0;}
+.alert-check-box .form-check{width: 210px !important;}
 }
 
 

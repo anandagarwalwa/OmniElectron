@@ -2,11 +2,13 @@
 var { getUsers, addUser, getUsersById, updateUserById, deleteUser, getUsersByEmailId } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
-var { getTeamUserMappingByID,addBulkTeamUserMapping,updateTeamUserMapping ,deleteTeamsUserMapping} = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
-var { addTeams, getTeamsList, getTeamsByID,  updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { getTeamUserMappingByID, addBulkTeamUserMapping, deleteTeamsUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
+var { addTeams, getTeamsList, getTeamsByID, updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var defaultImgUrl = "assets/images/40306.jpg";
 
-// var tinybind = require('../node_modules/tinybind/dist/tinybind.js');
+
+
+
 document.getElementById("loader").style.display = "none";
 function BindUser() {
     getUsers().then(data => {
@@ -20,7 +22,7 @@ function BindUser() {
             $("#TeamsUserSelect").html("");
             $("#userList").html("");
             var htmlUserList = "";
-            var html = '<option value=' + 0 + '>Select User</option>';
+            var html = '';//'<option value=' + 0 + '>Select User</option>';
             for (var u = 0; u < model.items.length; u++) {
                 var UserData = model.items[u];
                 var Name = UserData.FirstName + " " + UserData.LastName;
@@ -34,6 +36,11 @@ function BindUser() {
             }
             $("#TeamsUserSelect").html(html);
             $("#userList").html(htmlUserList);
+            $('.SlectBox').SumoSelect({
+                // triggerChangeCombined: true,
+                // okCancelInMulti: true,
+                placeholder: "Select here"
+            });
         }
     }).catch(err => {
         console.error(err);
@@ -45,15 +52,15 @@ function getUserListHtml(objUserData) {
     var html = '<li>'
     html += '    <div class="col-md-12 pt-2">'
     html += '        <div class="row">'
-    html += '            <div class="col-md-1">'
+    html += '            <div class="col-md-2 col-lg-2 col-xl-1 col-sm-2">'
     html += '                <div class="tab-profile tab-pic">'
     html += '                    <img src="' + objUserData.Photo + '" class="img-fluid rounded-circle" onerror="this.onerror=null;this.src=\'' + defaultImgUrl + '\';">'
     html += '                </div>'
     html += '            </div>'
-    html += '            <div class="col-md-7">'
+    html += '            <div class="col-md-5 col-xl-6 col-lg-5 col-sm-5">'
     html += '                <h6 class="username">' + objUserData.FirstName + ' ' + objUserData.LastName + ' </h6>'
     html += '            </div>'
-    html += '            <div class="col-md-4">'
+    html += '            <div class="col-md-5 col-xl-5 col-lg-5 col-sm-5">'
     html += '                <a href="javascript:void(0)" category-id=' + objUserData.UserId
     html += '                    class="btn-add-member-action btn-primary" id="addmember"'
     html += '                    data-toggle="modal" data-target="#userModal"'
@@ -67,7 +74,6 @@ function getUserListHtml(objUserData) {
     html += '</li>';
     return html;
 }
-
 BindUser();
 //Roles Binding
 getRoles().then(data => {
@@ -123,7 +129,7 @@ jQuery.validator.addMethod("domainValidation", function (value, element) {
 //             return true;
 //         }
 //     });
-   
+
 //     debugger;
 //     // var res = getUsersByEmailId(value);
 //     // return res;
@@ -615,23 +621,19 @@ $("#IdAddteams").click(function () {
     }
     if (Temansobj.TeamId > 0) {
         updateTeamsById(Temansobj).then(data => {
-
             var SelectedUserList = [];
-            var SelectedTeamUser = $("#TeamsUserSelect option:selected").val();
-            if (SelectedTeamUser != 0) {
-                SelectedUserList.push({
-                    TeamId: $("#TeamID").val(),
-                    UserId: SelectedTeamUser,
-                    CreatedBy: 1,
-                    CreatedDate: new Date(),
-                });
-            }
-            if (SelectedUserList && SelectedUserList.length > 0) {
-                // for (var tu = 0; tu < SelectedUserList.length; tu++) {
-                //     SelectedUserList[tu].TeamId = data[0];
-                // }
-                updateTeamUserMapping(SelectedUserList[0].TeamId, SelectedUserList).then(TeamUserMappingResponseData => {
-
+           
+            var SelectedTeamUser = $("#TeamsUserSelect").val();
+            if (SelectedTeamUser && SelectedTeamUser.length > 0) {
+                for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
+                    SelectedUserList.push({
+                        TeamId: $("#TeamID").val(),
+                        UserId: SelectedTeamUser[tu],
+                        CreatedBy: 1,
+                        CreatedDate: new Date(),
+                    });
+                }
+                deleteTeamsUserMapping($("#TeamID").val()).then(TeamUserMappingResponseData => {
                     addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
 
                         if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
@@ -667,18 +669,16 @@ $("#IdAddteams").click(function () {
         Temansobj.CreatedDate = new Date();
         addTeams(Temansobj).then(data => {
             var SelectedUserList = [];
-            var SelectedTeamUser = $("#TeamsUserSelect option:selected").val();
-            if (SelectedTeamUser != 0) {
-                SelectedUserList.push({
-                    TeamId: 0,
-                    UserId: SelectedTeamUser,
-                    CreatedBy: 1,
-                    CreatedDate: new Date(),
-                });
-            }
-            if (SelectedUserList && SelectedUserList.length > 0) {
-                for (var tu = 0; tu < SelectedUserList.length; tu++) {
-                    SelectedUserList[tu].TeamId = data[0];
+          
+            var SelectedTeamUser = $("#TeamsUserSelect").val();// $("#TeamsUserSelect option:selected").val();
+            if (SelectedTeamUser && SelectedTeamUser.length > 0) {
+                for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
+                    SelectedUserList.push({
+                        TeamId: data[0],
+                        UserId: SelectedTeamUser[tu],
+                        CreatedBy: 1,
+                        CreatedDate: new Date(),
+                    });
                 }
                 addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
 
@@ -714,16 +714,16 @@ function AddTeams(Teamsobj) {
     $("#TeamID").val(0);
     $("#Teamname").val("");
     $('#TeamsIsActive').prop('checked', false);
-    $("#TeamDescription").val();
-
+    $("#TeamDescription").val("");
+    $('.SlectBox option:selected').each(function () {        
+        $('.SlectBox')[0].sumo.unSelectItem($(this).index());
+    });
 }
 function EditTeams(Teamsobj) {
     $('#TeamsModals').modal('show');
-    //var id = Teamsobj.dataset.categoryTeamid;
     var id = $(Teamsobj).attr("data-teamid");
     getTeamsByID(id).then(ResponseTeams => {
         getTeamUserMappingByID(id).then(ResponseTeamsUserMapping => {
-
             SetTeamsValue(ResponseTeams, ResponseTeamsUserMapping);
         }).catch(error => {
             console.log(error);
@@ -735,13 +735,15 @@ function EditTeams(Teamsobj) {
 }
 
 function SetTeamsValue(TeamData, TeamUserMapping) {
-
     var TeamData = TeamData[0];
     if (TeamUserMapping && TeamUserMapping.length > 0) {
+        $('.SlectBox option:selected').each(function () {        
+            $('.SlectBox')[0].sumo.unSelectItem($(this).index());
+        });
         for (var tu = 0; tu < TeamUserMapping.length; tu++) {
-            var teamsUsermapping = TeamUserMapping[tu];
-            $("#TeamsUserSelect selected").val(teamsUsermapping.UserId);
+            $(".SlectBox")[0].sumo.selectItem("" + TeamUserMapping[tu].UserId + "");
         }
+        $('.SlectBox')[0].sumo.reload();       
     }
     $("#TeamID").val(TeamData.TeamId);
     $("#Teamname").val(TeamData.TeamName);
@@ -752,6 +754,7 @@ function SetTeamsValue(TeamData, TeamUserMapping) {
     }
     $("#TeamDescription").val(TeamData.Description);
 }
+
 function RebindTeamList() {
     getTeamsList().then(ResponseTeamList => {
         var html = "";
@@ -767,13 +770,13 @@ function RebindTeamList() {
             html += '<li>'
                 + '<div class="col-md-12 pt-2">'
                 + ' <div class="row">'
-                + ' <div class="col-md-4">'
+                + ' <div class="col-md-3 col-xl-4 col-lg-3 col-sm-3">'
                 + ' <h6>' + Items.TeamName + '</h6>'
                 + ' </div>'
-                + '  <div class="col-md-4">'
+                + '  <div class="col-md-3 col-xl-4 col-lg-4 col-sm-3">'
                 + ' <h6>' + Items.IsActiveStatus + '</h6>'
                 + ' </div>'
-                + ' <div class="col-md-4">'
+                + ' <div class="col-md-6 col-xl-4 col-lg-5 col-sm-6">'
                 + ' <a  data-teamid=' + Items.TeamId + ' rv-data-category-TeamId=' + Items.TeamId
                 + ' class="btn-add-member-action btn-primary" id="EditTeams"'
                 + ' onclick="EditTeams(this)">Edit</a>'
