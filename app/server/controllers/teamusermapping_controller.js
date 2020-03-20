@@ -26,9 +26,6 @@ const addBulkTeamUserMapping = (data) => {
 const getTeamUserMappingByID = (id) => {
     return TeamUserMapping.find({ TeamId: id });    
 }
-const updateTeamUserMapping = (TeamIds, Data) => {
-    return TeamUserMapping.destroy({ TeamId: TeamIds })   
-}
 const deleteTeamsUserMapping = (TeamIds) => {
     return TeamUserMapping.destroy({ TeamId: TeamIds }) 
 }
@@ -36,7 +33,6 @@ module.exports = {
     getTeamUserMapping,
     addTeamUserMapping,
     getTeamUserMappingByID,
-    updateTeamUserMapping,
     deleteTeamsUserMapping,
     addBulkTeamUserMapping
 }

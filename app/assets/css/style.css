@@ -106,10 +106,10 @@ ul li{list-style-type: none;}
 #usernameid {
     white-space: nowrap !important;
     overflow: hidden !important;
-    width: 200px !important;
+    width: 110px !important;
     text-overflow: ellipsis !important;
+    float: left;
 }
-
 
 #sidebar {
     min-width: 68px;
@@ -931,6 +931,9 @@ a.article:hover {
 
 
   /*============Add====Page============*/
+  .username {
+    padding-top: 10px;
+}
   .form-section {
     float: left;
     width: 100%;
