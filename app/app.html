@@ -5,7 +5,7 @@
     <title></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <!-- <link rel="stylesheet" type="text/css" href="assets/css/jquery.dropdown.css"> -->
     <link rel="stylesheet" type="text/css" href="assets/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -209,7 +209,7 @@
                                 <div class="dropdown">
                                     <button type="button" class="btn  dropdown-toggle"
                                         data-toggle="dropdown" style="margin-top: 9px;">
-  <span id="usernameid"></span>
+                                        <span id="usernameid"></span>
                                     </button>
                                     <img id="userimage" src="assets/images/40306.jpg"
                                         class="rounded-circle img-fluid dropdown-toggle" style="cursor: pointer;"
@@ -301,6 +301,14 @@
                 templateUrl: '../src/components/login/login.html'
             },
             ],
+            filterResult: [{
+                selector: "#content",
+                templateUrl: '../src/components/filter/filter-result.html'
+            }, ],
+            filterScratch: [{
+                selector: "#content",
+                templateUrl: '../src/components/filter/filter-scratch.html'
+            }, ],
             defaultView: {
                 view: 'explore'
             }
