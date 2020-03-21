@@ -9,7 +9,7 @@ import { app, Menu } from "electron";
 import { devMenuTemplate } from "./menu/dev_menu_template";
 import { editMenuTemplate } from "./menu/edit_menu_template";
 import createWindow from "./helpers/window";
-import { getDatasource } from "../app/server/controllers/datasource_controller";
+
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from "env";
@@ -55,8 +55,3 @@ app.on("window-all-closed", () => {
   app.quit();
 });
 
-getDatasource().then(data => {
-  console.log(data);
-}).catch(err => {
-  console.error(err);
-});
