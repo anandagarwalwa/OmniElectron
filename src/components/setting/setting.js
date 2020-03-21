@@ -373,6 +373,7 @@ function resetUserModel() {
     $("#domain").val('');
     $("#ddlRoles").val('');
     $("#ddlTeams").val('');
+    $("#hdnUserId").val("") ;
     isActive = "";
 }
 
