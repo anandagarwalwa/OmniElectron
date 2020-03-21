@@ -70,20 +70,27 @@ getUsers().then(data => {
         $("#analysisUserSelect").html("");
         $("#testUserSelect").html("");
         var html = '<option value=' + 0 + '>Select Owner</option>';
+        var ownerlist = '<option value=' + 0 + '>Select Owner</option>';
         for (var u = 0; u < model.items.length; u++) {
             var UserData = model.items[u];
             var Name = UserData.FirstName + " " + UserData.LastName;
+            var userId=UserData.UserId;
+            if(userId == parseInt(localStorage.getItem("UserId")))
+            {
+                ownerlist += '<option value=' + UserData.UserId + '>' + Name + '</option>';
+            }
             if (html) {
                 html += '<option value=' + UserData.UserId + '>' + Name + '</option>';
-            } else {
+            }
+             else {
                 html = '<option value=' + UserData.UserId + '>' + Name + '</option>';
             }
         }
         $("#DataLinkUserSelect").html(html);
         $("#analysisUserSelect").html(html);
         $("#testUserSelect").html(html);
-        $(".ownerId").html("");
-        $(".ownerId").append(html);
+        $("#selectOwner").html("");
+        $("#selectOwner").append(ownerlist);
     }
 }).catch(err => {
     console.error(err);
