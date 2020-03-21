@@ -2178,4 +2178,21 @@ label.error
     transition: all 1s ease 0s;	
 }
 
+
+.SumoSelect{
+    width: 100% !important;
+}
+.SumoSelect > .CaptionCont > label{
+    top: 6px !important;
+    
+}
+
+.SumoSelect > .CaptionCont > span.placeholder{ 
+     color: #6c757d !important;
+     font-style: normal !important;
+}
+
+.SumoSelect > .CaptionCont{
+    border: 1px solid #ced4da !important;
+}
 /* Added by Dipak for Testing */

@@ -15,8 +15,7 @@ const addWorkspace = (data) => {
 }
 
 // Update Workspace by id
-const updateWorkspaceById = (workspaceid, data) => {
-    debugger;
+const updateWorkspaceById = (workspaceid, data) => {   
     return Workspace.update({ Id: workspaceid }, data).catch(err => {
         console.log(err);
     });
@@ -29,9 +28,15 @@ const getWorkspaceUsersById = (id) => {
     });
 }
 
+
+const getDomainList = () => {
+    return Workspace.findDistinct('Domain');
+}
+
 module.exports = {
     addWorkspace,
     getWorkspaceUsersById,
-    updateWorkspaceById
+    updateWorkspaceById,
+    getDomainList
 }
 

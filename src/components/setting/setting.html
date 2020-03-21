@@ -290,12 +290,12 @@
                                                     </div>
                                                 </div> -->
                                                         <div class="member-form-section">
-                                                            <form>
+                                                            <form id="addTeamsForm" method="post">
 
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">Team Name</label>
                                                                     <input type="text" class="form-control"
-                                                                        id="Teamname" aria-describedby="emailHelp"
+                                                                        id="Teamname" name="Teamname" aria-describedby="emailHelp"
                                                                         placeholder="Team Name">
                                                                     <input type="hidden" id="TeamID" name="TeamID"
                                                                         value="0">
@@ -338,11 +338,12 @@
                                                     <!-- Modal footer -->
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-primary col-xl-6"
-                                                            data-dismiss="modal" id="IdAddteams">Add</button>
+                                                        data-dismiss="modal" id="IdAddteams">Add</button>
                                                         <button type="button" class="btn btn-danger col-xl-6"
                                                             data-dismiss="modal">Close</button>
                                                     </div>
 
+                                                    
                                                 </div>
                                             </div>
                                         </div>
