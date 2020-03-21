@@ -608,10 +608,39 @@ function showPage() {
     document.getElementById("loader").style.display = "none";
 }
 
+//validation in teams form
+
+$("#addTeamsForm").validate({
+    ignore: [],
+    rules: {
+        //uploadPhoto: 'required',
+        Teamname: { required: true },
+    },
+    messages: {
+        //uploadPhoto: 'this field is required',
+        Teamname: {
+            required: "This field is required"
+        },
+    },
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Team Section
 $("#IdAddteams").click(function () {
-
-    // document.getElementById("mainsettingpage").style.display = "none";
+    var addTeamsdetails = $('form[id="addTeamsForm"]').valid();
+    if (addTeamsdetails == true) {
+         // document.getElementById("mainsettingpage").style.display = "none";
     // document.getElementById("loader").style.display = "block";
     var Temansobj = {
         TeamId: $("#TeamID").val(),
@@ -706,6 +735,8 @@ $("#IdAddteams").click(function () {
             Showtoast_Message(false);
         });
     }
+    }
+   
 
 });
 
