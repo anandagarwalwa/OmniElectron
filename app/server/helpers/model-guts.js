@@ -81,6 +81,11 @@ module.exports = ({
       .returning(selectableProps)
       .timeout(timeout)
   }
+
+  const findDistinct  = () => knex.distinct(selectableProps)
+    .from(tableName)
+    .timeout(timeout)
+
   return {
     name,
     tableName,
@@ -94,6 +99,7 @@ module.exports = ({
     update,
     destroy,
     bulkSave,
-    updateTeams
+    updateTeams,
+    findDistinct
   }
 }
