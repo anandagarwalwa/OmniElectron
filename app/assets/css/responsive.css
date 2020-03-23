@@ -2,8 +2,18 @@
 
 
 
+@media(max-width:1199px){
+  .pic-font-section .dropdown.show::before{right: 43px !important;}
+}
 
+@media(min-width:992px) and (max-width:1235px){
+  .filter-scratch-form .form-control{width: 20% !important;}
+}
 
+@media(min-width:750px) and (max-width:850px){
+  .filter-scratch-form .form-control{width: 20% !important;}
+}
+ 
 @media(min-width:1025px) and (max-width:1220px){
   .main-sidebar .sidenav{width: 171px !important;}
 }
@@ -39,6 +49,7 @@
   padding: .5rem 5px;
   font-size: 13px !important;
 }
+.filter-scratch-form .form-control{width: 24% !important;}												  
 
 }
 
@@ -74,10 +85,23 @@
   .tags-section{width: 100% !important;}
   
 }
+@media(max-width:860px){
+  .coman-result-section{flex-direction: column !important;}
+}
+
+@media(max-width:670px){
+  .Weekly-report-section {
+    flex-direction: column !important;
+}
+.form-tab-section .form-group{
+  justify-content: center !important;
+}
+.coman-result-section{flex-direction: column !important;}
+}
 
 @media(max-width:810px){
   .table-section-main .table td, .table-section-main .table th{
-    padding: .5rem !important;
+    padding: .3rem !important;
   }
 }
 
@@ -105,7 +129,7 @@
   .tab-form-section {
     width: 63% !important;
   }
-  .timeline-ico img.img-fluid{width: 25px !important;}
+  .timeline-ico img.img-fluid{width: 18px !important;}
   .tags-section{width: 100% !important;}
   .Onear-section h6{
     font-size: 13px !important;
@@ -153,8 +177,9 @@
     position: absolute;
   }
   .pic-font-section .dropdown.show::before{
-    right: 58px !important;
+    right: 29px !important;
   }
+.filter-scratch-check-box .form-check{width: 220px !important;}															 
 }
 
 @media (min-width: 320px) and (max-width: 768px) {
@@ -199,14 +224,18 @@
   .dropdown-notification .dropdown-menu {
     position: absolute;
   }
-  .pic-font-section .dropdown.show::before {
-    right: 59px !important;
+  .pic-font-section .dropdown.show::before {						   
+    right: 30px !important;}
+	.filter-scratch-form .form-control{margin-right: 10px !important;}
+  .filter-scratch-check-box .form-check{width: 210px !important;}
+  .table-section-main .table td, .table-section-main .table th{
+    padding: .3rem !important;
   }
 }
 
 
 @media(min-width:771px) and (max-width:848px){
-  #sidebar ul li a{padding: 10px 10px !important;}
+  #sidebar ul li a{padding: 10px 2px !important;}
   .tags-section{width: 100% !important;}
   .table-title h6{font-size: 13px !important;}
   .Onear-section h6{font-size: 13px !important;}
@@ -226,6 +255,11 @@
   }
   .tab-form-section{width: 80% !important;}
   .login-section-main{flex-direction: column !important;}
+	.filter-scratch-form .form-inline{ display: inline-block !important;}
+  .filter-scratch-form label{float: left !important;}
+  .filter-scratch-form .form-control{width: 23% !important; float: left;}
+  .filter-scratch-check-box .form-check{width: 130px !important;}
+  .filter-scratch-check-box .form-check .form-check-input{right: 0px !important;}																   
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
@@ -294,6 +328,7 @@
   display: flex !important;
 }
 .timeline-ico img.img-fluid{width: 30px !important;}
+.explore-icon img.img-fluid{width: 20px !important;}							 
 .table-title h6{
   font-size: 12px !important;
 }
