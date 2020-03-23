@@ -9,6 +9,10 @@ ul li{list-style-type: none;}
 }
 
 
+.explore-icon img {
+    width: 25px !important;
+}				   
+
 /*===============Modal==Popup==============*/
 .dropdown-notification .dropdown-toggle::after{
     display: none;
@@ -76,6 +80,7 @@ ul li{list-style-type: none;}
 .navigation .bg-dark {
     background-color: #363640 !important;
     height: 45px;
+	padding: .5rem 0px !important;				   
 }
 
 .navigation .btn:focus{
@@ -517,7 +522,7 @@ a.article:hover {
 
 
 .pic-font-section {
-    width: 200px;
+     width: 172px;
     margin-left: 10px;
     margin-top: 0;
 }
@@ -568,7 +573,7 @@ a.article:hover {
 .pic-font-section .dropdown.show::before{
     position: absolute;
     content: "";
-    right: 50px;
+    right: 13px;
     top: 40px;
     width: 7px;
     height: 7px;
@@ -687,9 +692,9 @@ a.article:hover {
 
 .search-main svg.svg-inline--fa.fa-search.fa-w-16 {
     position: absolute;
-    left: 17px;
+    left: 8px;
     top: 12px;
-    color: #ccc;
+    color: #c6c7cc !important;
 }
 
 
@@ -697,10 +702,10 @@ a.article:hover {
     width: 90%;
     box-sizing: border-box;
     border: 2px solid #ccc;
-    border-radius: 5px;
-    border: 1px solid #fff;
+    border-radius: 0px;
+    border: none;
     font-size: 16px;
-    background-color: white;
+    background-color:transparent !important;
     background-position: 10px 10px;
     background-repeat: no-repeat;
     padding: 5px 19px 5px 30px;
@@ -708,11 +713,14 @@ a.article:hover {
     transition: width 0.4s ease-in-out;
     margin: 0 10px;
     position: relative;
+    border-bottom: 1px solid #fff !important;
+    color: #fff !important;
 }
 
   
  .search-main  input[type=text]:focus {
     width: 90%;
+	 outline: none !important;								  
   }
 
 
@@ -1060,6 +1068,11 @@ a.article:hover {
 
 /*==================Setting-Page===================*/
 /*--Work-Space--*/
+.tab-pane {
+    height: 295px !important;
+    overflow-y: auto !important;
+}
+
 .tab-form-section .form-inline .form-control{width: 100%;}
 .tab-section {
     float: left;
@@ -1728,6 +1741,7 @@ label.error
     color: #c5c7cd;
     font-weight: 400;
     text-transform: capitalize;
+	margin-bottom: 0px;					
 }
 
 
@@ -2089,8 +2103,12 @@ label.error
 }	
 /*=====Range-Slider=====*/	
 .slidecontainer {	
-    width: 100%;	
+    width: 30%;
+    max-width: 100%;	
   }	
+  .slidecontainer .irs--modern .irs-bar{
+      background: linear-gradient(#a0a0b6 0%, #cacae3 100%) !important;
+  }
   	
   .slider {	
     -webkit-appearance: none;	
@@ -2196,3 +2214,115 @@ label.error
     border: 1px solid #ced4da !important;
 }
 /* Added by Dipak for Testing */
+
+.alert-btn-popup .dropdown-toggle::after{
+    display: none !important;
+}
+
+.table-responsive .table{
+    color: black !important;
+}
+.table-section-main table {
+    margin-bottom: 0;
+}
+
+.alert-pic-section .table td, .alert-pic-section .table th{
+    padding: .4rem !important;
+    font-size: 14px !important;
+    line-height: 14px !important;
+}
+
+
+/*===============Filter-Weekly-Report===============*/
+.form-tab-section {
+    float: left;
+    width: 100%;
+}
+.form-tab-section .form-group {
+    width: 100% !important;
+    display: flex;
+    justify-content: flex-end;
+}
+.form-tab-section label {
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    margin-right: 5px;
+    float: left;
+    padding-top: 7px;
+}
+
+.form-tab-section .form-control{
+    width: 30% !important;
+    border-radius: 0 !important;
+    height: 30px !important;
+    padding: 2px 5px !important;
+    font-size: 15px !important;
+    line-height: 15px !important;
+}
+.filter-weeklyReport-Title h5 {
+    font-size: 18px;
+    line-height: 18px;
+    text-transform: capitalize;
+}
+
+
+/*====Alert-Display-Weekly Report=1.1======*/
+.granularity-section {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+   
+}
+
+.granularity-section-left {
+    width: 50%;
+    margin-right: 10px;
+}
+
+
+.granularity-section-left label {
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: capitalize;
+    padding-left: 15px;
+}
+
+
+.granularity-section-left .form-control {
+    border-radius: 0;
+    height: 30px;
+    padding: 2px 10px;
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+}
+
+
+.granularity-section-right {
+    width: 50%;
+}
+
+.granularity-frame-title p {
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    margin-bottom: 0;
+    text-align: center;
+    padding-top: 10px;
+}
+.granularity-slider{
+    width: 100% !important;
+}
+.alert-btn-popup-Two {
+    margin-bottom: 20px;
+}
+
+.Equal-Section-dropdown {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.Filter-table-section {
+    padding-top: 0;
+}

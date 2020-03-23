@@ -16,7 +16,7 @@ function BindUser() {
             items: data
         }
         $('#exampleInputEmail').val(data[0].EmailId);
-        $('#exampleInputFirstName').val(data[0].FirstName);
+        $('#exampleInputFirstName').val(data[0].FirstName + " " + data[0].LastName);
         $('#userProfile').html(data[0].FirstName);
         if (model.items && model.items.length > 0) {
             $("#TeamsUserSelect").html("");
@@ -196,6 +196,7 @@ $("#btnAddMember").click(function () {
                 // });
                 $("#userModal").modal('hide');
                 BindUser();
+				getUserDetails();				 
                 $.toast({
                     text: "Member details updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -378,7 +379,7 @@ function resetUserModel() {
 }
 
 // Get User Login Data
-
+function getUserDetails() {
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
     if (data == undefined) {
@@ -387,12 +388,13 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
     if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
     if (data.length > 0) {
         $("#exampleInputEmail").val(data[0].EmailId);
-        $("#exampleInputFirstName").val(data[0].FirstName);
+        $("#exampleInputFirstName").val(data[0].FirstName + " " + data[0].LastName);
     }
 }).catch(err => {
     console.error(err);
 });
-
+}
+getUserDetails();				 
 // Get Worekspace By logged User
 getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
@@ -408,15 +410,20 @@ getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
 $("#updatebtn").click(function () {
     document.getElementById("mainsettingpage").style.display = "none";
     document.getElementById("loader").style.display = "block";
+	var splitValue = $("#exampleInputFirstName").val();
+    var memberName = splitValue.split(" ");												   
     updateUserById(parseInt(localStorage.getItem("UserId")),
         {
             'EmailId': $("#exampleInputEmail").val(),
-            'FirstName': $("#exampleInputFirstName").val()
+            'FirstName': memberName[0],
+            'LastName': memberName[1] == undefined ? '' : memberName[1] 													
         }).then(data => {
             setTimeout(showPage, 500);
             document.getElementById("mainsettingpage").style.display = "block";
 
             if (data == 1) {
+				BindUser();				 
+				getUserDetails();		 
                 $.toast({
                     text: "Member details update Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
