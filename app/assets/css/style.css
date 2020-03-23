@@ -2213,8 +2213,6 @@ label.error
 .SumoSelect > .CaptionCont{
     border: 1px solid #ced4da !important;
 }
-/* Added by Dipak for Testing */
-
 .alert-btn-popup .dropdown-toggle::after{
     display: none !important;
 }
