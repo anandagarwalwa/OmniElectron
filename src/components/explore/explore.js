@@ -6,6 +6,7 @@ var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_control
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getNodes } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinks} = require(__dirname + '\\server\\controllers\\links_controller.js');
+var { getNodesByID } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
@@ -80,3 +81,16 @@ function BindSearchPanel() {
         }
     }
 }
+
+
+$(document).ready(function () {
+    $("#btnOpenModel").click(function () {
+        getNodesByID(1)
+            .then(data => {
+                console.log(data[0].Description);
+                $("#nodeDescription").html(data[0].Description);
+            }).catch(err => {
+                console.error(err);
+            });
+    });
+});
