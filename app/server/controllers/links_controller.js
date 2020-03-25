@@ -11,39 +11,34 @@ const {
 
 const getLinksByID = (id) => {
     return Links.find({ Id: id });
-    //return Links.findAll();
 }
 
 const getLinks = () => {
     return Links.findAll();
 }
 
+const getLinksByCreatedBy = (userId) => {
+    if (userId)
+        return Links.find({ CreatedBy: userId });
+    else
+        return Links.findAll();
+}
+
 const addLinks = (data) => {
-    debugger;
     return Links.create(data)
-    .then(data => {
-        console.log(data);
-    }).catch(err => {
-        console.log(err);
-    });
+        .then(data => {
+            console.log(data);
+        }).catch(err => {
+            console.log(err);
+        });
 }
 
 const updateLinksbyid = (id, data) => {
     return Links.update({ Id: id }, data);
-    // .then(data => {
-    //     console.log(data);
-    // }).catch(err => {
-    //     console.log(err);
-    // });
 }
 
 const deleteLinksbyid = (nodeId) => {
     return Links.destroy({ Id: nodeId })
-    // .then(data => {
-    //     console.log(data);
-    // }).catch(err => {
-    //     console.log(err);
-    // });
 }
 
 module.exports = {
@@ -51,5 +46,6 @@ module.exports = {
     addLinks,
     updateLinksbyid,
     deleteLinksbyid,
-    getLinks
+    getLinks,
+    getLinksByCreatedBy
 }
