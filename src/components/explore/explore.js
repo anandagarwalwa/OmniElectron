@@ -4,7 +4,8 @@ var { getChannels } = require(__dirname + '\\server\\controllers\\channels_contr
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
-
+var { getNodes } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
+var { getLinks} = require(__dirname + '\\server\\controllers\\links_controller.js');
 
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
@@ -27,7 +28,6 @@ $(function () {
 });
 
 function BindSearchPanel() {
-    debugger;
     var selectedVal = $('#ddlBreakDown').val();
     var html = '';
     switch (selectedVal) {

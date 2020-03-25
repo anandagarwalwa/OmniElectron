@@ -2324,3 +2324,147 @@ label.error
 .Filter-table-section {
     padding-top: 0;
 }
+
+
+
+/*==============Filter-Popup================*/
+.filter-popup-section {
+    display: flex;
+    float: left;
+    width: 100%;
+}
+.filter-btn-popup .btn {
+    width: 150px;
+    height: 40px;
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+    border-radius: 0;
+    position: relative;
+}
+.filter-popup .modal-title {
+    font-size: 15px;
+    line-height: 24px;
+    text-transform: capitalize;
+}
+
+.filter-ownear-main {
+    float: left;
+    width: 100%;
+}
+
+.filter-ownear-sec {
+    float: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.filter-title-sec h5 {
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+
+.filter-title-sec {
+    width: 15%;
+}
+
+.filter-right-sec {
+    align-items: center;
+    display: flex;
+}
+
+.filter-pic-right {
+    width: 45px;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+.filter-pic-right img {
+    width: 50px;
+    height: 42px;
+}
+.filter-discription-sec-main {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #dfe0eb;
+    border-bottom: 1px solid #dfe0eb;
+}
+
+.filter-desc-section {
+    float: left;
+    width: 100%;
+    
+}
+
+.filter-desc-section h5 {
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+    margin-top: 10px;
+}
+
+.filter-desc-section p {
+    font-size: 14px;
+    line-height: 24px;
+    text-transform: capitalize;
+    max-width: 383px;
+}
+
+.tag-section-filter {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.tag-section-filter h5 {
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+}
+
+.tag-section-filter p {
+    font-size: 15px;
+    line-height: 15px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+
+.filter-nav {
+    float: left;
+    width: 100%;
+}
+
+.filter-nav li a {
+    text-transform: capitalize;
+    font-size: 15px;
+    line-height: 15px;
+    display: block;
+    padding: 6px 0;
+    color: #2d4bf7;
+    text-decoration: underline;
+}
+.filter-footer-sec {
+    padding: 5px;
+}
+
+.filter-footer-sec .btn {
+    width: 100%;
+    text-align: center;
+    font-size: 15px !important;
+    line-height: 15px;
+    text-transform: capitalize;
+}
+
+/*=========Popup=========*/
+
+.filter-popup .modal-dialog{
+    max-width: 400px !important;
+}
+.filter-chart-pic {
+    float: left;
+    width: 100%;
+}
