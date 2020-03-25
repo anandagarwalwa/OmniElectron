@@ -40,11 +40,12 @@
         "exe:x64": "electron-installer-windows --src dist/omni-win32-x64/ --dest dist/installers/x64/ --config config.json",
         "buildsetup": "npm run clean && npm run bundle:x64 && npm run exe:x64",
         "build": "electron-packager . omni --platform win32 --arch x64 --out dist/",
-        "buildmac":"electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=dist/"
+        "buildmac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=dist/"
     },
     "dependencies": {
         "babel-preset-es2015": "^6.24.1",
         "bootstrap": "^4.3.1",
+        "d3": "^5.15.0",
         "font-awesome": "^4.7.0",
         "fs-jetpack": "^2.1.0",
         "fs-plus": "^3.1.1",
