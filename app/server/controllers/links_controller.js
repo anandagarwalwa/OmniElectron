@@ -17,11 +17,13 @@ const getLinks = () => {
     return Links.findAll();
 }
 
-const getLinksByCreatedBy = (userId) => {
+const getLinksForExplor = (userId) => {
+    let query = 'select l.*,nFrom.Description as LinksFromDesc,nTo.Description as LinksToDesc from links l ' +
+        ' left join nodes nFrom on nFrom.Id = l.LinksFrom ' +
+        ' left join nodes nTo on nTo.Id = l.LinksTo';
     if (userId)
-        return Links.find({ CreatedBy: userId });
-    else
-        return Links.findAll();
+        query += ' where CreatedBy=' + userId;
+    return Links.raw(query);
 }
 
 const addLinks = (data) => {
@@ -47,5 +49,5 @@ module.exports = {
     updateLinksbyid,
     deleteLinksbyid,
     getLinks,
-    getLinksByCreatedBy
+    getLinksForExplor
 }

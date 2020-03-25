@@ -110,3 +110,14 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
 }).catch(err => {
   console.error(err);
 });
+
+/**
+ * Runs async functions sequentially
+ * @param Function[]
+ * @return Promise<any>
+ */
+function runSequentially(functions) {
+  return functions.reduce((promise, next) => {
+      return promise.then(next);
+  }, Promise.resolve());
+}

@@ -5,7 +5,7 @@ var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_c
 var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
-var { getLinksByCreatedBy } = require(__dirname + '\\server\\controllers\\links_controller.js');
+var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
@@ -26,7 +26,6 @@ $(function () {
         //alert($('#ddlBreakDown option:selected').text());
     });
     GetNodes();
-    GetLinks();
 });
 
 function BindSearchPanel() {
@@ -82,7 +81,8 @@ function BindSearchPanel() {
         }
     }
 }
-var nodes = [],links=[];
+var graphData = {};
+var nodes = [], links = [];
 function GetNodes() {
     var userId = undefined;
     if (!SessionManager.IsAdmin)
@@ -97,25 +97,30 @@ function GetNodes() {
                 });
             }
         }
+        GetLinks();
     }).catch(err => {
         console.error(err);
     });
 }
 function GetLinks() {
-
     var userId = undefined;
     if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get links option selected
-    getLinksByCreatedBy(userId).then(data => {
+    getLinksForExplor(userId).then(data => {
         if (data && data.length > 0) {
-            for (var u = 0; u < data.length; u++) {
+            for (var u = 0; u < data[0].length; u++) {
                 links.push({
-                    "id": data[u].Description,
-                    "group": 1
+                    "source": data[0][u].LinksFromDesc,
+                    "target": data[0][u].LinksToDesc == null ? data[0][u].LinksFromDesc : data[0][u].LinksToDesc,
+                    "value": data[0][u].Description
                 });
             }
         }
+        graphData.nodes = nodes;
+        graphData.links = links;
+        graphData.multigraph= false;
+        BindChart(graphData);
     }).catch(err => {
         console.error(err);
     });
