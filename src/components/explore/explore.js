@@ -6,7 +6,7 @@ var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_control
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
-
+var ForceGraph3D = require('3d-force-graph');
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
@@ -25,14 +25,14 @@ $(function () {
         BindSearchPanel();
         //alert($('#ddlBreakDown option:selected').text());
     });
-    GetNodes();
+    GetLinks();
 });
 
 function BindSearchPanel() {
-    var selectedVal = $('#ddlBreakDown').val();
+    var selectedVal = parseInt($('#ddlBreakDown').val());
     var html = '';
     switch (selectedVal) {
-        case "1": {
+        case BreakdownEnum.Channel: {
             getChannels().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
@@ -43,7 +43,7 @@ function BindSearchPanel() {
             });
             break;
         }
-        case "2": {
+        case BreakdownEnum.Domain: {
             getDomainList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
@@ -54,7 +54,7 @@ function BindSearchPanel() {
             });
             break;
         }
-        case "3": {
+        case BreakdownEnum.Team: {
             getTeamsList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
@@ -65,7 +65,7 @@ function BindSearchPanel() {
             });
             break;
         }
-        case "4": {
+        case BreakdownEnum.DataTool: {
             getDatasource().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
@@ -90,18 +90,21 @@ function GetNodes() {
     // Get nodes with link option selected
     nodes.push({
         "id": "None",
-        "nodeId": 0
+        "nodeId": 0,
+        "nodeColor":"#ccc"
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
             for (var u = 0; u < data.length; u++) {
                 nodes.push({
                     "id": data[u].Description,
-                    "nodeId":data[u].Id
+                    "nodeId": data[u].Id,
+                    "nodeColor": getNodeColor(data[u].Id)
                 });
             }
         }
-        GetLinks();
+        BindExplorGraph();
+        //GetLinks();
     }).catch(err => {
         console.error(err);
     });
@@ -119,17 +122,47 @@ function GetLinks() {
                     "source": linkData[u].LinksFromDesc == null ? "None" : linkData[u].LinksFromDesc,
                     "target": linkData[u].LinksToDesc == null ? "None" : linkData[u].LinksToDesc,
                     "value": linkData[u].Description,
-                    "linkColor":  linkData[u].ChannelColor,
-                    "nodeId": linkData[u].NodeId                  
+                    "linkColor": linkData[u].ChannelColor,
+                    "nodeId": linkData[u].NodeId
                 });
             }
         }
-        graphData.nodes = nodes;
-        graphData.links = links;
-        // graphData.multigraph= false;
-        // graphData.directed= false;
-        BindChart(graphData);
+        GetNodes();
     }).catch(err => {
         console.error(err);
     });
+}
+
+function BindExplorGraph() {
+    graphData.nodes = nodes;
+    graphData.links = links;
+    const elem = document.getElementById('graph');
+    const Graph = ForceGraph3D()
+        (elem)
+        .graphData(graphData)
+        .nodeLabel('id')
+        .nodeAutoColorBy('nodeColor')
+        .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+        .onNodeClick(node => {
+            // Aim at node from outside it
+            const distance = 40;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+            Graph.cameraPosition(
+                { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
+                node, // lookAt ({ x, y, z })
+                3000  // ms transition duration
+            );
+        });
+}
+
+function getNodeColor(nodeId) {
+    var colors = '#ccc';
+    var nodeObj = $.grep(links, function (v) {
+        return v.nodeId === nodeId;
+    });
+    if (nodeObj && nodeObj.length > 0) {
+        colors = nodeObj[0].linkColor;
+    }
+    return colors;
 }

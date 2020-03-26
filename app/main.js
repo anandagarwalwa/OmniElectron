@@ -111,13 +111,9 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
   console.error(err);
 });
 
-/**
- * Runs async functions sequentially
- * @param Function[]
- * @return Promise<any>
- */
-function runSequentially(functions) {
-  return functions.reduce((promise, next) => {
-      return promise.then(next);
-  }, Promise.resolve());
-}
+var BreakdownEnum = {
+  Channel: 1,
+  Domain: 2,
+  Team: 3,
+  DataTool: 4
+};
