@@ -2,7 +2,10 @@ var d3 = require("d3");
 var width = 800;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
-
+var default_node_size = 8;
+var default_node_color = "#ccc";
+var default_link_color = "#888";
+var link_stroke = 1.5;
 var label = {
     'nodes': [],
     'links': []
@@ -21,7 +24,7 @@ function BindChart(graph) {
     var labelLayout = d3.forceSimulation(label.nodes)
         .force("charge", d3.forceManyBody().strength(-50))
         .force("link", d3.forceLink(label.links).distance(0).strength(2));
-        debugger;
+
     var graphLayout = d3.forceSimulation(graph.nodes)
         .force("charge", d3.forceManyBody().strength(-3000))
         .force("center", d3.forceCenter(width / 2, height / 2))
@@ -33,24 +36,13 @@ function BindChart(graph) {
     var adjlist = [];
 
     graph.links.forEach(function (d) {
-       
         adjlist[d.source.index + "-" + d.target.index] = true;
         adjlist[d.target.index + "-" + d.source.index] = true;
     });
 
-    // links.forEach(function(link) {
-    //     link.source = nodes[link.source] || 
-    //         (nodes[link.source] = {name: link.source});
-    //     link.target = nodes[link.target] || 
-    //         (nodes[link.target] = {name: link.target});
-    //     link.value = +link.value;
-    // });
-    
-
     function neigh(a, b) {
         return a == b || adjlist[a + "-" + b];
     }
-
 
     var svg = d3.select("#graph").attr("width", width).attr("height", height);
     var container = svg.append("g");
@@ -66,16 +58,33 @@ function BindChart(graph) {
         .data(graph.links)
         .enter()
         .append("line")
-        .attr("stroke", "#aaa")
-        .attr("stroke-width", "1px");
+        .attr("stroke", function (d) {
+            if (d.linkColor)
+                return d.linkColor;
+            else
+                return default_link_color;
+        })
+        .attr("stroke-width", link_stroke);
 
     var node = container.append("g").attr("class", "nodes")
         .selectAll("g")
         .data(graph.nodes)
         .enter()
         .append("circle")
-        .attr("r", 5)
-        .attr("fill", function (d) { return color(d.group); })
+        .attr("r", default_node_size)
+        .attr("fill", function (d) { 
+            var colors=default_node_color;
+            if(d.nodeId)
+            {
+                var nodeObj = $.grep(links, function(v) {
+                    return v.nodeId === d.nodeId;
+                });
+                if(nodeObj && nodeObj.length > 0){
+                    colors = nodeObj[0].linkColor;
+                }
+            }
+            return colors; 
+        })
 
     node.on("mouseover", focus).on("mouseout", unfocus);
 

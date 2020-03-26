@@ -90,14 +90,14 @@ function GetNodes() {
     // Get nodes with link option selected
     nodes.push({
         "id": "None",
-        "group": 1
+        "nodeId": 0
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
             for (var u = 0; u < data.length; u++) {
                 nodes.push({
                     "id": data[u].Description,
-                    "group": 1
+                    "nodeId":data[u].Id
                 });
             }
         }
@@ -113,18 +113,21 @@ function GetLinks() {
     // Get links option selected
     getLinksForExplor(userId).then(data => {
         if (data && data.length > 0) {
-            for (var u = 0; u < data[0].length; u++) {
+            var linkData = data[0];
+            for (var u = 0; u < linkData.length; u++) {
                 links.push({
-                    "source": data[0][u].LinksFromDesc == null ? "None" : data[0][u].LinksFromDesc,
-                    "target": data[0][u].LinksToDesc == null ? "None" : data[0][u].LinksToDesc,
-                    "value": data[0][u].Description
+                    "source": linkData[u].LinksFromDesc == null ? "None" : linkData[u].LinksFromDesc,
+                    "target": linkData[u].LinksToDesc == null ? "None" : linkData[u].LinksToDesc,
+                    "value": linkData[u].Description,
+                    "linkColor":  linkData[u].ChannelColor,
+                    "nodeId": linkData[u].NodeId                  
                 });
             }
         }
         graphData.nodes = nodes;
         graphData.links = links;
-        graphData.multigraph= false;
-        graphData.directed= false;
+        // graphData.multigraph= false;
+        // graphData.directed= false;
         BindChart(graphData);
     }).catch(err => {
         console.error(err);
