@@ -88,6 +88,10 @@ function GetNodes() {
     if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get nodes with link option selected
+    nodes.push({
+        "id": "None",
+        "group": 1
+    });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
             for (var u = 0; u < data.length; u++) {
@@ -111,8 +115,8 @@ function GetLinks() {
         if (data && data.length > 0) {
             for (var u = 0; u < data[0].length; u++) {
                 links.push({
-                    "source": data[0][u].LinksFromDesc,
-                    "target": data[0][u].LinksToDesc == null ? data[0][u].LinksFromDesc : data[0][u].LinksToDesc,
+                    "source": data[0][u].LinksFromDesc == null ? "None" : data[0][u].LinksFromDesc,
+                    "target": data[0][u].LinksToDesc == null ? "None" : data[0][u].LinksToDesc,
                     "value": data[0][u].Description
                 });
             }
@@ -120,6 +124,7 @@ function GetLinks() {
         graphData.nodes = nodes;
         graphData.links = links;
         graphData.multigraph= false;
+        graphData.directed= false;
         BindChart(graphData);
     }).catch(err => {
         console.error(err);
