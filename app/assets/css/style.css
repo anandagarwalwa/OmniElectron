@@ -99,7 +99,10 @@ ul li{list-style-type: none;}
     font-size: 25px;
     /* line-height: 35px !important; */
 }
-
+#graph canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
 /*
 #sidebar {
     min-width: 250px;

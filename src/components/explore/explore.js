@@ -25,7 +25,7 @@ $(function () {
         BindSearchPanel();
         //alert($('#ddlBreakDown option:selected').text());
     });
-    GetLinks();
+    InitGraphData();
 });
 
 function BindSearchPanel() {
@@ -80,6 +80,7 @@ function BindSearchPanel() {
             $('#divSearchPanel').html('');
         }
     }
+    InitGraphData();
 }
 var graphData = {};
 var nodes = [], links = [];
@@ -91,7 +92,7 @@ function GetNodes() {
     nodes.push({
         "id": "None",
         "nodeId": 0,
-        "nodeColor":"#ccc"
+        "nodeColor": "#ccc"
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
@@ -117,12 +118,26 @@ function GetLinks() {
     getLinksForExplor(userId).then(data => {
         if (data && data.length > 0) {
             var linkData = data[0];
+            var linkColor = '';
+            var selectedVal = parseInt($('#ddlBreakDown').val());
             for (var u = 0; u < linkData.length; u++) {
+                linkColor = '';
+                switch (selectedVal) {
+                    case BreakdownEnum.Channel:
+                        linkColor = linkData[u].ChannelColor
+                        break;
+                    case BreakdownEnum.Team:
+                        linkColor = linkData[u].TeamColor
+                        break;
+                    case BreakdownEnum.DataTool:
+                        linkColor = linkData[u].DataToolColor
+                        break;
+                }
                 links.push({
                     "source": linkData[u].LinksFromDesc == null ? "None" : linkData[u].LinksFromDesc,
                     "target": linkData[u].LinksToDesc == null ? "None" : linkData[u].LinksToDesc,
                     "value": linkData[u].Description,
-                    "linkColor": linkData[u].ChannelColor,
+                    "linkColor": linkColor,
                     "nodeId": linkData[u].NodeId
                 });
             }
@@ -139,9 +154,16 @@ function BindExplorGraph() {
     const elem = document.getElementById('graph');
     const Graph = ForceGraph3D()
         (elem)
+        .showNavInfo(false)
+        .width($("#graph").width())
+        .height(window.innerHeight - 185)
         .graphData(graphData)
         .nodeLabel('id')
-        .nodeAutoColorBy('nodeColor')
+        .nodeColor(d => d.nodeColor)
+        .nodeRelSize(8)
+        .nodeOpacity(1)
+        .linkColor(link => link.linkColor)
+        .linkOpacity(1)
         .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
         .onNodeClick(node => {
             // Aim at node from outside it
@@ -165,4 +187,9 @@ function getNodeColor(nodeId) {
         colors = nodeObj[0].linkColor;
     }
     return colors;
+}
+
+function InitGraphData(){
+    nodes = [], links = [];
+    GetLinks();
 }
