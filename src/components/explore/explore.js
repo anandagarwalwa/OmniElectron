@@ -202,8 +202,8 @@ function getNodeLinkObject(nodeId) {
 }
 
 
-let highlightNodes = [];
-let highlightLink = [];
+var highlightNodes = [];
+var highlightLink = [];
 var Graph;
 
 function Bind2DForceGraph() {
@@ -221,30 +221,35 @@ function Bind2DForceGraph() {
         .nodeColor(d => d.nodeColor)
         .nodeVal(d => d.nodeSize)
         .linkColor(link => link.linkColor)
-        .linkWidth(link => link === highlightLink ? 5 : 1)
-        .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+        //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
+        .onNodeHover(node => {
+            debugger;
+            elem.style.cursor = node ? 'pointer' : null
+        })
         .onNodeClick(node => {
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(8, 2000);
         })
-        .linkDirectionalParticleWidth(link => link === highlightLink ? 4 : 0)
-        .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : undefined)
-        .nodeCanvasObject((node, ctx) => {
-          // add ring just for highlighted nodes
-          ctx.beginPath();
-          ctx.arc(node.x, node.y, node.nodeSize * 1.4, 0, 2 * Math.PI, false);
-          ctx.fillStyle = 'red';
-          ctx.fill();
-        });;
+        // .linkDirectionalParticleWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 4)
+        // .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : undefined)
+        // .nodeCanvasObject((node, ctx) => {
+        //     debugger;
+        //   // add ring just for highlighted nodes
+        //   ctx.beginPath();
+        //   ctx.arc(node.x, node.y, node.nodeSize * 1.4, 0, 2 * Math.PI, false);
+        //   ctx.fillStyle = 'red';
+        //   ctx.fill();
+        // })
+        ;
 }
 
 function updateHighlight() {
     // trigger update of highlighted objects in scene
-    Graph
-        .nodeColor(Graph.nodeColor())
-        .linkWidth(Graph.linkWidth())
-        .linkDirectionalParticles(Graph.linkDirectionalParticles());
+    // Graph
+    //     .nodeColor(Graph.nodeColor())
+    //     .linkWidth(Graph.linkWidth())
+    //     .linkDirectionalParticles(Graph.linkDirectionalParticles());
     if (highlightNodes && highlightNodes.length > 0) {
         var node = highlightNodes[0];
         // Center/zoom on node
