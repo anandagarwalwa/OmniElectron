@@ -21,14 +21,27 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
 });
 
 $(function () {
+    BindSearchPanel();
     $("#ddlBreakDown").change(function () {
         BindSearchPanel();
-        //alert($('#ddlBreakDown option:selected').text());
     });
-    InitGraphData();
+    $('#txtSearch').keyup(function (e) {
+        if (e.keyCode != 13) {
+            serchExplore();
+        }
+    });
+    $('body').on('click', 'a.dynamic-box', function () {
+        alert($(this).attr("data-val"));
+    });   
 });
-
+function serchExplore() {
+    var value = $('#txtSearch').val().toLowerCase();
+    $("#divSearchPanel .dynamic-box").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+}
 function BindSearchPanel() {
+    $('#txtSearch').val('');
     var selectedVal = parseInt($('#ddlBreakDown').val());
     var html = '';
     switch (selectedVal) {
@@ -36,7 +49,7 @@ function BindSearchPanel() {
             getChannels().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -47,7 +60,7 @@ function BindSearchPanel() {
             getDomainList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -58,7 +71,7 @@ function BindSearchPanel() {
             getTeamsList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="'+ val.TeamId +'"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -69,7 +82,7 @@ function BindSearchPanel() {
             getDatasource().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -142,8 +155,8 @@ function GetLinks() {
                     "value": linkData[u].Description,
                     "linkColor": linkColor,
                     "nodeId": linkData[u].NodeId,
-                    "linksFrom":linkData[u].LinksFrom,
-                    "linksTo":linkData[u].LinksTo,                    
+                    "linksFrom": linkData[u].LinksFrom,
+                    "linksTo": linkData[u].LinksTo,
                 });
             }
         }
@@ -166,7 +179,7 @@ function BindExplorGraph() {
         .nodeLabel('id')
         .nodeColor(d => d.nodeColor)
         //.nodeRelSize(8)
-        .nodeVal(d=> d.nodeSize)
+        .nodeVal(d => d.nodeSize)
         .nodeOpacity(1)
         .linkColor(link => link.linkColor)
         .linkOpacity(1)
@@ -186,13 +199,13 @@ function BindExplorGraph() {
 
 function getNodeLinkObject(nodeId) {
     var colors = '#ccc';
-    var objNode={};
+    var objNode = {};
     var len = 1;
     var nodeObj = $.grep(links, function (v) {
         return v.nodeId === nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
-        colors = nodeObj[0].linkColor;       
+        colors = nodeObj[0].linkColor;
     }
     var nodeSizeObj = $.grep(links, function (v) {
         return v.linksFrom === nodeId || v.linksTo === nodeId;
@@ -205,7 +218,7 @@ function getNodeLinkObject(nodeId) {
     return objNode;
 }
 
-function InitGraphData(){
+function InitGraphData() {
     nodes = [], links = [];
     GetLinks();
 }
