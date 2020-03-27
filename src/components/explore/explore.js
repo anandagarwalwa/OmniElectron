@@ -31,8 +31,8 @@ $(function () {
         }
     });
     $('body').on('click', 'a.dynamic-box', function () {
-        alert($(this).attr("data-val"));
-    });   
+        FilterGraph($(this).attr("data-val"))
+    });
 });
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
@@ -49,7 +49,7 @@ function BindSearchPanel() {
             getChannels().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -60,7 +60,7 @@ function BindSearchPanel() {
             getDomainList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -71,7 +71,7 @@ function BindSearchPanel() {
             getTeamsList().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#" class="dynamic-box" data-val="'+ val.TeamId +'"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -82,7 +82,7 @@ function BindSearchPanel() {
             getDatasource().then(data => {
                 if (data) {
                     $.each(data, function (key, val) {
-                        html += '<a href="#" class="dynamic-box" data-val="'+ val.Id +'"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
@@ -97,34 +97,10 @@ function BindSearchPanel() {
 }
 var graphData = {};
 var nodes = [], links = [];
-function GetNodes() {
-    var userId = undefined;
-    if (!SessionManager.IsAdmin)
-        userId = SessionManager.UserId;
-    // Get nodes with link option selected
-    nodes.push({
-        "id": "None",
-        "nodeId": 0,
-        "nodeColor": "#ccc"
-    });
-    getNodesByDataCategoryId(1, userId).then(data => {
-        if (data && data.length > 0) {
-            var objNode;
-            for (var u = 0; u < data.length; u++) {
-                objNode = getNodeLinkObject(data[u].Id);
-                nodes.push({
-                    "id": data[u].Description,
-                    "nodeId": data[u].Id,
-                    "nodeColor": objNode.Color,
-                    "nodeSize": objNode.NodeSize,
-                });
-            }
-        }
-        BindExplorGraph();
-        //GetLinks();
-    }).catch(err => {
-        console.error(err);
-    });
+
+function InitGraphData() {
+    nodes = [], links = [];
+    GetLinks();
 }
 function GetLinks() {
     var userId = undefined;
@@ -157,6 +133,9 @@ function GetLinks() {
                     "nodeId": linkData[u].NodeId,
                     "linksFrom": linkData[u].LinksFrom,
                     "linksTo": linkData[u].LinksTo,
+                    "teamId": linkData[u].TeamId,
+                    "channelId": linkData[u].ChannelId,
+                    "dataToolId": linkData[u].DataSourceId
                 });
             }
         }
@@ -165,36 +144,34 @@ function GetLinks() {
         console.error(err);
     });
 }
-
-function BindExplorGraph() {
-    graphData.nodes = nodes;
-    graphData.links = links;
-    const elem = document.getElementById('graph');
-    const Graph = ForceGraph3D()
-        (elem)
-        .showNavInfo(false)
-        .width($("#graph").width())
-        .height(window.innerHeight - 185)
-        .graphData(graphData)
-        .nodeLabel('id')
-        .nodeColor(d => d.nodeColor)
-        //.nodeRelSize(8)
-        .nodeVal(d => d.nodeSize)
-        .nodeOpacity(1)
-        .linkColor(link => link.linkColor)
-        .linkOpacity(1)
-        .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
-        .onNodeClick(node => {
-            // Aim at node from outside it
-            const distance = 40;
-            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-
-            Graph.cameraPosition(
-                { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
-                node, // lookAt ({ x, y, z })
-                3000  // ms transition duration
-            );
-        });
+function GetNodes() {
+    var userId = undefined;
+    if (!SessionManager.IsAdmin)
+        userId = SessionManager.UserId;
+    // Get nodes with link option selected
+    nodes.push({
+        "id": "None",
+        "nodeId": 0,
+        "nodeColor": "#ccc"
+    });
+    getNodesByDataCategoryId(1, userId).then(data => {
+        if (data && data.length > 0) {
+            var objNode;
+            for (var u = 0; u < data.length; u++) {
+                objNode = getNodeLinkObject(data[u].Id);
+                nodes.push({
+                    "id": data[u].Description,
+                    "nodeId": data[u].Id,
+                    "nodeColor": objNode.Color,
+                    "nodeSize": objNode.NodeSize,
+                });
+            }
+        }
+        BindExplorGraph();
+        //GetLinks();
+    }).catch(err => {
+        console.error(err);
+    });
 }
 
 function getNodeLinkObject(nodeId) {
@@ -218,7 +195,104 @@ function getNodeLinkObject(nodeId) {
     return objNode;
 }
 
-function InitGraphData() {
-    nodes = [], links = [];
-    GetLinks();
+
+let highlightNodes = [];
+let highlightLink = null;
+var Graph;
+function BindExplorGraph() {
+    graphData.nodes = nodes;
+    graphData.links = links;
+    const elem = document.getElementById('graph');
+    Graph = ForceGraph3D()
+        (elem)
+        .showNavInfo(false)
+        .width($("#graph").width())
+        .height(window.innerHeight - 185)
+        .graphData(graphData)
+        .nodeLabel('id')
+        .nodeColor(d => highlightNodes.indexOf(d) === -1 ? d.nodeColor : 'red')
+        .nodeVal(d => d.nodeSize)
+        .nodeOpacity(1)
+        .linkColor(link => link.linkColor)
+        .linkOpacity(1)
+        .linkWidth(link => link === highlightLink ? 4 : 1)
+        .linkDirectionalParticles(link => link === highlightLink ? 4 : 0)
+        .linkDirectionalParticleWidth(4)
+        // .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+        .onNodeHover(node => {
+            // no state change
+            if ((!node && !highlightNodes.length) || (highlightNodes.length === 1 && highlightNodes[0] === node)) return;
+
+            highlightNodes = node ? [node] : [];
+
+            updateHighlight();
+        })
+        .onNodeClick(node => {
+            // Aim at node from outside it
+            const distance = 40;
+            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
+
+            Graph.cameraPosition(
+                { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
+                node, // lookAt ({ x, y, z })
+                3000  // ms transition duration
+            );
+        }).onLinkHover(link => {
+            // no state change
+            if (highlightLink === link) return;
+
+            highlightLink = link;
+            highlightNodes = link ? [link.source, link.target] : [];
+
+            updateHighlight();
+        });
 }
+function updateHighlight() {
+    // trigger update of highlighted objects in scene
+    Graph
+        .nodeColor(Graph.nodeColor())
+        .linkWidth(Graph.linkWidth())
+        .linkDirectionalParticles(Graph.linkDirectionalParticles());
+}
+
+function FilterGraph(selId) {
+    var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
+    var prop = "";
+    selId = parseInt(selId) ;
+    switch (selectedBreakDownVal) {
+        case BreakdownEnum.Channel:
+            prop = "channelId";
+            break;
+        case BreakdownEnum.Team:
+            prop = "teamId";
+            break;
+        case BreakdownEnum.DataTool:
+            prop = "dataToolId";
+            break;
+    }
+    var filteredLinks = $.grep(Graph.graphData().links, function (v) {
+        return v[prop] === selId;
+    });
+    if (filteredLinks) {
+debugger;
+    }
+}
+
+// function set_highlight(d)
+// {
+// 	svg.style("cursor","pointer");
+// 	if (focus_node!==null) d = focus_node;
+// 	highlight_node = d;
+
+// 	if (highlight_color!="white")
+// 	{
+// 		  circle.style(towhite, function(o) {
+//                 return isConnected(d, o) ? highlight_color : "white";});
+// 			text.style("font-weight", function(o) {
+//                 return isConnected(d, o) ? "bold" : "normal";});
+//             link.style("stroke", function(o) {
+// 		      return o.source.index == d.index || o.target.index == d.index ? highlight_color : ((isNumber(o.score) && o.score>=0)?color(o.score):default_link_color);
+
+//             });
+// 	}
+// }
