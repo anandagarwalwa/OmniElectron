@@ -6,7 +6,8 @@ var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_control
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
-var ForceGraph3D = require('3d-force-graph');
+//var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
+var ForceGraph = require('force-graph');
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
@@ -171,7 +172,8 @@ function GetNodes() {
                 });
             }
         }
-        BindExplorGraph();
+        //Bind3DForceGraph();
+        Bind2DForceGraph();
         //GetLinks();
     }).catch(err => {
         console.error(err);
@@ -203,7 +205,56 @@ function getNodeLinkObject(nodeId) {
 let highlightNodes = [];
 let highlightLink = [];
 var Graph;
-function BindExplorGraph() {
+
+function Bind2DForceGraph() {
+    highlightNodes = [], highlightLink = [];
+    graphData.nodes = nodes;
+    graphData.links = links;
+    const elem = document.getElementById('graph');
+    Graph = ForceGraph()
+        (elem)
+        .width($("#graph").width())
+        .height(window.innerHeight - 185)
+        .backgroundColor("#000011")
+        .graphData(graphData)
+        .nodeLabel('id')
+        .nodeColor(d => d.nodeColor)
+        .nodeVal(d => d.nodeSize)
+        .linkColor(link => link.linkColor)
+        .linkWidth(link => link === highlightLink ? 5 : 1)
+        .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
+        .onNodeClick(node => {
+            // Center/zoom on node
+            Graph.centerAt(node.x, node.y, 1000);
+            Graph.zoom(8, 2000);
+        })
+        .linkDirectionalParticleWidth(link => link === highlightLink ? 4 : 0)
+        .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : undefined)
+        .nodeCanvasObject((node, ctx) => {
+          // add ring just for highlighted nodes
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, node.nodeSize * 1.4, 0, 2 * Math.PI, false);
+          ctx.fillStyle = 'red';
+          ctx.fill();
+        });;
+}
+
+function updateHighlight() {
+    // trigger update of highlighted objects in scene
+    Graph
+        .nodeColor(Graph.nodeColor())
+        .linkWidth(Graph.linkWidth())
+        .linkDirectionalParticles(Graph.linkDirectionalParticles());
+    if (highlightNodes && highlightNodes.length > 0) {
+        var node = highlightNodes[0];
+        // Center/zoom on node
+        Graph.centerAt(node.x, node.y, 1000);
+        Graph.zoom(8, 2000);
+    }
+}
+
+
+function Bind3DForceGraph() {
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -233,7 +284,7 @@ function BindExplorGraph() {
 
         //     highlightNodes = node ? [node] : [];
 
-        //    // updateHighlight();
+        //    // update3DHighlight();
         // })
         .onNodeClick(node => {
             highlightNodes = [], highlightLink = [];
@@ -254,11 +305,11 @@ function BindExplorGraph() {
         //     highlightLink = link;
         //     highlightNodes = link ? [link.source, link.target] : [];
 
-        //     //updateHighlight();
+        //     //update3DHighlight();
         // })
         ;
 }
-function updateHighlight() {
+function update3DHighlight() {
     // trigger update of highlighted objects in scene
     Graph
         .nodeColor(Graph.nodeColor())
