@@ -96,11 +96,14 @@ function GetNodes() {
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
+            var objNode;
             for (var u = 0; u < data.length; u++) {
+                objNode = getNodeLinkObject(data[u].Id);
                 nodes.push({
                     "id": data[u].Description,
                     "nodeId": data[u].Id,
-                    "nodeColor": getNodeColor(data[u].Id)
+                    "nodeColor": objNode.Color,
+                    "nodeSize": objNode.NodeSize,
                 });
             }
         }
@@ -138,7 +141,9 @@ function GetLinks() {
                     "target": linkData[u].LinksToDesc == null ? "None" : linkData[u].LinksToDesc,
                     "value": linkData[u].Description,
                     "linkColor": linkColor,
-                    "nodeId": linkData[u].NodeId
+                    "nodeId": linkData[u].NodeId,
+                    "linksFrom":linkData[u].LinksFrom,
+                    "linksTo":linkData[u].LinksTo,                    
                 });
             }
         }
@@ -160,7 +165,8 @@ function BindExplorGraph() {
         .graphData(graphData)
         .nodeLabel('id')
         .nodeColor(d => d.nodeColor)
-        .nodeRelSize(8)
+        //.nodeRelSize(8)
+        .nodeVal(d=> d.nodeSize)
         .nodeOpacity(1)
         .linkColor(link => link.linkColor)
         .linkOpacity(1)
@@ -178,15 +184,25 @@ function BindExplorGraph() {
         });
 }
 
-function getNodeColor(nodeId) {
+function getNodeLinkObject(nodeId) {
     var colors = '#ccc';
+    var objNode={};
+    var len = 1;
     var nodeObj = $.grep(links, function (v) {
         return v.nodeId === nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
-        colors = nodeObj[0].linkColor;
+        colors = nodeObj[0].linkColor;       
     }
-    return colors;
+    var nodeSizeObj = $.grep(links, function (v) {
+        return v.linksFrom === nodeId || v.linksTo === nodeId;
+    });
+    if (nodeSizeObj && nodeSizeObj.length > 0) {
+        len = nodeSizeObj.length;
+    }
+    objNode.Color = colors;
+    objNode.NodeSize = len;
+    return objNode;
 }
 
 function InitGraphData(){
