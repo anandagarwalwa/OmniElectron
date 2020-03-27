@@ -12,16 +12,16 @@
                  <div class="sidenav">
                      <div class="search-main">
                          <form>
-                             <input type="text" name="search" placeholder="Search..">
+                             <input type="text" name="search" id="txtSearch" placeholder="Search..">
                              <i class="fas fa-search"></i>
                          </form>                         
                      </div>   
                      <div id="divSearchPanel">
-                        <a href="#"> <i class="fas fa-circle co-org"></i> Search</a>
-                        <a href="#"> <i class="fas fa-circle co-pink"></i> Email</a>
-                        <a href="#"> <i class="fas fa-circle co-blue"></i> Display</a>
-                        <a href="#"> <i class="fas fa-circle co-green"></i> Tv</a>
-                        <a href="#"> <i class="fas fa-circle col-yellow"></i> Other office</a>
+                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-org"></i> Search</a>
+                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-pink"></i> Email</a>
+                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-blue"></i> Display</a>
+                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-green"></i> Tv</a>
+                        <a href="#" class="dynamic-box"> <i class="fas fa-circle col-yellow"></i> Other office</a>
                      </div>                    
                  </div>               
             </div> 
@@ -54,7 +54,7 @@
                                 <label for="ddlBreakDown">Breakdown</label>
                                 <select class="form-control" id="ddlBreakDown">
                                 <option value="1">Channel</option>
-                                <option value="2">Domain</option>
+                                <!-- <option value="2">Domain</option> -->
                                 <option value="3">Team</option>
                                 <option value="4">Data Tool</option>                                
                                 </select>
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="box-content">
-                <img src="assets/images/hgyb2.png" class="img-fluid d-block mx-auto">
+                <div id='graph'></div>               
             </div>
         </div>
         

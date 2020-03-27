@@ -74,7 +74,7 @@ getUsers().then(data => {
         for (var u = 0; u < model.items.length; u++) {
             var UserData = model.items[u];
             var Name = UserData.FirstName + " " + UserData.LastName;
-            if (UserData.UserId  == parseInt(localStorage.getItem("UserId"))) {
+            if (UserData.UserId == parseInt(localStorage.getItem("UserId"))) {
                 html += '<option value=' + UserData.UserId + ' selected>' + Name + '</option>';
             }
             else {
@@ -173,31 +173,36 @@ getChannels().then(data => {
     console.error(err);
 });
 
-// Get Links To List 
-// 1 - For Data Link
-getNodesByDataCategoryId(1).then(data => {
-    var model = {
-        items: data
-    }
-    if (model.items && model.items.length > 0) {
-        $("#DataLinkToSelect").html("");
-        $("#DataLinkFromSelect").html("");
-        var html = '<option value=' + 0 + '>None</option>';
-        for (var u = 0; u < model.items.length; u++) {
-            var LinksTo = model.items[u];
-            var Name = LinksTo.Description;
-            if (html) {
-                html += '<option value=' + LinksTo.Id + '>' + Name + '</option>';
-            } else {
-                html = '<option value=' + LinksTo.Id + '>' + Name + '</option>';
-            }
+function bindLinkFromandLinkToDropdown() {
+
+    // Get Links To List 
+    // 1 - For Data Link
+    getNodesByDataCategoryId(1).then(data => {
+        debugger;
+        var model = {
+            items: data
         }
-        $("#DataLinkToSelect").html(html);
-        $("#DataLinkFromSelect").html(html);
-    }
-}).catch(err => {
-    console.error(err);
-});
+        if (model.items && model.items.length > 0) {
+            $("#DataLinkToSelect").html("");
+            $("#DataLinkFromSelect").html("");
+            var html = '<option value=' + 0 + '>None</option>';
+            for (var u = 0; u < model.items.length; u++) {
+                var LinksTo = model.items[u];
+                var Name = LinksTo.Description;
+                if (html) {
+                    html += '<option value=' + LinksTo.Id + '>' + Name + '</option>';
+                } else {
+                    html = '<option value=' + LinksTo.Id + '>' + Name + '</option>';
+                }
+            }
+            $("#DataLinkToSelect").html(html);
+            $("#DataLinkFromSelect").html(html);
+        }
+    }).catch(err => {
+        console.error(err);
+    });
+}
+
 
 getLocales().then(data => {
     var model = {
@@ -307,6 +312,7 @@ $("#btnPublish").click(function () {
                 //     beforeHide: function () { }, // will be triggered before the toast gets hidden
                 //     afterHidden: function () { }  // will be triggered after the toast has been hidden
                 // });
+                bindLinkFromandLinkToDropdown();
                 if ($("input[type='radio'].radioBtnClass").is(':checked')) {
                     var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
                     if (radioBtnClass_type == "1") {
@@ -338,6 +344,7 @@ $("#btnPublish").click(function () {
                 }
             ).then(data => {
                 localStorage.setItem("nodeId", data[0]);
+                bindLinkFromandLinkToDropdown();
                 // $.toast({
                 //     text: "Data Point details save Successfully.", // Text that is to be shown in the toast
                 //     heading: 'Success Message', // Optional heading to be shown on the toast
