@@ -19,12 +19,13 @@ const getLinks = () => {
 
 const getLinksForExplor = (userId) => {
     let query = "select l.*,nFrom.Description as LinksFromDesc,nTo.Description as LinksToDesc, " +
-        " c.Color as ChannelColor,ds.Color as DataToolColor,'#f88317' as TeamColor  " +
+        " c.Color as ChannelColor,ds.Color as DataToolColor,'#f88317' as TeamColor, nSelf.Description as NodeSourceDesc  " +
         " from links l " +
         " left join nodes nFrom on nFrom.Id = l.LinksFrom " +
         " left join nodes nTo on nTo.Id = l.LinksTo " +
         " left join channels c on c.Id=l.ChannelId " +
-        " left join datasources ds on ds.Id=l.datasourceId ";
+        " left join datasources ds on ds.Id=l.datasourceId " + 
+        " left join nodes nSelf on nSelf.Id = l.NodeId ";
     if (userId)
         query += ' where l.CreatedBy=' + userId;
     return Links.raw(query);
