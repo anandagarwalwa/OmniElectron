@@ -158,7 +158,7 @@ function GetNodes() {
         "id": "None",
         "nodeId": 0,
         "nodeColor": "#ccc",
-        "nodeSize":1
+        "nodeSize": 1
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
@@ -223,7 +223,8 @@ function Bind2DForceGraph() {
         .nodeVal(d => d.nodeSize)
         .linkColor(link => link.linkColor)
         //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
-        .nodeCanvasObjectMode(() => 'after')
+        // .nodeCanvasObjectMode(() => 'after')
+        .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : 'after')
         .nodeCanvasObject((node, ctx, globalScale) => {
             const label = node.id;
             const fontSize = 12 / globalScale;
@@ -237,8 +238,8 @@ function Bind2DForceGraph() {
             ctx.fillStyle = node.color;
             ctx.fillStyle = '#54545f';
             //   ctx.fillText(label, node.x, node.y);
-            
-            ctx.fillText(label, node.x, node.y + (fontSize  * 0.8));
+
+            ctx.fillText(label, node.x, node.y + (fontSize * 0.8));            
         })
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
@@ -261,7 +262,7 @@ function Bind2DForceGraph() {
         ;
 }
 
-function updateHighlight() {
+function updateHighlight(filterColor) {
     // trigger update of highlighted objects in scene
     // Graph
     //     .nodeColor(Graph.nodeColor())
@@ -270,8 +271,11 @@ function updateHighlight() {
     if (highlightNodes && highlightNodes.length > 0) {
         var node = highlightNodes[0];
         // Center/zoom on node
-        Graph.centerAt(node.x, node.y, 1000);
-        Graph.zoom(8, 2000);
+        Graph
+        .nodeColor(node => highlightNodes.indexOf(node) === -1 ? 'gray': filterColor)
+        .linkColor(link => highlightLink.indexOf(link) === -1 ? 'gray': filterColor)
+        .centerAt(node.x, node.y, 1000);
+        Graph.zoom(7, 2000);
     }
 }
 
@@ -370,11 +374,17 @@ function FilterGraph(selId) {
     });
     highlightNodes = [], highlightLink = [];
     if (filteredLinks) {
+        var linkColor = '';
         filteredLinks.forEach(element => {
-            highlightNodes.push(element.source);
-            highlightNodes.push(element.target);
+            var filteredLNode = $.grep(Graph.graphData().nodes, function (v) {
+                return v.nodeId === element.nodeId;
+            });
+            highlightNodes.push(filteredLNode[0]);
+            // highlightNodes.push(element.source);
+            // highlightNodes.push(element.target);
             highlightLink.push(element);
+            linkColor = element.linkColor;
         });
-        updateHighlight();
+        updateHighlight(linkColor);
     }
 }
