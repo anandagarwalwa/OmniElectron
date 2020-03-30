@@ -157,7 +157,8 @@ function GetNodes() {
     nodes.push({
         "id": "None",
         "nodeId": 0,
-        "nodeColor": "#ccc"
+        "nodeColor": "#ccc",
+        "nodeSize":1
     });
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
@@ -215,15 +216,31 @@ function Bind2DForceGraph() {
         (elem)
         .width($("#graph").width())
         .height(window.innerHeight - 185)
-        .backgroundColor("#000011")
+        // .backgroundColor("#000011")
         .graphData(graphData)
         .nodeLabel('id')
         .nodeColor(d => d.nodeColor)
         .nodeVal(d => d.nodeSize)
         .linkColor(link => link.linkColor)
         //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
+        .nodeCanvasObjectMode(() => 'after')
+        .nodeCanvasObject((node, ctx, globalScale) => {
+            const label = node.id;
+            const fontSize = 12 / globalScale;
+            ctx.font = `${fontSize}px Arial`;
+            const textWidth = ctx.measureText(label).width;
+            const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+            //ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            //ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
+            //ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = node.color;
+            ctx.fillStyle = '#54545f';
+            //   ctx.fillText(label, node.x, node.y);
+            
+            ctx.fillText(label, node.x, node.y + (fontSize  * 0.8));
+        })
         .onNodeHover(node => {
-            debugger;
             elem.style.cursor = node ? 'pointer' : null
         })
         .onNodeClick(node => {
