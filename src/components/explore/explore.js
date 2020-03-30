@@ -292,81 +292,6 @@ function updateHighlight(filterColor) {
     }
 }
 
-
-function Bind3DForceGraph() {
-    highlightNodes = [], highlightLink = [];
-    graphData.nodes = nodes;
-    graphData.links = links;
-    const elem = document.getElementById('graph');
-    Graph = ForceGraph3D()
-        (elem)
-        .showNavInfo(false)
-        .width($("#graph").width())
-        .height(window.innerHeight - 185)
-        .graphData(graphData)
-        .nodeLabel('id')
-        .nodeColor(d => d.nodeColor)
-        // .nodeColor(d => highlightNodes.indexOf(d) === -1 ? d.nodeColor : 'red')
-        .nodeVal(d => d.nodeSize)
-        .nodeOpacity(1)
-        .linkColor(link => link.linkColor)
-        // .linkColor(link => highlightLink.indexOf(link) === -1 ? link.linkColor : 'red')
-        .linkOpacity(1)
-        //.linkWidth(link => link === highlightLink ? 4 : 1)
-        .linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
-        // .linkDirectionalParticles(link => link === highlightLink ? 4 : 0)
-        // .linkDirectionalParticleWidth(4)
-        .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null)
-        // .onNodeHover(node => {
-        //     // no state change
-        //     if ((!node && !highlightNodes.length) || (highlightNodes.length === 1 && highlightNodes[0] === node)) return;
-
-        //     highlightNodes = node ? [node] : [];
-
-        //    // update3DHighlight();
-        // })
-        .onNodeClick(node => {
-            highlightNodes = [], highlightLink = [];
-            // Aim at node from outside it
-            const distance = 40;
-            const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-
-            Graph.cameraPosition(
-                { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
-                node, // lookAt ({ x, y, z })
-                3000  // ms transition duration
-            );
-        })
-        // .onLinkHover(link => {
-        //     // no state change
-        //     if (highlightLink === link) return;
-
-        //     highlightLink = link;
-        //     highlightNodes = link ? [link.source, link.target] : [];
-
-        //     //update3DHighlight();
-        // })
-        ;
-}
-function update3DHighlight() {
-    // trigger update of highlighted objects in scene
-    Graph
-        .nodeColor(Graph.nodeColor())
-        .linkWidth(Graph.linkWidth())
-        .linkDirectionalParticles(Graph.linkDirectionalParticles());
-    if (highlightNodes && highlightNodes.length > 0) {
-        var node = highlightNodes[0];
-        // Aim at node from outside it
-        const distance = 40;
-        const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-        Graph.cameraPosition(
-            { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio }, // new position
-            node, // lookAt ({ x, y, z })
-            3000  // ms transition duration
-        );
-    }
-}
-
 function FilterGraph(selId) {
     var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     var prop = "";
@@ -390,7 +315,7 @@ function FilterGraph(selId) {
         var linkColor = '';
         filteredLinks.forEach(element => {
             var filteredLNode = $.grep(Graph.graphData().nodes, function (v) {
-                return v.nodeId === element.nodeId;
+                return v.nodeId === element.linksFrom;
             });
             highlightNodes.push(filteredLNode[0]);
             // highlightNodes.push(element.source);
