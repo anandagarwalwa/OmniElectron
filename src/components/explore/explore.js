@@ -36,7 +36,7 @@ $(function () {
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
             Bind2DForceGraph();
-            isClearClick = false;            
+            isClearClick = false;
         }
         else {
             $(this).addClass("active");
@@ -210,7 +210,7 @@ function GetNodes() {
 }
 
 function getNodeLinkObject(nodeId) {
-    var colors = '#ccc';
+    var colors = '#cccccc';
     var objNode = {};
     var len = 1;
     var nodeObj = $.grep(links, function (v) {
@@ -252,7 +252,8 @@ function Bind2DForceGraph() {
         .linkColor(link => link.linkColor)
         //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
         // .nodeCanvasObjectMode(() => 'after')
-        .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : 'after')
+        // .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'after' : 'after')
+        .nodeCanvasObjectMode(node => 'after')
         .nodeCanvasObject((node, ctx, globalScale) => {
             const label = node.id;
             const fontSize = 12 / globalScale;
@@ -261,13 +262,13 @@ function Bind2DForceGraph() {
             const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
             //ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             //ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-            //ctx.textAlign = 'center';
+            ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = node.color;
             ctx.fillStyle = '#54545f';
             //   ctx.fillText(label, node.x, node.y);
-
-            ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
+            ctx.fillText(label, node.x , node.y + bckgDimensions[1] + 1);
+            // ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
         })
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
@@ -278,15 +279,20 @@ function Bind2DForceGraph() {
             Graph.zoom(8, 2000);
         });
 }
+let hex2rgb = c => `rgb(${c.substr(1).match(/../g).map(x => +`0x${x}`)},0.2)`;
+let rgb2hex = c => '#' + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``
 
 function updateHighlight(filterColor) {
     if (highlightNodes && highlightNodes.length > 0) {
         var node = highlightNodes[0];
         // Center/zoom on node
         Graph
-            .nodeColor(node => highlightNodes.indexOf(node) === -1 ? 'gray' : filterColor)
-            .linkColor(link => highlightLink.indexOf(link) === -1 ? 'gray' : filterColor)
-            .centerAt(node.x, node.y, 1000);
+            .nodeColor(node => {                              
+               return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor) : filterColor
+            })
+            .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor) : filterColor)
+            .centerAt(node.x, node.y, 1000)            
+            ;
         Graph.zoom(7, 2000);
     }
 }
