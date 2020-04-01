@@ -1,73 +1,150 @@
-<div class="container-fluid">
+<style>
+    .explore-sidenav {
+        background: rgba(84, 84, 95, 0.8) !important;
+    }
+
+    .container-content {
+        max-width: 1200px !important;
+        padding-left: 220px;
+    }
+
+
+    .box-content-pic img {
+        height: 490px !important;
+        width: 100%;
+    }
+
+    .box-content-pic {
+        float: left;
+        width: 100%;
+    }
+
+    .explor-container {
+        padding-top: 20px;
+    }
+
+    a .active {
+        background-color: #656565;
+    }
+
+    #divSearchPanel {
+        margin-top: 70px;
+    }
+    .position-explore{
+        position: relative;
+    }
+    .box-content-pic{
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .coman-drop-explore{
+        z-index: 1;
+        background: transparent !important;
+    }
+    .explore-content{
+        box-shadow: none !important;
+        border: none !important;
+    }
+</style>
+<!---Explore--New--Design-->
+<div class="container-fluid explor-container">
     <div class="row">
-        
-        <div class="col-xl-2 col-lg-2 col-md-2">  
+        <div class="col-xl-2 col-lg-2 col-md-2">
             <!-- <div class="collapse-btn-hide">
                 <button type="button" id="demo-one" class="btn">
                     <i class="fas fa-align-justify text-white"></i>
                 </button>
             </div> -->
 
-            <div class="main-sidebar collapse" id="main-side">                
-                 <div class="sidenav">
-                     <div class="search-main">
-                         <form>
-                             <input type="text" name="search" id="txtSearch" placeholder="Search..">
-                             <i class="fas fa-search"></i>
-                         </form>                         
-                     </div>   
-                     <div id="divSearchPanel">
+            <div class="main-sidebar collapse" id="main-side">
+                <div class="sidenav explore-sidenav">
+                    <div class="search-main">
+                        <input type="text" name="search" id="txtSearch" placeholder="Search..">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div id="divSearchPanel">
                         <a href="#" class="dynamic-box"> <i class="fas fa-circle co-org"></i> Search</a>
                         <a href="#" class="dynamic-box"> <i class="fas fa-circle co-pink"></i> Email</a>
                         <a href="#" class="dynamic-box"> <i class="fas fa-circle co-blue"></i> Display</a>
                         <a href="#" class="dynamic-box"> <i class="fas fa-circle co-green"></i> Tv</a>
                         <a href="#" class="dynamic-box"> <i class="fas fa-circle col-yellow"></i> Other office</a>
-                     </div>                    
-                 </div>               
-            </div> 
-      </div>
-        <div class="col-xl-10 col-lg-10 col-12 col-md-10  pl-0 pr-0 mt-5 responsive-section">
-            <div class="coman-drop-down d-flex mx-auto justify-content-center">
-                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
-                    <div class="main-explore-section">
-                        <form>
-                            <div class="form-group" style="display: none;" id="divFilterBlock">
-                                <label for="exampleFormControlSelect1">Filter</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                </select>
-                            </div>
-                        </form>
                     </div>
                 </div>
-
-
-                <!---DropDown-Two-->
-                <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
-                    <div class="main-explore-section">
-                        <form>
-                            <div class="form-group">
-                                <label for="ddlBreakDown">Breakdown</label>
-                                <select class="form-control" id="ddlBreakDown">
-                                <option value="1">Channel</option>
-                                <!-- <option value="2">Domain</option> -->
-                                <option value="3">Team</option>
-                                <option value="4">Data Tool</option>                                
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="box-content">
-                <div id='graph'></div>               
             </div>
         </div>
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="box-content explore-content">
+            
+            <div class="col-xl-12 col-lg-12 col-12 col-md-12  pl-0 pr-0 mt-1 responsive-section position-explore">
+                <div class="container">
+                    <div class="row">
+                        <div
+                            class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
+                            <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
+                                <div class="main-explore-section">
+                                    <form>
+                                        <div class="form-group" style="display: none;" id="divFilterBlock">
+                                            <label for="exampleFormControlSelect1">Filter</label>
+                                            <select class="form-control" id="exampleFormControlSelect1">
+                                                <option>Display</option>
+                                                <option>Display</option>
+                                                <option>Display</option>
+                                                <option>Display</option>
+                                                <option>Display</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+    
+    
+                            <!---DropDown-Two-->
+                            <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
+                                <div class="main-explore-section">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="ddlBreakDown">Breakdown</label>
+                                            <select class="form-control" id="ddlBreakDown">
+                                                <option value="1">Channel</option>
+                                                <!-- <option value="2">Domain</option> -->
+                                                <option value="3">Team</option>
+                                                <option value="4">Data Tool</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+    
+                </div>
+                <div class="box-content-pic">
+                    <div id='graph'></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<script src="../src/components/explore/explore.js"></script> 
+<!---Explore--End--Design-->
+<script src="../src/components/explore/explore.js"></script>

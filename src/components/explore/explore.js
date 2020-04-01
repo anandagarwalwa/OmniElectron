@@ -31,8 +31,19 @@ $(function () {
             serchExplore();
         }
     });
+    var isClearClick = false, filterId = '';
     $('body').on('click', 'a.dynamic-box', function () {
-        FilterGraph($(this).attr("data-val"))
+        $("#divSearchPanel").find(".active").removeClass("active");
+        if (isClearClick && filterId == $(this).attr("data-val")) {
+            Bind2DForceGraph();
+            isClearClick = false;            
+        }
+        else {
+            $(this).addClass("active");
+            isClearClick = true;
+            filterId = $(this).attr("data-val");
+            FilterGraph($(this).attr("data-val"));
+        }
     });
     // $('body').on('click', '.coman-drop-down', function () {
     //     highlightNodes = [],highlightLink = [];
@@ -159,18 +170,6 @@ function GetLinks() {
                         "dataToolId": linkData[u].DataSourceId
                     });
                 }
-                // links.push({
-                //     "source": linkData[u].LinksFromDesc == null ? "None" : linkData[u].LinksFromDesc,
-                //     "target": linkData[u].LinksToDesc == null ? "None" : linkData[u].LinksToDesc,
-                //     "value": linkData[u].Description,
-                //     "linkColor": linkColor,
-                //     "nodeId": linkData[u].NodeId,
-                //     "linksFrom": linkData[u].LinksFrom,
-                //     "linksTo": linkData[u].LinksTo,
-                //     "teamId": linkData[u].TeamId,
-                //     "channelId": linkData[u].ChannelId,
-                //     "dataToolId": linkData[u].DataSourceId                   
-                // });
             }
         }
         GetNodes();
@@ -215,7 +214,7 @@ function getNodeLinkObject(nodeId) {
     var objNode = {};
     var len = 1;
     var nodeObj = $.grep(links, function (v) {
-        return v.linksFrom === nodeId;
+        return v.nodeId === nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
         colors = nodeObj[0].linkColor;
@@ -244,7 +243,7 @@ function Bind2DForceGraph() {
     Graph = ForceGraph()
         (elem)
         .width($("#graph").width())
-        .height(window.innerHeight - 185)
+        .height(window.innerHeight - 100)
         // .backgroundColor("#000011")
         .graphData(graphData)
         .nodeLabel('id')
@@ -315,7 +314,7 @@ function FilterGraph(selId) {
         var linkColor = '';
         filteredLinks.forEach(element => {
             var filteredLNode = $.grep(Graph.graphData().nodes, function (v) {
-                return v.nodeId === element.linksFrom;
+                return v.nodeId === element.nodeId;
             });
             highlightNodes.push(filteredLNode[0]);
             // highlightNodes.push(element.source);
