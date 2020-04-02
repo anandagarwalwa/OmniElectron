@@ -279,8 +279,6 @@ function Bind2DForceGraph() {
             Graph.zoom(8, 2000);
         });
 }
-let hex2rgb = c => `rgb(${c.substr(1).match(/../g).map(x => +`0x${x}`)},0.2)`;
-let rgb2hex = c => '#' + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``
 
 function updateHighlight(filterColor) {
     if (highlightNodes && highlightNodes.length > 0) {
