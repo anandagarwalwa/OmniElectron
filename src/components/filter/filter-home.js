@@ -4,7 +4,7 @@ var { getChannels } = require(__dirname + '\\server\\controllers\\channels_contr
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
-var { getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
+var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
@@ -210,7 +210,7 @@ function GetNodes() {
 }
 
 function getNodeLinkObject(nodeId) {
-    var colors = '#cccccc';
+    var colors = '#ccc';
     var objNode = {};
     var len = 1;
     var nodeObj = $.grep(links, function (v) {
@@ -252,8 +252,7 @@ function Bind2DForceGraph() {
         .linkColor(link => link.linkColor)
         //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
         // .nodeCanvasObjectMode(() => 'after')
-        // .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'after' : 'after')
-        .nodeCanvasObjectMode(node => 'after')
+        .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'before' : 'after')
         .nodeCanvasObject((node, ctx, globalScale) => {
             const label = node.id;
             const fontSize = 12 / globalScale;
@@ -262,18 +261,25 @@ function Bind2DForceGraph() {
             const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
             //ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             //ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-            ctx.textAlign = 'center';
+            //ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = node.color;
             ctx.fillStyle = '#54545f';
             //   ctx.fillText(label, node.x, node.y);
-            ctx.fillText(label, node.x , node.y + bckgDimensions[1] + 1);
-            // ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
+
+            ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
         })
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
         })
         .onNodeClick(node => {
+            $('#myModal').modal('show');
+            getNodeFilterData(node.nodeId).then(data => {
+                var filterData = data[0];
+                $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
+                $("#filterDescription").text(filterData[0].nDescription);
+                $("#filterTags").text(filterData[0].cChannelName + ", " + filterData[0].tTeamName + ", " + filterData[0].dDatasource);
+            })
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(8, 2000);
@@ -285,12 +291,9 @@ function updateHighlight(filterColor) {
         var node = highlightNodes[0];
         // Center/zoom on node
         Graph
-            .nodeColor(node => {                              
-               return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor) : filterColor
-            })
-            .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor) : filterColor)
-            .centerAt(node.x, node.y, 1000)            
-            ;
+            .nodeColor(node => highlightNodes.indexOf(node) === -1 ? 'gray' : filterColor)
+            .linkColor(link => highlightLink.indexOf(link) === -1 ? 'gray' : filterColor)
+            .centerAt(node.x, node.y, 1000);
         Graph.zoom(7, 2000);
     }
 }
