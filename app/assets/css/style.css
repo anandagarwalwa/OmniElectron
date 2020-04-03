@@ -2471,3 +2471,23 @@ label.error
     float: left;
     width: 100%;
 }
+
+/*dataLink input tag css*/
+.bootstrap-tagsinput .tag {
+    color: #fff;
+    background: #938897;
+    padding: 1px 5px;
+    font-size: 14px;
+    text-transform: capitalize;
+    border-radius: 5px;
+}
+
+.bootstrap-tagsinput {
+    width: 58%;
+	color: #495057;
+	font-size: 13px;
+}
+
+.bootstrap-tagsinput ::placeholder {
+    font-size: 13px !important;
+}
