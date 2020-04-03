@@ -18,7 +18,10 @@ const selectableProps = [
     'IsConfluencePage',
     'NodeId',
     'CreatedBy',
-    'CreatedDate'
+    'CreatedDate',
+    'Tag',
+    'Codelink',
+    'ReportLink'
 ]
 
 module.exports = knex => {
