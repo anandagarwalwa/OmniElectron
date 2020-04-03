@@ -71,6 +71,7 @@
                
 
                 <div class="row">
+                    <form id="addFilterWeeklyReportForm" method="post">
                     <div class="col-xl-12">
                         <div class="filter-weeklyReport-Title text-center">
                             <h5>Alert - Display Weekly Report</h5>
@@ -78,17 +79,15 @@
                     </div>
                     <div class="col-xl-6 ml-auto">
                         <div class="form-tab-section">
-                            <form >
                                 <div class="form-group">
                                     <label for="sel1">Tab:</label>
-                                    <select class="form-control" id="sel1">
-                                      <option>Dataset</option>
+                                    <select class="form-control" id="tablist" name="tablist">
+                                      <option value="0">Dataset</option>
                                       <option>2</option>
                                       <option>3</option>
                                       <option>4</option>
                                     </select>
                                   </div> 
-                            </form>
                         </div>
                     </div>
                     <div class="coman-result-section Weekly-report-section  d-flex">
@@ -98,14 +97,20 @@
                                     <h6>What to set alert to?</h6>
                                 </div>
                                 <div class="alert-btn-popup dropup">
-                                    <button type="button" class="btn btn-group-lg dropdown-toggle" 
+                                    <!-- <button type="button" class="btn btn-group-lg dropdown-toggle" 
                                     data-toggle="dropdown">order date</button>
 
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Link 1</a>
                                         <a class="dropdown-item" href="#">Link 2</a>
                                         <a class="dropdown-item" href="#">Link 3</a>
-                                      </div>                                           
+                                      </div>                                            -->
+                                      <select  class="btn btn-group-lg dropdown-toggle" id="orderDate" name="orderDate">
+                                        <option value="0">order date</option>
+                                        <option>Link 1</option>
+                                        <option>Link 2</option>
+                                        <option>Link 3</option>
+                                      </select>
                                            
                                 </div>
                                 
@@ -113,8 +118,8 @@
                                     <div class="granularity-section-left">
                                         <div class="form-group">
                                             <label for="sel1">Granularity</label>
-                                            <select class="form-control" id="sel1">
-                                              <option>Day</option>
+                                            <select class="form-control" id="granularity" name="granularity">
+                                              <option value="0">Day</option>
                                               <option>2</option>
                                               <option>3</option>
                                               <option>4</option>
@@ -129,7 +134,8 @@
                                         
                                             <!-- <input type="range" min="1" max="100" value="50">  -->
                                             <input type="text" class="js-range-slider" name="my_range" value="" />
-                                           
+                                            <input type="hidden" class="js-input-from" value="0" id="tFrom" />
+                                            <input type="hidden" class="js-input-to" value="0" id="tTo" />
                                          </div>
                                     </div>
                                 </div>
@@ -139,14 +145,20 @@
                                     <h6>Tie alert to metric?</h6>
                                 </div>
                                 <div class="alert-btn-popup alert-btn-popup-one dropdown">
-                                    <button type="button" class="btn btn-group-lg dropdown-toggle" 
+                                    <!-- <button type="button" class="btn btn-group-lg dropdown-toggle" 
                                     data-toggle="dropdown">Bookings_usd</button>
 
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Link 1</a>
                                         <a class="dropdown-item" href="#">Link 2</a>
                                         <a class="dropdown-item" href="#">Link 3</a>
-                                      </div>                                            
+                                      </div>                                             -->
+                                      <select  class="btn btn-group-lg dropdown-toggle" id="booking" name="booking">
+                                        <option value="0">Bookings_usd</option>
+                                        <option>Link 1</option>
+                                        <option>Link 2</option>
+                                        <option>Link 3</option>
+                                      </select>
                                            
                                 </div>
 
@@ -178,23 +190,21 @@
                            
                                 <div class="alert-dropdown-section">
                                     <div class="alert-form-one">
-                                        <form>
                                             <div class="form-group">
                                                
-                                                <select class="form-control" id="sel1" name="sellist1">
-                                                  <option>Less Than</option>
+                                                <select class="form-control" id="matricConditionList" name="matricConditionList">
+                                                  <option value="0">Less Than</option>
                                                   <option>2</option>
                                                   
                                                 </select>
                                             </div>
-                                        </form>
                                     </div>
 
                                     <div class="alert-form-Two">
                                         <form>
                                             <div class="form-group">
                                                 
-                                                <input type="number" class="form-control"  placeholder="60" id="usr">
+                                                <input type="number" class="form-control"  placeholder="60" id="matricValue" name="matricValue">
                                               </div>
                                         </form>
                                     </div>
@@ -206,47 +216,49 @@
                                     <h6>Add Filter</h6>
                                 </div>
                                 <div class="alert-btn-popup alert-btn-popup-one alert-btn-popup-Two dropdown">
-                                    <button type="button" class="btn btn-group-lg dropdown-toggle" 
+                                    <!-- <button type="button" class="btn btn-group-lg dropdown-toggle" 
                                     data-toggle="dropdown">Product</button>
 
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#">Link 1</a>
                                         <a class="dropdown-item" href="#">Link 2</a>
                                         <a class="dropdown-item" href="#">Link 3</a>
-                                      </div>                                            
+                                      </div>                                             -->
+                                      <select  class="btn btn-group-lg dropdown-toggle" id="product" name="product">
+                                        <option value="0">Product</option>
+                                        <option>Link 1</option>
+                                        <option>Link 2</option>
+                                        <option>Link 3</option>
+                                      </select>
                                            
                                 </div>
 
                                 <!---Equal-->
                                 <div class="alert-dropdown-section Equal-Section-dropdown">
                                     <div class="alert-form-one">
-                                        <form>
                                             <div class="form-group">
                                                
-                                                <select class="form-control" id="sel1" name="sellist1">
-                                                  <option>Equals</option>
+                                                <select class="form-control" id="filterConditionList" name="filterConditionList">
+                                                  <option value="0">Equals</option>
                                                   <option>2</option>
                                                   
                                                 </select>
                                             </div>
-                                        </form>
                                     </div>
 
                                     <div class="alert-form-Two">
-                                        <form>
                                             <div class="form-group">
-                                                
-                                                <input type="text" class="form-control"  placeholder="Chairs" id="usr">
+                                                <input type="text" class="form-control"  placeholder="Chairs" id="filterValue" name="filterValue">
                                               </div>
-                                        </form>
                                     </div>
                                 </div>
 
                                 <!---Btn-->
                                 <div class="filter-footer-btn">
-                                    <a route-link route-href="filterpopup"  class="btn btn-group-lg">
+                                    <!-- <a route-link route-href="filterpopup"  class="btn btn-group-lg">
                                         Set Schedule
-                                    </a>
+                                    </a> -->
+                                    <button type="button" href="#" id="btnFilterWeeklyReport"class="btn btn-group-lg">Set Schedule</button>
                                 </div>
                             </div>
                          </div>
@@ -386,19 +398,11 @@
                              </div>
                          </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(".js-range-slider").ionRangeSlider({
-        skin: "modern",
-        type: "double",
-        from: 10,
-        to: 500,
-        grid: false,
-        
-    });
-</script>
+<script src="../src/components/filter/filter-weeklyReport-1.js"></script>
