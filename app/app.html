@@ -140,7 +140,7 @@
                         </a>
                     </li>
                     <li>
-                        <a route-href="#"  id="fildernode">
+                        <a route-link route-href="explore"  id="fildernode">
                             <i class="fas fa-filter"></i>
                             Filter
                         </a>
@@ -280,11 +280,11 @@
                 templateUrl: '../src/components/timeline/timeline.html'
             },
             ],
-            // filter: [{
-            //     selector: "#content",
-            //     templateUrl: '../src/components/filter/filter-home.html'
-            // },
-            // ],
+            filter: [{
+                selector: "#content",
+                templateUrl: '../src/components/explore/explore.html'
+            },
+            ],
             activity: [{
                 selector: "#content",
                 templateUrl: '../src/components/activity/activity.html'
