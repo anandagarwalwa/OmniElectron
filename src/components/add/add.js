@@ -187,12 +187,16 @@ getChannels().then(data => {
     console.error(err);
 });
 
-function bindLinkFromandLinkToDropdown() {
-
+function bindLinkFromandLinkToDropdown(selfNodeId) {
     // Get Links To List 
     // 1 - For Data Link
     getNodesByDataCategoryId(1).then(data => {
-        debugger;
+        if(selfNodeId && selfNodeId > 0){
+            selfNodeId = parseInt(selfNodeId);
+            data = $.grep(data,function(e,i){
+                return (e.Id != selfNodeId)
+            });
+        }
         var model = {
             items: data
         }
@@ -326,7 +330,7 @@ $("#btnPublish").click(function () {
                 //     beforeHide: function () { }, // will be triggered before the toast gets hidden
                 //     afterHidden: function () { }  // will be triggered after the toast has been hidden
                 // });
-                bindLinkFromandLinkToDropdown();
+                bindLinkFromandLinkToDropdown($("#hdnNodeId").val());
                 if ($("input[type='radio'].radioBtnClass").is(':checked')) {
                     var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
                     if (radioBtnClass_type == "1") {
@@ -358,7 +362,7 @@ $("#btnPublish").click(function () {
                 }
             ).then(data => {
                 localStorage.setItem("nodeId", data[0]);
-                bindLinkFromandLinkToDropdown();
+                bindLinkFromandLinkToDropdown(data[0]);
                 // $.toast({
                 //     text: "Data Point details save Successfully.", // Text that is to be shown in the toast
                 //     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -546,6 +550,7 @@ $("#btnDataLink").click(function () {
                 });
                 allPageRefresh();
             }).catch(err => {
+                debugger;
                 console.error(err);
             });
         }
