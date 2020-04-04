@@ -43,7 +43,7 @@ $(function () {
             $(this).addClass("active");
             isClearClick = true;
             filterId = $(this).attr("data-val");
-            FilterGraph($(this).attr("data-val"));
+            FilterGraphBySearchPanel($(this).attr("data-val"));
         }
     });
     $("#explorenode").click(function () {
@@ -247,15 +247,11 @@ function Bind2DForceGraph() {
         (elem)
         .width($("#graph").width())
         .height(window.innerHeight - 100)
-        // .backgroundColor("#000011")
         .graphData(graphData)
         .nodeLabel('id')
         .nodeColor(d => d.nodeColor)
         .nodeVal(d => d.nodeSize)
         .linkColor(link => link.linkColor)
-        //.linkWidth(link => highlightLink.indexOf(link) === -1 ? 1 : 2)
-        // .nodeCanvasObjectMode(() => 'after')
-        // .nodeCanvasObjectMode(node => highlightNodes.indexOf(node) !== -1 ? 'after' : 'after')
         .nodeCanvasObjectMode(node => 'after')
         .nodeCanvasObject((node, ctx, globalScale) => {
             const label = node.id;
@@ -263,15 +259,11 @@ function Bind2DForceGraph() {
             ctx.font = `${fontSize}px Arial`;
             const textWidth = ctx.measureText(label).width;
             const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-            //ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            //ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = node.color;
             ctx.fillStyle = '#54545f';
-            //   ctx.fillText(label, node.x, node.y);
-            ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
-            // ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
+            ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);            
         })
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
@@ -310,7 +302,7 @@ function updateHighlight(filterColor) {
     }
 }
 
-function FilterGraph(selId) {
+function FilterGraphBySearchPanel(selId) {
     var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     var prop = "";
     selId = parseInt(selId);
@@ -346,15 +338,11 @@ function FilterGraph(selId) {
 // Code link path
 $("#codelink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
-    // shell.openItem('filepath')
-    // shell.openItem('folderpath')
     shell.showItemInFolder(codeLink)
 });
 
 // Report link path
 $("#reportlink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
-    // shell.openItem('filepath')
-    // shell.openItem('folderpath')
     shell.showItemInFolder(reportLink)
 });
