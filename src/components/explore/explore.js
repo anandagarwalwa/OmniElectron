@@ -4,11 +4,12 @@ var { getChannels } = require(__dirname + '\\server\\controllers\\channels_contr
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
-var { getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
+var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
 document.getElementById("loader").style.display = "none";
+var isNodeFilter = false;
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
@@ -45,10 +46,12 @@ $(function () {
             FilterGraph($(this).attr("data-val"));
         }
     });
-    // $('body').on('click', '.coman-drop-down', function () {
-    //     highlightNodes = [],highlightLink = [];
-    //     updateHighlight();
-    // });
+    $("#explorenode").click(function () {
+        isNodeFilter = false;
+    });
+    $("#fildernode").click(function () {
+        isNodeFilter = true;
+    });
 });
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
@@ -267,13 +270,25 @@ function Bind2DForceGraph() {
             ctx.fillStyle = node.color;
             ctx.fillStyle = '#54545f';
             //   ctx.fillText(label, node.x, node.y);
-            ctx.fillText(label, node.x , node.y + bckgDimensions[1] + 1);
+            ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
             // ctx.fillText(label, node.x, node.y + (fontSize * 0.8));
         })
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
         })
         .onNodeClick(node => {
+            if(isNodeFilter){
+                $('#myModal').modal('show');
+                getNodeFilterData(node.nodeId).then(data => {
+                    var filterData = data[0];
+                    $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
+                    $("#nodeDescription").text(filterData[0].nDescription);
+                    $("#filterDescription").text(filterData[0].lLinkDescription);
+                    $("#filterTags").text(filterData[0].lTags);
+                    codeLink = filterData[0].lCodeLink;
+                    reportLink = filterData[0].lReportLink;
+                })
+            }            
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(8, 2000);
@@ -285,11 +300,11 @@ function updateHighlight(filterColor) {
         var node = highlightNodes[0];
         // Center/zoom on node
         Graph
-            .nodeColor(node => {                              
-               return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor) : filterColor
+            .nodeColor(node => {
+                return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor) : filterColor
             })
             .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor) : filterColor)
-            .centerAt(node.x, node.y, 1000)            
+            .centerAt(node.x, node.y, 1000)
             ;
         Graph.zoom(7, 2000);
     }
@@ -321,11 +336,25 @@ function FilterGraph(selId) {
                 return v.nodeId === element.nodeId;
             });
             highlightNodes.push(filteredLNode[0]);
-            // highlightNodes.push(element.source);
-            // highlightNodes.push(element.target);
             highlightLink.push(element);
             linkColor = element.linkColor;
         });
         updateHighlight(linkColor);
     }
 }
+
+// Code link path
+$("#codelink").click(function () {
+    const { shell } = require('electron') // deconstructing assignment
+    // shell.openItem('filepath')
+    // shell.openItem('folderpath')
+    shell.showItemInFolder(codeLink)
+});
+
+// Report link path
+$("#reportlink").click(function () {
+    const { shell } = require('electron') // deconstructing assignment
+    // shell.openItem('filepath')
+    // shell.openItem('folderpath')
+    shell.showItemInFolder(reportLink)
+});

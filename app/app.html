@@ -121,7 +121,7 @@
                 </div>
                 <ul class="list-unstyled components">
                     <li class="active timeline-ico explore-icon">
-                        <a route-link route-href="explore">
+                        <a route-link route-href="explore" id="explorenode">
                              <img src="assets/images/Explore.svg" class="img-fluid">
                             Explore
                         </a>
@@ -140,7 +140,7 @@
                         </a>
                     </li>
                     <li>
-                        <a route-link route-href="filter">
+                        <a route-href="#"  id="fildernode">
                             <i class="fas fa-filter"></i>
                             Filter
                         </a>
@@ -280,11 +280,11 @@
                 templateUrl: '../src/components/timeline/timeline.html'
             },
             ],
-            filter: [{
-                selector: "#content",
-                templateUrl: '../src/components/filter/filter-home.html'
-            },
-            ],
+            // filter: [{
+            //     selector: "#content",
+            //     templateUrl: '../src/components/filter/filter-home.html'
+            // },
+            // ],
             activity: [{
                 selector: "#content",
                 templateUrl: '../src/components/activity/activity.html'

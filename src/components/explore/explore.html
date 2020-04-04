@@ -146,5 +146,54 @@
         </div>
     </div>
 </div>
+<!-- The Modal -->
+<div class="modal fade filter-popup" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="nodeDescription"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="filter-ownear-main">
+                    <div class="filter-ownear-sec">
+                        <div class="filter-title-sec">
+                            <h5>ownear:</h5>
+                        </div>
+                        <div class="filter-right-sec">
+                            <div class="filter-pic-right">
+                                <img src="assets/images/40306.jpg" class="img-fluid rounded-circle">
+                            </div>
+                            <div class="filter-text-right">
+                                <h6 id="filterusername"></h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-discription-sec-main">
+                        <div class="filter-desc-section">
+                            <h5>Description:</h5>
+                            <p id="filterDescription"></p>
+                        </div>
+                        <div class="tag-section-filter">
+                            <h5>tags:</h5>
+                            <p id="filterTags"></p>
+                        </div>
+                    </div>
+                    <div class="filter-nav">
+                        <ul>
+                            <li><a style="color: blue;text-decoration: underline;cursor: pointer;" id="codelink">code link</a></li>
+                            <li><a style="color: blue;text-decoration: underline;cursor: pointer;" id="reportlink">report link</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer filter-footer-sec">
+                <a id="addAlert" style="color: white; cursor: pointer;" route-link route-href="filterResult" class="btn btn-primary">Add Alert</a>
+            </div>
+        </div>
+    </div>
+</div>
 <!---Explore--End--Design-->
 <script src="../src/components/explore/explore.js"></script>
