@@ -439,10 +439,7 @@ $("#addDataLinkForm").validate({
         DataLinkTeamSelect: { valueNotEquals: "0" },
         DataLinkDatasourceSelect: { valueNotEquals: "0" },
         datalinkLocation: { required: true },
-        DataLinkChannelsSelect: { valueNotEquals: "0" },
-        datalinkTag:{required: true},
-        datalinkCodeLike:{required: true},
-        datalinkReportLink:{required: true}
+        DataLinkChannelsSelect: { valueNotEquals: "0" }       
     },
     messages: {
         linkdesc: {
@@ -462,10 +459,7 @@ $("#addDataLinkForm").validate({
         },
         DataLinkChannelsSelect: {
             valueNotEquals: "Please select one chanels"
-        },
-        datalinkTag:{required: "This field is required"},
-        datalinkCodeLike:{required: "This field is required"},
-        datalinkReportLink:{required: "This field is required"}
+        }       
     },
 });
 
