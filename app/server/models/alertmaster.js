@@ -2,26 +2,23 @@
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'Links'
-const tableName = 'links'
+const name = 'AlertMaster'
+const tableName = 'alertmaster'
 
 const selectableProps = [
     'Id',
     'Description',
-    'Owner',
-    'TeamId',
-    'DataSourceId',
-    'Location',
-    'ChannelId',
-    'LinksTo',
-    'LinksFrom',
-    'IsConfluencePage',
     'NodeId',
+    'DataSourceId',
+    'SubDataSourceName',
+    'NotificationType',
+    'Recipieants',
+    'EmailBody',
+    'IsIncludeData',
+    'NotifyTimeFrameFrom',
+    'NotifyTimeFrameTo',
     'CreatedBy',
-    'CreatedDate',
-    'Tag',
-    'Codelink',
-    'ReportLink'
+    'CreatedDate'
 ]
 
 module.exports = knex => {

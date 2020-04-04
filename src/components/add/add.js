@@ -10,13 +10,9 @@ var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\control
 var { getLocales } = require(__dirname + '\\server\\controllers\\locales_controller.js');
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 document.getElementById("loader").style.display = "none";
-
-function allPageRefresh() {
-    //add data point all value null
-    $("#description").val("");
-    $("#selectOwner").val("0");
-    $('input[name="rBtndatacategory"]').prop('checked', false);
-
+$('#datalinkTag').tagsinput('refresh');
+function dataLikePageRefresh()
+{
     //add Data Link all value null
     $("#linkdesc").val("");
     $("#DataLinkUserSelect").val("0");
@@ -28,7 +24,13 @@ function allPageRefresh() {
     $("#DataLinkFromSelect").val("0");
     $('input[name="ConfluenceNo"]').prop('checked', false);
     $("#ConfluenceNo").attr('checked', 'checked');
-    //add Analysis all value null
+    $('#datalinkTag').tagsinput('removeAll');
+    $("#datalinkTag").val("");
+    $("#datalinkCodeLike").val("");
+    $("#datalinkReportLink").val("");
+}
+function analysisPageRefresh()
+{
     $("#analysisDescription").val("");
     $("#analysisUserSelect").val("0");
     $("#analysisTeamSelectt").val("0");
@@ -37,7 +39,9 @@ function allPageRefresh() {
     $("#analysisDate").val("");
     $('input[name="rBtnConfluence"]').prop('checked', false);
     $("#rBtnConfluenceNO").attr('checked', 'checked');
-    //add Test all value null
+}
+function testPageRefresh()
+{
     $("#testDescription").val("");
     $('input[name="didTestWin"]').prop('checked', false);
     $("#didTestWinNO").attr('checked', 'checked');
@@ -48,10 +52,20 @@ function allPageRefresh() {
     $("#testDate").val("");
     $('input[name="testConfluence"]').prop('checked', false);
     $("#testConfluenceNO").attr('checked', 'checked');
+}
+function allPageRefresh() {
+    //add data point all value null
+    $("#description").val("");
+    $("#selectOwner").val("0");
+    $('input[name="rBtndatacategory"]').prop('checked', false);
+    //add Data Link all value null
+    dataLikePageRefresh();
+    //add Analysis all value null
+    analysisPageRefresh();
+    //add Test all value null
+    testPageRefresh();
     //remove nodeId in localstorage
     localStorage.removeItem("nodeId");
-
-
     $('#addDataPointdiv').removeClass('d-none');
     $('#dataLinkBlock').addClass('d-none');
     $('#analysisBlock').addClass('d-none');
@@ -173,12 +187,16 @@ getChannels().then(data => {
     console.error(err);
 });
 
-function bindLinkFromandLinkToDropdown() {
-
+function bindLinkFromandLinkToDropdown(selfNodeId) {
     // Get Links To List 
     // 1 - For Data Link
     getNodesByDataCategoryId(1).then(data => {
-        debugger;
+        if(selfNodeId && selfNodeId > 0){
+            selfNodeId = parseInt(selfNodeId);
+            data = $.grep(data,function(e,i){
+                return (e.Id != selfNodeId)
+            });
+        }
         var model = {
             items: data
         }
@@ -312,7 +330,7 @@ $("#btnPublish").click(function () {
                 //     beforeHide: function () { }, // will be triggered before the toast gets hidden
                 //     afterHidden: function () { }  // will be triggered after the toast has been hidden
                 // });
-                bindLinkFromandLinkToDropdown();
+                bindLinkFromandLinkToDropdown($("#hdnNodeId").val());
                 if ($("input[type='radio'].radioBtnClass").is(':checked')) {
                     var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
                     if (radioBtnClass_type == "1") {
@@ -344,7 +362,7 @@ $("#btnPublish").click(function () {
                 }
             ).then(data => {
                 localStorage.setItem("nodeId", data[0]);
-                bindLinkFromandLinkToDropdown();
+                bindLinkFromandLinkToDropdown(data[0]);
                 // $.toast({
                 //     text: "Data Point details save Successfully.", // Text that is to be shown in the toast
                 //     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -393,6 +411,7 @@ $("#btnPreviousDataLinkBlock").click(function () {
     $('#addDataPointdiv').removeClass('d-none');
     $('#dataLinkBlock').addClass('d-none');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    dataLikePageRefresh();
 
 });
 
@@ -402,6 +421,7 @@ $("#btnPreviousAnalysisBlock").click(function () {
     $('#addDataPointdiv').removeClass('d-none');
     $('#analysisBlock').addClass('d-none');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    analysisPageRefresh();
 });
 
 
@@ -411,6 +431,7 @@ $("#btnPreviousTestBlock").click(function () {
     $('#addDataPointdiv').removeClass('d-none');
     $('#testBlock').addClass('d-none');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    testPageRefresh();
 });
 
 // Data Link Form
@@ -422,7 +443,7 @@ $("#addDataLinkForm").validate({
         DataLinkTeamSelect: { valueNotEquals: "0" },
         DataLinkDatasourceSelect: { valueNotEquals: "0" },
         datalinkLocation: { required: true },
-        DataLinkChannelsSelect: { valueNotEquals: "0" },
+        DataLinkChannelsSelect: { valueNotEquals: "0" }       
     },
     messages: {
         linkdesc: {
@@ -442,7 +463,7 @@ $("#addDataLinkForm").validate({
         },
         DataLinkChannelsSelect: {
             valueNotEquals: "Please select one chanels"
-        }
+        }       
     },
 });
 
@@ -464,7 +485,10 @@ $("#btnDataLink").click(function () {
                 'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
                 'NodeId': parseInt(localStorage.getItem("nodeId")),
                 'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                'CreatedDate': new Date()
+                'CreatedDate': new Date(),
+                'Tag':$("#datalinkTag").val(),
+                'Codelink':$("#datalinkCodeLike").val(),
+                'ReportLink':$("#datalinkReportLink").val()
             }).then(data => {
                 $.toast({
                     text: "Data Link updated Successfully.", // Text that is to be shown in the toast
@@ -501,7 +525,10 @@ $("#btnDataLink").click(function () {
                     'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
                     'NodeId': parseInt(localStorage.getItem("nodeId")),
                     'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                    'CreatedDate': new Date()
+                    'CreatedDate': new Date(),
+                    'Tag':$("#datalinkTag").val(),
+                'Codelink':$("#datalinkCodeLike").val(),
+                'ReportLink':$("#datalinkReportLink").val()
                 }
             ).then(data => {
                 $.toast({
@@ -523,6 +550,7 @@ $("#btnDataLink").click(function () {
                 });
                 allPageRefresh();
             }).catch(err => {
+                debugger;
                 console.error(err);
             });
         }

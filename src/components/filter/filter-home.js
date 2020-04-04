@@ -8,6 +8,9 @@ var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\ser
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
+var codeLink = '';
+var reportLink = '';
+
 document.getElementById("loader").style.display = "none";
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
@@ -277,8 +280,11 @@ function Bind2DForceGraph() {
             getNodeFilterData(node.nodeId).then(data => {
                 var filterData = data[0];
                 $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
-                $("#filterDescription").text(filterData[0].nDescription);
-                $("#filterTags").text(filterData[0].cChannelName + ", " + filterData[0].tTeamName + ", " + filterData[0].dDatasource);
+                $("#nodeDescription").text(filterData[0].nDescription);
+                $("#filterDescription").text(filterData[0].lLinkDescription);
+                $("#filterTags").text(filterData[0].lTags);
+                codeLink = filterData[0].lCodeLink;
+                reportLink = filterData[0].lReportLink;
             })
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
@@ -332,3 +338,19 @@ function FilterGraph(selId) {
         updateHighlight(linkColor);
     }
 }
+
+// Code link path
+$("#codelink").click(function () {
+    const { shell } = require('electron') // deconstructing assignment
+    // shell.openItem('filepath')
+    // shell.openItem('folderpath')
+    shell.showItemInFolder(codeLink)
+});
+
+// Report link path
+$("#reportlink").click(function () {
+    const { shell } = require('electron') // deconstructing assignment
+    // shell.openItem('filepath')
+    // shell.openItem('folderpath')
+    shell.showItemInFolder(reportLink)
+});

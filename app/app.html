@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="assets/css/jquery.toast.css">
     <link rel="stylesheet" href="assets/css/jquery-confirm.min.css">
     <link rel="stylesheet" href="assets/css/sumoselect.css"></link>
+    <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css"></link>
+    <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css"></link>
     <style>
         #main-side {
             display: block;
@@ -119,7 +121,7 @@
                 </div>
                 <ul class="list-unstyled components">
                     <li class="active timeline-ico explore-icon">
-                        <a route-link route-href="explore">
+                        <a route-link route-href="explore" id="explorenode">
                              <img src="assets/images/Explore.svg" class="img-fluid">
                             Explore
                         </a>
@@ -138,7 +140,7 @@
                         </a>
                     </li>
                     <li>
-                        <a route-link route-href="filter">
+                        <a route-link route-href="explore"  id="fildernode">
                             <i class="fas fa-filter"></i>
                             Filter
                         </a>
@@ -280,7 +282,7 @@
             ],
             filter: [{
                 selector: "#content",
-                templateUrl: '../src/components/filter/filter-home.html'
+                templateUrl: '../src/components/explore/explore.html'
             },
             ],
             activity: [{
@@ -321,6 +323,8 @@
         });
     </script>
     <script type="text/javascript" src="assets/js/jquery.toast.js"></script>
+    <script type="text/javascript" src="assets/js/ion.rangeSlider.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap-tagsinput.js"></script>
     
 </body>
 
