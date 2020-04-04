@@ -10,7 +10,7 @@ var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\control
 var { getLocales } = require(__dirname + '\\server\\controllers\\locales_controller.js');
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 document.getElementById("loader").style.display = "none";
-
+/*hi dipak*/
 function allPageRefresh() {
     //add data point all value null
     $("#description").val("");
