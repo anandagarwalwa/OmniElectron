@@ -354,3 +354,9 @@ $("#reportlink").click(function () {
     // shell.openItem('folderpath')
     shell.showItemInFolder(reportLink)
 });
+
+// $("#addAlert").click(function(){
+//     $('#myModal').modal('hide');
+//     $('#filterResult').load('../src/components/filter/filter-result.html');
+//     $('#filterScratch').load('../src/components/filter/filter-scratch.html');
+// });

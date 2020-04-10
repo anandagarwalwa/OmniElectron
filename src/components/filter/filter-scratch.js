@@ -4,6 +4,12 @@ var { addAlertMaster } = require(__dirname + '\\server\\controllers\\alertmaster
 
 
 $(document).ready(function () {
+    $('#modeFitlerScratch').modal('hide');
+    $("#btnBackFilterResult").click(function(){
+        $('#modeFitlerScratch').modal('hide');
+        $('#modelFilterResult').modal('show');
+    });
+
     var $timeFrame = $(".js-range-slider");
     var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
         instance,
