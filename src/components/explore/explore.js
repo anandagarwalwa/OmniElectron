@@ -8,8 +8,11 @@ var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\ser
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
+var codeLink = '';
+var reportLink = '';
 document.getElementById("loader").style.display = "none";
 var isNodeFilter = false;
+$("#divFilterBlock").hide();
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
@@ -25,52 +28,101 @@ getUsersById(parseInt(localStorage.getItem("UserId"))
 $(function () {
     BindSearchPanel();
     $("#ddlBreakDown").change(function () {
-        BindSearchPanel();
+        // BindSearchPanel();
+        breakDownNodeFilter();
     });
     $('#txtSearch').keyup(function (e) {
         if (e.keyCode != 13) {
             serchExplore();
         }
-        else{
-            if (isNodeFilter) {
-                NodeFilterGraphData(null,$('#txtSearch').val());
-            }
-            else {
-                FilterGraphBySearchPanel(null,$('#txtSearch').val());
-            }
+        else {
+            $("#filterBlockContainer").append(getFilterTag($('#txtSearch').val()));
+            FilterGraphBySearchPanel(null, $('#txtSearch').val());
+            // if (isNodeFilter) {
+            //     //NodeFilterGraphData(null, $('#txtSearch').val());
+            //     updateFilteredNode(filteredLinkColor);
+            // }
+            // else {
+            //     FilterGraphBySearchPanel(null, $('#txtSearch').val());
+            // }
         }
     });
     var isClearClick = false, filterId = '';
     $('body').on('click', 'a.dynamic-box', function () {
+        debugger;
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
-            Bind2DForceGraph();
+            // Bind2DForceGraph();
             isClearClick = false;
+            // For Deselecting Breakdown
+            Graph
+                .nodeColor(node => {
+                    return hex2rgb(node.nodeColor, 1);
+                })
+                .linkColor(link => hex2rgb(link.linkColor, 1))
+                // .centerAt(node.x, node.y, 1000)
+                ;
         }
         else {
+            if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
+                $("#filterBlockContainer span").remove();
+                $("#filterBlockContainer").append(getFilterTag($(this).text())); //We can use this later
+            }
             $(this).addClass("active");
             isClearClick = true;
             filterId = $(this).attr("data-val");
-            
-            if (isNodeFilter) {
-                NodeFilterGraphData(filterId,null);
-            }
-            else {
-                FilterGraphBySearchPanel(filterId,null);
-            }
+            FilterGraphBySearchPanel(filterId, null);
+            // if (isNodeFilter) {
+            //     NodeFilterGraphData(filterId, null);
+            // }
+            // else {
+            //     FilterGraphBySearchPanel(filterId, null);
+            // }
         }
     });
     $("#explorenode").click(function () {
-        isClearClick = false, filterId = '';
-        Bind2DForceGraph();
+        //Bind2DForceGraph();
+        // removeNodeFilterBreakdown();
+        $("#divSearchPanel").find(".active").removeClass("active");
+        updateHighlight(filteredLinkColor);
         isNodeFilter = false;
+        isClearClick = true;
     });
     $("#fildernode").click(function () {
-        isClearClick = false, filterId = '';
         isNodeFilter = true;
-        NodeFilterGraphData();
+        //NodeFilterGraphData();
+        removeNodeFilterBreakdown();
+        isClearClick = true;
+        updateFilteredNode(filteredLinkColor);
+        $("#divFilterBlock").show();
     });
 });
+
+function removeNodeFilterBreakdown() {
+    $("#divSearchPanel").find(".active").removeClass("active");
+    // For Deselecting Breakdown
+    Graph
+        .nodeColor(node => {
+            return hex2rgb(node.nodeColor, 1);
+        })
+        .linkColor(link => hex2rgb(link.linkColor, 1))
+        // .centerAt(node.x, node.y, 1000)
+        ;
+    // remove all filter nodes & links
+    highlightNodes = [];
+    highlightLink = [];
+    filteredLinkColor = '';
+}
+
+function getFilterTag(tagtext) {
+    return '<span class="tag label label-info">' + tagtext.trim() + '<span data-role="remove" onclick="removeTag(this)"></span></span>';
+}
+
+function removeTag(obj) {
+    obj.closest(".tag").remove();
+    removeNodeFilterBreakdown();
+}
+
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
     $("#divSearchPanel .dynamic-box").filter(function () {
@@ -133,7 +185,7 @@ function BindSearchPanel() {
     InitGraphData();
 }
 var graphData = {};
-var nodes = [], links = [];
+var nodes = [], tempnodes = [], links = [];
 
 function InitGraphData() {
     nodes = [], links = [];
@@ -148,18 +200,22 @@ function GetLinks() {
         if (data && data.length > 0) {
             var linkData = data[0];
             var linkColor = '';
+            var fromLinkColor = '';
             var selectedVal = parseInt($('#ddlBreakDown').val());
             for (var u = 0; u < linkData.length; u++) {
                 linkColor = '';
                 switch (selectedVal) {
                     case BreakdownEnum.Channel:
-                        linkColor = linkData[u].ChannelColor
+                        linkColor = linkData[u].ChannelColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).ChannelColor : linkColor;
                         break;
                     case BreakdownEnum.Team:
-                        linkColor = linkData[u].TeamColor
+                        linkColor = linkData[u].TeamColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).TeamColor : linkColor;
                         break;
                     case BreakdownEnum.DataTool:
-                        linkColor = linkData[u].DataToolColor
+                        linkColor = linkData[u].DataToolColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).DataToolColor : linkColor;
                         break;
                 }
                 //NodeSourceDesc
@@ -213,6 +269,7 @@ function GetNodes() {
         if (data && data.length > 0) {
             var objNode;
             for (var u = 0; u < data.length; u++) {
+                debugger;
                 objNode = getNodeLinkObject(data[u].Id);
                 nodes.push({
                     "id": data[u].Description,
@@ -233,15 +290,15 @@ function GetNodes() {
 function getNodeLinkObject(nodeId) {
     var colors = '#cccccc';
     var objNode = {};
-    var len = 1;
+    var len = 3;
     var nodeObj = $.grep(links, function (v) {
-        return v.nodeId === nodeId;
+        return v.nodeId == nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
         colors = nodeObj[0].linkColor;
     }
     var nodeSizeObj = $.grep(links, function (v) {
-        return v.linksFrom === nodeId || v.linksTo === nodeId;
+        return v.linksFrom == nodeId || v.linksTo == nodeId;
     });
     if (nodeSizeObj && nodeSizeObj.length > 0) {
         len = nodeSizeObj.length;
@@ -264,7 +321,7 @@ function Bind2DForceGraph() {
     Graph = ForceGraph()
         (elem)
         .width($("#graph").width())
-        .height(window.innerHeight - 100)
+        .height(window.innerHeight - 150)
         .graphData(graphData)
         .nodeLabel('id')
         .nodeColor(d => d.nodeColor)
@@ -311,14 +368,44 @@ function updateHighlight(filterColor) {
         // Center/zoom on node
         Graph
             .nodeColor(node => {
-                return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor) : filterColor
+                return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0.2) : filterColor
             })
-            .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor) : filterColor)
-            .centerAt(node.x, node.y, 1000)
+            .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor, 0.2) : filterColor)
+            // .centerAt(node.x, node.y, 1000)
             ;
-        Graph.zoom(7, 2000);
-    }    
+        Graph.zoom(2, 2000);
+    }
 }
+
+function updateFilteredNode(filterColor) {
+    if (highlightNodes && highlightNodes.length > 0) {
+        var node = highlightNodes[0];
+        // Center/zoom on node
+        Graph
+            .nodeColor(node => {
+                return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0) : filterColor
+            })
+            .linkColor(link => highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor, 0) : filterColor)
+            .nodeCanvasObjectMode(node => 'after')
+            .nodeCanvasObject((node, ctx, globalScale) => {
+                const label = '';
+                const fontSize = 12 / globalScale;
+                ctx.font = `${fontSize}px Arial`;
+                const textWidth = ctx.measureText(label).width;
+                const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = node.color;
+                ctx.fillStyle = '#54545f';
+                ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
+            })
+            // .centerAt(node.x, node.y, 1000)
+            ;
+        Graph.zoom(2, 2000);
+    }
+}
+
+var filteredLinkColor = '';
 
 function FilterGraphBySearchPanel(selId) {
     var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
@@ -338,6 +425,16 @@ function FilterGraphBySearchPanel(selId) {
     var filteredLinks = $.grep(Graph.graphData().links, function (v) {
         return v[prop] === selId;
     });
+    // var tempLinks = Graph.graphData().links;
+    // var filteredLinks = $.grep(Graph.graphData().links, function (v) {
+    //     debugger;
+    //     var sourceChannel = tempLinks.find(x => x.nodeId == v.source.nodeId);
+    //     if (sourceChannel)
+    //         return sourceChannel[prop] === selId;
+    //     else
+    //         return v[prop] === selId;
+
+    // });
     highlightNodes = [], highlightLink = [];
     if (filteredLinks) {
         var linkColor = '';
@@ -345,11 +442,18 @@ function FilterGraphBySearchPanel(selId) {
             var filteredLNode = $.grep(Graph.graphData().nodes, function (v) {
                 return v.nodeId === element.nodeId;
             });
+
             highlightNodes.push(filteredLNode[0]);
             highlightLink.push(element);
             linkColor = element.linkColor;
         });
-        updateHighlight(linkColor);
+        filteredLinkColor = linkColor;
+        if (isNodeFilter) {
+            updateFilteredNode(linkColor);
+        }
+        else {
+            updateHighlight(linkColor);
+        }
     }
 }
 
@@ -365,6 +469,12 @@ $("#reportlink").click(function () {
     shell.showItemInFolder(reportLink)
 });
 
+$("#addAlert").click(function () {
+    $('#myModal').modal('hide');
+    $('#filterResult').load('../src/components/filter/filter-result.html');
+    $('#filterScratch').load('../src/components/filter/filter-scratch.html');
+});
+
 function NodeFilterGraphData(selId, searchText) {
     //var searchText = $('#txtSearch').val();   
     if (searchText) {
@@ -375,7 +485,7 @@ function NodeFilterGraphData(selId, searchText) {
             return (n.value.indexOf(searchText) > -1);
         });
     }
-    else if(selId) {
+    else if (selId) {
         var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
         var prop = "";
         selId = parseInt(selId);
@@ -406,7 +516,7 @@ function NodeFilterGraphData(selId, searchText) {
             });
         }
     }
-    else{
+    else {
         highlightNodes = nodes;
         highlightLink = links;
     }
@@ -417,7 +527,7 @@ function NodeFilterGraphData(selId, searchText) {
     Graph = ForceGraph()
         (elem)
         .width($("#graph").width())
-        .height(window.innerHeight - 100)
+        .height(window.innerHeight - 150)
         // .backgroundColor("#000011")
         .graphData(graphData)
         .nodeLabel('id')
@@ -460,4 +570,145 @@ function NodeFilterGraphData(selId, searchText) {
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(8, 2000);
         });
+}
+
+// breakdown filter nodes
+function breakDownNodeFilter() {
+    var userId = undefined;
+    if (!SessionManager.IsAdmin)
+        userId = SessionManager.UserId;
+    getLinksForExplor(userId).then(data => {
+        if (data && data.length > 0) {
+            var linkData = data[0];
+            var linkColor = '';
+            var fromLinkColor = '';
+            var selectedVal = parseInt($('#ddlBreakDown').val());
+            for (var u = 0; u < linkData.length; u++) {
+                linkColor = '';
+                switch (selectedVal) {
+                    case BreakdownEnum.Channel:
+                        linkColor = linkData[u].ChannelColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).ChannelColor : linkColor;
+                        break;
+                    case BreakdownEnum.Team:
+                        linkColor = linkData[u].TeamColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).TeamColor : linkColor;
+                        break;
+                    case BreakdownEnum.DataTool:
+                        linkColor = linkData[u].DataToolColor;
+                        fromLinkColor = linkData[u].LinksFrom ? linkData.find(x => x.NodeId == linkData[u].LinksFrom).DataToolColor : linkColor;
+                        break;
+                }
+                if (linkData[u].LinksFromDesc != null) {
+                    links.push({
+                        "source": linkData[u].LinksFromDesc,
+                        "target": linkData[u].NodeSourceDesc,
+                        "value": linkData[u].Description,
+                        "linkColor": linkColor,
+                        "nodeId": linkData[u].NodeId,
+                        "linksFrom": linkData[u].LinksFrom,
+                        "linksTo": linkData[u].NodeId,
+                        "teamId": linkData[u].TeamId,
+                        "channelId": linkData[u].ChannelId,
+                        "dataToolId": linkData[u].DataSourceId
+                    });
+                }
+                if (linkData[u].LinksToDesc != null) {
+                    links.push({
+                        "source": linkData[u].NodeSourceDesc,
+                        "target": linkData[u].LinksToDesc,
+                        "value": linkData[u].Description,
+                        "linkColor": linkColor,
+                        "nodeId": linkData[u].NodeId,
+                        "linksFrom": linkData[u].NodeId,
+                        "linksTo": linkData[u].LinksTo,
+                        "teamId": linkData[u].TeamId,
+                        "channelId": linkData[u].ChannelId,
+                        "dataToolId": linkData[u].DataSourceId
+                    });
+                }
+            }
+        }
+    }).catch(err => {
+        console.error(err);
+    });
+    $('#txtSearch').val('');
+    var selectedVal = parseInt($('#ddlBreakDown').val());
+    var html = '';
+    switch (selectedVal) {
+        case BreakdownEnum.Channel: {
+            getChannels().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            break;
+        }
+        case BreakdownEnum.Domain: {
+            getDomainList().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            break;
+        }
+        case BreakdownEnum.Team: {
+            getTeamsList().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            break;
+        }
+        case BreakdownEnum.DataTool: {
+            getDatasource().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            break;
+        }
+        default: {
+            $('#divSearchPanel').html('');
+        }
+    }
+    tempnodes = [];
+    links = [];
+    getNodesByDataCategoryId(1, userId).then(data => {
+        if (data && data.length > 0) {
+            var objNode;
+            for (var u = 0; u < data.length; u++) {
+                objNode = getNodeLinkObject(data[u].Id);
+                tempnodes.push({
+                    "id": data[u].Description,
+                    "nodeId": data[u].Id,
+                    "nodeColor": objNode.Color,
+                    "nodeSize": objNode.NodeSize,
+                });
+            }
+        }
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].nodeId == tempnodes[i].nodeId) {
+                nodes[i].id = tempnodes[i].id;
+                nodes[i].nodeId = tempnodes[i].nodeId;
+                nodes[i].nodeColor = tempnodes[i].nodeColor;
+                nodes[i].nodeSize = tempnodes[i].nodeSize;
+            }
+        }
+        Bind2DForceGraph();
+    }).catch(err => {
+        console.error(err);
+    });
 }

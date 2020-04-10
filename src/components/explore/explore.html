@@ -73,25 +73,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="box-content explore-content">
             
             <div class="col-xl-12 col-lg-12 col-12 col-md-12  pl-0 pr-0 mt-1 responsive-section position-explore">
@@ -102,15 +83,18 @@
                             <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
                                 <div class="main-explore-section">
                                     <form>
-                                        <div class="form-group" style="display: none;" id="divFilterBlock">
-                                            <label for="exampleFormControlSelect1">Filter</label>
-                                            <select class="form-control" id="exampleFormControlSelect1">
+                                        <div class="explorefilter-sec" id="divFilterBlock">
+                                            <label for="filterBlockContainer">Filter</label>
+                                            <div id="filterBlockContainer" class="bootstrap-tagsinput">
+
+                                            </div>
+                                            <!-- <select class="form-control" id="exampleFormControlSelect1">
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
-                                            </select>
+                                            </select> -->
                                         </div>
                                     </form>
                                 </div>
@@ -189,11 +173,16 @@
                     </div>
                 </div>
             </div>
+            <!-- route-link route-href="filterResult" -->
             <div class="modal-footer filter-footer-sec">
-                <a id="addAlert" style="color: white; cursor: pointer;" route-link route-href="filterResult" class="btn btn-primary">Add Alert</a>
+                <a id="addAlert" style="color: white; cursor: pointer;"  class="btn btn-primary">Add Alert</a>
             </div>
         </div>
     </div>
+</div>
+<div  id="filterResult">
+</div>
+<div id="filterScratch">
 </div>
 <!---Explore--End--Design-->
 <script src="../src/components/explore/explore.js"></script>

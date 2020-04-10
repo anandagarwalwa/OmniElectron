@@ -1,70 +1,12 @@
-<div class="container-fluid">
-    <div class="row">
-
-        <div class="col-xl-2 col-lg-2 col-md-2">
-            <!-- <div class="collapse-btn-hide">
-                <button type="button" id="demo-one" class="btn">
-                    <i class="fas fa-align-justify text-white"></i>
-                </button>
-            </div> -->
-
-            <div class="main-sidebar collapse" id="main-side">
-                <div class="sidenav">
-                    <div class="search-main">
-                        <form>
-                            <input type="text" name="search" placeholder="Search..">
-                            <i class="fas fa-search"></i>
-                        </form>
-                    </div>
-                    <a href="#"> <i class="fas fa-circle co-org"></i> Tablequ</a>
-                    <a href="#"> <i class="fas fa-circle co-pink"></i> SQL</a>
-                    <a href="#"> <i class="fas fa-circle co-blue"></i> Excel</a>
-                    <a href="#"> <i class="fas fa-circle co-green"></i> Power BI</a>
-                    <a href="#"> <i class="fas fa-circle col-yellow"></i> Partner UI</a>
-                </div>
+<!-- The Modal -->
+<div class="modal fade bd-example-modal-lg" id="modelFilterResult">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Alert-result..display_data</h5>
+                <!-- data-dismiss="modal" -->
+                <button type="button" class="close" id="btnBackFilterHome" >&times;</button>
             </div>
-        </div>
-        <div class="col-xl-10 col-lg-10 col-12 col-md-10  pl-0 pr-0 mt-5 responsive-section">
-            <div class="coman-drop-down d-flex mx-auto justify-content-center">
-                <div class="col-xl-2 col-12 col-sm-3 col-md-3 col-lg-3 mr-auto p-0">
-                    <div class="main-explore-section">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Filter</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                <option>Display</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
-                <!---DropDown-Two-->
-                <div class="col-xl-2 col-12 col-sm-3 col-md-3 col-lg-3 ml-auto p-0">
-                    <div class="main-explore-section">
-                        <form>
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Breakdown</label>
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Data Tool</option>
-                                <option>Data Tool</option>
-                                <option>Data Tool</option>
-                                <option>Data Tool</option>
-                                <option>Data Tool</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-section box-content mb-5">
                 <div class="row">
                     <div class="coman-result-section p-5 d-flex">
                         <div class="col-xl-3">
@@ -189,9 +131,9 @@
                                         </form>
                                     </div>
                                 </div>
-
+                                <!-- route-link  route-href="filterScratch" -->
                                 <div class="filter-footer-btn">
-                                    <a route-link route-href="filterScratch"  class="btn btn-group-lg">
+                                    <a style="color: white;cursor: pointer;" id="btnfilterResult" class="btn btn-group-lg">
                                         Set Schedule
                                     </a>
                                 </div>
@@ -288,7 +230,8 @@
         </div>
     </div>
 </div>
-<script src="../src/components/filter/filter-home.js"></script>
-<script>
-    $('.modal-backdrop').css('display','none');
-</script>
+<script src="../src/components/filter/filter-result.js"></script> 
+
+   
+    <!-- //$('.modal-backdrop').css('display','none'); -->
+
