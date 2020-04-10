@@ -2492,7 +2492,19 @@ label.error
     font-size: 13px !important;
 }
 
-
+/*=========Explore Filter=========*/
+.explorefilter-sec {
+    float: left;
+    width: 400px;
+    overflow-x: auto;
+}
+#filterBlockContainer {
+    background: transparent;
+    border: 0px;
+    box-shadow: none;
+    width: 100%;
+    float: left;
+}
 
 
 

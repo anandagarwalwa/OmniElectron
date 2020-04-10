@@ -10,9 +10,68 @@ var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\control
 var { getLocales } = require(__dirname + '\\server\\controllers\\locales_controller.js');
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 document.getElementById("loader").style.display = "none";
+
+$('#modeAddDataPoint').modal('show');
+//Add Link form in Previous button click event 
+$("#btnPreviousDataLinkBlock").click(function () {
+
+    // $('#addDataPointdiv').removeClass('d-none');
+    // $('#dataLinkBlock').addClass('d-none');
+    $('#modeAddLink').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    dataLikePageRefresh();
+
+});
+
+//Add Analysis form in Previous button click event 
+$("#btnPreviousAnalysisBlock").click(function () {
+
+    // $('#addDataPointdiv').removeClass('d-none');
+    // $('#analysisBlock').addClass('d-none');
+    // $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    $('#modeAddAnalysis').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    analysisPageRefresh();
+});
+
+
+//Add Test form in Previous button click event 
+$("#btnPreviousTestBlock").click(function () {
+
+    // $('#addDataPointdiv').removeClass('d-none');
+    // $('#testBlock').addClass('d-none');
+    $('#modeAddTest').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    testPageRefresh();
+});
+
+
+/*close button event */
+$("#btnBackAddDataPoint").click(function () {
+    $('#modeAddLink').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    dataLikePageRefresh();
+});
+$("#btnBackAddLinkpage").click(function () {
+    $('#modeAddAnalysis').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    analysisPageRefresh();
+});
+$("#btnAddLinkpage").click(function () {
+    $('#modeAddTest').modal('hide');
+    $('#modeAddDataPoint').modal('show');
+    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
+    testPageRefresh();
+});
+//tagimput refresh 
 $('#datalinkTag').tagsinput('refresh');
-function dataLikePageRefresh()
-{
+
+function dataLikePageRefresh() {
     //add Data Link all value null
     $("#linkdesc").val("");
     $("#DataLinkUserSelect").val("0");
@@ -29,8 +88,7 @@ function dataLikePageRefresh()
     $("#datalinkCodeLike").val("");
     $("#datalinkReportLink").val("");
 }
-function analysisPageRefresh()
-{
+function analysisPageRefresh() {
     $("#analysisDescription").val("");
     $("#analysisUserSelect").val("0");
     $("#analysisTeamSelectt").val("0");
@@ -40,8 +98,7 @@ function analysisPageRefresh()
     $('input[name="rBtnConfluence"]').prop('checked', false);
     $("#rBtnConfluenceNO").attr('checked', 'checked');
 }
-function testPageRefresh()
-{
+function testPageRefresh() {
     $("#testDescription").val("");
     $('input[name="didTestWin"]').prop('checked', false);
     $("#didTestWinNO").attr('checked', 'checked');
@@ -66,10 +123,14 @@ function allPageRefresh() {
     testPageRefresh();
     //remove nodeId in localstorage
     localStorage.removeItem("nodeId");
-    $('#addDataPointdiv').removeClass('d-none');
-    $('#dataLinkBlock').addClass('d-none');
-    $('#analysisBlock').addClass('d-none');
-    $('#testBlock').addClass('d-none');
+    $('#modeAddDataPoint').modal('show');
+    $('#modeAddLink').modal('hide');
+    $('#modeAddAnalysis').modal('hide');
+    $('#modeAddTest').modal('hide');
+    // $('#addDataPointdiv').removeClass('d-none');
+    // $('#dataLinkBlock').addClass('d-none');
+    // $('#analysisBlock').addClass('d-none');
+    // $('#testBlock').addClass('d-none');
 }
 
 
@@ -187,16 +248,12 @@ getChannels().then(data => {
     console.error(err);
 });
 
-function bindLinkFromandLinkToDropdown(selfNodeId) {
+function bindLinkFromandLinkToDropdown() {
+
     // Get Links To List 
     // 1 - For Data Link
     getNodesByDataCategoryId(1).then(data => {
-        if(selfNodeId && selfNodeId > 0){
-            selfNodeId = parseInt(selfNodeId);
-            data = $.grep(data,function(e,i){
-                return (e.Id != selfNodeId)
-            });
-        }
+        debugger;
         var model = {
             items: data
         }
@@ -330,20 +387,27 @@ $("#btnPublish").click(function () {
                 //     beforeHide: function () { }, // will be triggered before the toast gets hidden
                 //     afterHidden: function () { }  // will be triggered after the toast has been hidden
                 // });
-                bindLinkFromandLinkToDropdown($("#hdnNodeId").val());
+                bindLinkFromandLinkToDropdown();
                 if ($("input[type='radio'].radioBtnClass").is(':checked')) {
                     var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
                     if (radioBtnClass_type == "1") {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#dataLinkBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#dataLinkBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddLink').modal('show');
                     }
                     else if (radioBtnClass_type == "2") {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#analysisBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#analysisBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddAnalysis').modal('show');
                     }
                     else {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#testBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#testBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddTest').modal('show');
+
                     }
                 }
             })
@@ -362,7 +426,8 @@ $("#btnPublish").click(function () {
                 }
             ).then(data => {
                 localStorage.setItem("nodeId", data[0]);
-                bindLinkFromandLinkToDropdown(data[0]);
+                bindLinkFromandLinkToDropdown();
+
                 // $.toast({
                 //     text: "Data Point details save Successfully.", // Text that is to be shown in the toast
                 //     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -383,16 +448,22 @@ $("#btnPublish").click(function () {
                 if ($("input[type='radio'].radioBtnClass").is(':checked')) {
                     var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
                     if (radioBtnClass_type == "1") {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#dataLinkBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#dataLinkBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddLink').modal('show');
                     }
                     else if (radioBtnClass_type == "2") {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#analysisBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#analysisBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddAnalysis').modal('show');
                     }
                     else {
-                        $('#addDataPointdiv').addClass('d-none');
-                        $('#testBlock').removeClass('d-none');
+                        // $('#addDataPointdiv').addClass('d-none');
+                        // $('#testBlock').removeClass('d-none');
+                        $('#modeAddDataPoint').modal('hide');
+                        $('#modeAddTest').modal('show');
                     }
                 }
                 // $("#description").val("");
@@ -405,34 +476,7 @@ $("#btnPublish").click(function () {
     }
 });
 
-//Add Link form in Previous button click event 
-$("#btnPreviousDataLinkBlock").click(function () {
 
-    $('#addDataPointdiv').removeClass('d-none');
-    $('#dataLinkBlock').addClass('d-none');
-    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
-    dataLikePageRefresh();
-
-});
-
-//Add Analysis form in Previous button click event 
-$("#btnPreviousAnalysisBlock").click(function () {
-
-    $('#addDataPointdiv').removeClass('d-none');
-    $('#analysisBlock').addClass('d-none');
-    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
-    analysisPageRefresh();
-});
-
-
-//Add Test form in Previous button click event 
-$("#btnPreviousTestBlock").click(function () {
-
-    $('#addDataPointdiv').removeClass('d-none');
-    $('#testBlock').addClass('d-none');
-    $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
-    testPageRefresh();
-});
 
 // Data Link Form
 $("#addDataLinkForm").validate({
@@ -443,7 +487,10 @@ $("#addDataLinkForm").validate({
         DataLinkTeamSelect: { valueNotEquals: "0" },
         DataLinkDatasourceSelect: { valueNotEquals: "0" },
         datalinkLocation: { required: true },
-        DataLinkChannelsSelect: { valueNotEquals: "0" }       
+        DataLinkChannelsSelect: { valueNotEquals: "0" },
+        datalinkTag: { required: true },
+        // datalinkCode:{required: true},
+        // datalinkReport:{required: true}
     },
     messages: {
         linkdesc: {
@@ -463,7 +510,10 @@ $("#addDataLinkForm").validate({
         },
         DataLinkChannelsSelect: {
             valueNotEquals: "Please select one chanels"
-        }       
+        },
+        datalinkTag: { required: "This field is required" },
+        // datalinkCode:{required: "This field is required"},
+        // datalinkReport:{required: "This field is required"}
     },
 });
 
@@ -486,9 +536,9 @@ $("#btnDataLink").click(function () {
                 'NodeId': parseInt(localStorage.getItem("nodeId")),
                 'CreatedBy': parseInt(localStorage.getItem("UserId")),
                 'CreatedDate': new Date(),
-                'Tag':$("#datalinkTag").val(),
-                'Codelink':$("#datalinkCodeLike").val(),
-                'ReportLink':$("#datalinkReportLink").val()
+                'Tag': $("#datalinkTag").val(),
+                'Codelink': $("#datalinkCode").val(),
+                'ReportLink': $("#datalinkReport").val()
             }).then(data => {
                 $.toast({
                     text: "Data Link updated Successfully.", // Text that is to be shown in the toast
@@ -526,9 +576,9 @@ $("#btnDataLink").click(function () {
                     'NodeId': parseInt(localStorage.getItem("nodeId")),
                     'CreatedBy': parseInt(localStorage.getItem("UserId")),
                     'CreatedDate': new Date(),
-                    'Tag':$("#datalinkTag").val(),
-                'Codelink':$("#datalinkCodeLike").val(),
-                'ReportLink':$("#datalinkReportLink").val()
+                    'Tag': $("#datalinkTag").val(),
+                    'Codelink': $("#datalinkCode").val(),
+                    'ReportLink': $("#datalinkReport").val()
                 }
             ).then(data => {
                 $.toast({
@@ -550,7 +600,6 @@ $("#btnDataLink").click(function () {
                 });
                 allPageRefresh();
             }).catch(err => {
-                debugger;
                 console.error(err);
             });
         }

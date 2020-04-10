@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div id="addDataPointdiv" class="form-section mb-5">
+    <!-- <div id="addDataPointdiv" class="form-section mb-5">
         <div class="row justify-content-center">
             <div class="col-xl-6 col-lg-7 col-md-7">
                 <div class="coman-form-section box-content">
@@ -121,7 +121,7 @@
                                 </select>
                             </div>
 
-                            <div class="check-coman dataCategoryList">
+                            <div class="check-coman dataCategoryList">-->
                                 <!-- <div class="form-check" >
                                     <label class="form-check-label" for="radio1">
                                   Data link
@@ -146,7 +146,7 @@
                                 <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="test">
                               </label>
                                 </div> -->
-                            </div>
+                            <!--</div>
 
                             <div class="submit-btn">
                                 <button type="button" href="#" id="btnPublish" class="btn btn-primary mt-3 float-right">publish</button>
@@ -157,11 +157,74 @@
                 </div>
             </div>
         </div>
+    </div> -->
+    <div class="modal fade bd-example-modal-lg" id="modeAddDataPoint">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Add data point</h6>
+                    <!-- data-dismiss="modal" -->
+                    <!-- <button type="button" class="close" id="btnBackFilterResult" >&times;</button>-->
+                </div>
+                <!-- Modal body -->
+            <div class="modal-body">
+                <div class="form-main-section">
+                            <form id="addDataPoint" method="post">
+                                <div class="form-group">
+                                    <input id="hdnNodeId" type="hidden">
+                                    <label for="text">description:</label>
+                                    <input type="text" class="form-control" name="description" placeholder="Enter description" id="description">
+                                </div>
+    
+                                <div class="form-group">
+                                    <label for="text">owner:</label>
+                                    <select class="form-control ownerId" name="listOwner" id="selectOwner">
+                                    </select>
+                                </div>
+    
+                                <div class="check-coman dataCategoryList">
+                                    <!-- <div class="form-check" >
+                                        <label class="form-check-label" for="radio1">
+                                      Data link
+                                    <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="dataLink">
+                                  </label>
+                                    </div> -->
+                                    <!-- <div class="form-check ">
+                                        <label class="form-check-label" for="radio1">
+                                      Data link
+                                    <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="dataLink">
+                                  </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="radio2">
+                                      Analysis
+                                    <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="analysis">
+                                  </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label"  for="radio3">
+                                      Test
+                                    <input type="radio" class="form-check-input radioBtnClass"  name="optradio" value="test">
+                                  </label>
+                                    </div> -->
+                                </div>
+    
+                                <div class="submit-btn">
+                                    <button type="button" href="#" id="btnPublish" class="btn btn-primary mt-3 float-right">publish</button>
+                                </div>
+                            </form>
+                        
+                        </form>
+
+                    </div>
+                    </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!---Add-Link-1.1-->
-<div class="form-section d-none mb-4" id="dataLinkBlock">
+<!-- <div class="form-section d-none mb-4" id="dataLinkBlock">
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-7 col-md-7">
             <div class="coman-form-section box-content">
@@ -238,17 +301,17 @@
                             <h6>Confluence Page</h6>
                         </div>
                         <div class="check-box-btn">
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label" for="check2">
                                   <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                 </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" checked name="Confluence" value="0"> <span></span>&nbsp;</label>No
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" checked name="Confluence" value="0"> <span></span>&nbsp;</label>No
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label">
                                   <input type="checkbox" class="form-check-input">Yes
                                 </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceYes" name="Confluence" gr value="1"> <span></span>&nbsp;</label>Yes
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceYes" name="Confluence" gr value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
 
@@ -263,19 +326,126 @@
             </div>
         </div>
     </div>
+</div> -->
+<div class="modal fade bd-example-modal-lg" id="modeAddLink">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Add Link</h6>
+                <!-- data-dismiss="modal" -->
+                <button type="button" class="close" id="btnBackAddDataPoint" >&times;</button>
+            </div>
+            <!-- Modal body -->
+        <div class="modal-body">
+             <div class="form-main-section add-link-form">
+                <form id="addDataLinkForm" method="post">
+                    <input id="hdnDataLinkId" type="hidden">
+                    <div class="form-group">
+                        <label class="col-xl-3 col-lg-3 col-md-3 pl-0"  for="text" for="linkdesc">Description</label>
+                        <input type="text" class="form-control  col-xl-7 col-lg-7 col-md-7" name="linkdesc" placeholder="" id="linkdesc">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0" >Owner</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkUserSelect" id="DataLinkUserSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
+                        <select class="form-control  col-xl-7 col-lg-7 col-md-7" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Data Source</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Location</label>
+                        <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkLocation" id="datalinkLocation">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0" >Channel</label>
+                         <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Links To</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkToSelect" id="DataLinkToSelect">
+                            <option value="0">No record</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Links From</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkFromSelect" id="DataLinkFromSelect">
+                            <option value="0">No record</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Tag</label>
+                        <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" data-role="tagsinput" placeholder="Add tags" name="datalinkTag" id="datalinkTag">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Codelink</label>
+                        <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkCode" id="datalinkCode">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">ReportLink</label>
+                        <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkReport" id="datalinkReport">
+                    </div>
+
+                    <div class="confluge-title col-xl-3 col-lg-3  col-md-5 pl-0">
+                        <h6>Confluence Page</h6>
+                    </div>
+                    <div class="check-box-btn">
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label" for="check2">
+                              <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
+                            </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceNo" checked name="Confluence" value="0"> <span></span>&nbsp;</label>No
+                        </div>
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input">Yes
+                            </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceYes" name="Confluence" gr value="1"> <span></span>&nbsp;</label>Yes
+                        </div>
+                    </div>
+
+                    <div class="submit-btn">
+                        <button type="button" id="btnDataLink" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                        <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
+
+
 
 <!---Add-Link-1.1a-->
 
-<div class="form-section d-none mb-5" id="analysisBlock">
+<!-- <div class="form-section d-none mb-5" id="analysisBlock">
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-7 col-md-7">
             <div class="coman-form-section box-content">
                 <div class="form-title">
                     <h6>Add Analysis</h6>
                 </div>
+                <form id="addAnalysisForm" method="post">
                 <div class="form-main-section add-link-form">
-                    <form id="addAnalysisForm" method="post">
                         <input id="hdnAnalysisId" type="hidden">
                         <div class="form-group">
                             <label for="email" class="col-xl-3 col-lg-3 col-md-3 pl-0">Description:</label>
@@ -304,15 +474,15 @@
                             <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Locale</label>
                             <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisLocalesSelect" id="analysisLocalesSelect">
                             </select>
-                        </div>
+                        </div> -->
 
-                        <div class="date-picker-sec">
+                        <!-- <div class="date-picker-sec">
                             <div class="form-group">
                                 <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
                                 <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2 col-xl-12 col-lg-12" size="16" type="date" id="analysisDate" name="analysisDate">
+                                    <input class="span2 col-xl-12 col-lg-12" size="16" type="date" id="analysisDate" name="analysisDate"> -->
                                     <!-- <i class="fas fa-calendar-alt"></i> -->
-                                </div>
+                                <!-- </div>
                             </div>
                         </div>
                 </div>
@@ -321,17 +491,17 @@
                     <h6>Confluence page</h6>
                 </div>
                 <div class="check-box-btn">
-                    <div class="form-check-inline">
+                    <div class="form-check-inline"> -->
                         <!-- <label class="form-check-label" for="check2">
                                   <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                 </label> -->
-                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceNO" checked name="rBtnConfluence" value="0"> <span></span>&nbsp;</label>No
+                        <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceNO" checked name="rBtnConfluence" value="0"> <span></span>&nbsp;</label>No
                     </div>                                                                                                        
-                    <div class="form-check-inline">
+                    <div class="form-check-inline"> -->
                         <!-- <label class="form-check-label">
                                   <input type="checkbox" class="form-check-input" checked>Yes
                                 </label> -->
-                        <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceYes" name="rBtnConfluence" value="1"> <span></span>&nbsp;</label>Yes
+                        <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceYes" name="rBtnConfluence" value="1"> <span></span>&nbsp;</label>Yes
                     </div>
                 </div>
 
@@ -341,15 +511,97 @@
                 </div>
                 </form>
             </div>
+        </div>
+    </div>
+</div> -->
 
+<div class="modal fade bd-example-modal-lg" id="modeAddAnalysis">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Add Analysis</h6>
+                <!-- data-dismiss="modal" -->
+                <button type="button" class="close" id="btnBackAddLinkpage" >&times;</button>
+            </div>
+            <!-- Modal body -->
+        <div class="modal-body">
+             
+             <form id="addAnalysisForm" method="post">
+            <div class="form-main-section add-link-form">
+                    <input id="hdnAnalysisId" type="hidden">
+                    <div class="form-group">
+                        <label for="email" class="col-xl-3 col-lg-3 col-md-3 pl-0">Description:</label>
+                        <input type="text" id="analysisDescription" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="analysisDescription">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="col-xl-3 col-lg-3 col-md-3 pl-0">Owner:</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisUserSelect" id="analysisUserSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisTeamSelect" id="analysisTeamSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Channel</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisChannelsSelect" id="analysisChannelsSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Locale</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisLocalesSelect" id="analysisLocalesSelect">
+                        </select>
+                    </div>
+
+                    <div class="date-picker-sec">
+                        <div class="form-group">
+                            <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
+                            <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                <input class="span2 col-xl-12 col-lg-12" size="16" type="date" id="analysisDate" name="analysisDate">
+                                <!-- <i class="fas fa-calendar-alt"></i> -->
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="confluge-title pt-1 col-xl-3 col-md-5 pl-0">
+                <h6>Confluence page</h6>
+            </div>
+            <div class="check-box-btn">
+                <div class="form-check-inline">
+                    <!-- <label class="form-check-label" for="check2">
+                              <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
+                            </label> -->
+                    <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceNO" checked name="rBtnConfluence" value="0"> <span></span>&nbsp;</label>No
+                </div>                                                                                                        
+                <div class="form-check-inline">
+                    <!-- <label class="form-check-label">
+                              <input type="checkbox" class="form-check-input" checked>Yes
+                            </label> -->
+                    <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="rBtnConfluenceYes" name="rBtnConfluence" value="1"> <span></span>&nbsp;</label>Yes
+                </div>
+            </div>
+
+            <div class="submit-btn">
+                <button type="button" href="#" id="btnAnalysis" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                <button type="button" href="#" id="btnPreviousAnalysisBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
+            </div>
             </form>
+             
         </div>
     </div>
 </div>
+</div>
+
 
 
 <!---Add-Link-1.2-->
-<div class="form-section d-none mb-5" id="testBlock">
+<!-- <div class="form-section d-none mb-5" id="testBlock">
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-7 col-md-7">
             <div class="coman-form-section box-content">
@@ -368,17 +620,17 @@
                             <h6>Did Test Win</h6>
                         </div>
                         <div class="check-box-btn pb-3">
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label" for="check2">
                                 <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                               </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinNO" name="didTestWin" checked value="0"> <span></span>&nbsp;</label>No
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinNO" name="didTestWin" checked value="0"> <span></span>&nbsp;</label>No
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input">Yes
                               </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinYes" name="didTestWin" value="1"> <span></span>&nbsp;</label>Yes
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinYes" name="didTestWin" value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
 
@@ -411,9 +663,9 @@
                             <div class="form-group">
                                 <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
                                 <div class="input-append date col-xl-7 col-lg-7 col-md-7 p-0" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="date" id="testDate" name="testDate">
+                                    <input class="span2" size="16" type="date" id="testDate" name="testDate"> -->
                                     <!-- <i class="fas fa-calendar-alt"></i> -->
-                                </div>
+                                <!-- </div>
                             </div>
                         </div>
 
@@ -421,33 +673,135 @@
                             <h6>Confluence page</h6>
                         </div>
                         <div class="check-box-btn">
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label" for="check2">
                                         <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
                                       </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceNO" name="testConfluence" checked value="0"> <span></span>&nbsp;</label>No
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceNO" name="testConfluence" checked value="0"> <span></span>&nbsp;</label>No
                             </div>
-                            <div class="form-check-inline">
+                            <div class="form-check-inline"> -->
                                 <!-- <label class="form-check-label">
                                         <input type="checkbox" class="form-check-input" checked>Yes
                                       </label> -->
-                                <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceYES" name="testConfluence" value="1"> <span></span>&nbsp;</label>Yes
+                                <!-- <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceYES" name="testConfluence" value="1"> <span></span>&nbsp;</label>Yes
                             </div>
-                        </div>
+                        </div> -->
 
 
 
 
-                        <div class="submit-btn">
+                        <!-- <div class="submit-btn">
                             <button type="button" href="#" id="btnTest" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
                             <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="modal fade bd-example-modal-lg" id="modeAddTest">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6>Add Test</h6>
+                <!-- data-dismiss="modal" -->
+                 <button type="button" class="close" id="btnAddLinkpage" >&times;</button>
+            </div>
+            <!-- Modal body -->
+        <div class="modal-body">
+             
+             <div class="form-main-section add-link-form">
+                <form id="addTestForm" method="post">
+                    <input id="hdnTestId" type="hidden">
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Description:</label>
+                        <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" id="testDescription" name="testDescription">
+                    </div>
 
+                    <div class="confluge-title col-xl-3 col-lg-3 col-md-5 pl-0">
+                        <h6>Did Test Win</h6>
+                    </div>
+                    <div class="check-box-btn pb-3">
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label" for="check2">
+                            <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
+                          </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinNO" name="didTestWin" checked value="0"> <span></span>&nbsp;</label>No
+                        </div>
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input">Yes
+                          </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinYes" name="didTestWin" value="1"> <span></span>&nbsp;</label>Yes
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Owner</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testUserSelect" id="testUserSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testTeamSelect" id="testTeamSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Channel</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testChannelsSelect" id="testChannelsSelect">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Locale</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testLocalesSelect" id="testLocalesSelect">
+                        </select>
+                    </div>
+
+                    <div class="date-picker-sec">
+                        <div class="form-group">
+                            <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
+                            <div class="input-append date col-xl-7 col-lg-7 col-md-7 p-0" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                <input class="span2" size="16" type="date" id="testDate" name="testDate">
+                                <!-- <i class="fas fa-calendar-alt"></i> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="confluge-title pt-1 col-xl-3 col-lg-3 col-md-5 pl-0">
+                        <h6>Confluence page</h6>
+                    </div>
+                    <div class="check-box-btn">
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label" for="check2">
+                                    <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
+                                  </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceNO" name="testConfluence" checked value="0"> <span></span>&nbsp;</label>No
+                        </div>
+                        <div class="form-check-inline">
+                            <!-- <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" checked>Yes
+                                  </label> -->
+                            <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="testConfluenceYES" name="testConfluence" value="1"> <span></span>&nbsp;</label>Yes
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="submit-btn">
+                        <button type="button" href="#" id="btnTest" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                        <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+</div>
+
 <script src="../src/components/add/add.js"></script>
