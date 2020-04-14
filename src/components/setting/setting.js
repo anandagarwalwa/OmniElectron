@@ -93,6 +93,14 @@ getRoles().then(data => {
 var imagebase64 = "";
 
 function encodeImageFileAsURL(element) {
+    var fileSize = element.files[0].size/1000;
+    $('#fileError').html("");
+    if(fileSize>300) {
+        $('#fileError').html("Image size maximum 300kb");
+    $('#uploadPhoto').val("");
+    }
+    else
+    {
     var file = element.files[0];
     var reader = new FileReader();
     reader.onloadend = function () {
@@ -101,6 +109,7 @@ function encodeImageFileAsURL(element) {
         // $("#addUserImage").html("<img src="+imagebase64+" class='img-fluid rounded-circle'>");  
     }
     reader.readAsDataURL(file);
+    }
 }
 
 
@@ -196,7 +205,7 @@ $("#btnAddMember").click(function () {
                 // });
                 $("#userModal").modal('hide');
                 BindUser();
-				getUserDetails();				 
+                getUserDetails();
                 $.toast({
                     text: "Member details updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -374,33 +383,35 @@ function resetUserModel() {
     $("#domain").val('');
     $("#ddlRoles").val('');
     $("#ddlTeams").val('');
-    $("#hdnUserId").val("") ;
+    $("#hdnUserId").val("");
     isActive = "";
 }
 
 // Get User Login Data
 function getUserDetails() {
-getUsersById(parseInt(localStorage.getItem("UserId"))
-).then(data => {
-    if (data == undefined) {
-        return false;
-    }
-    if (data[0].RoleId == 2) { $("#addmember").hide(); $("#addteams").hide() }
-    if (data.length > 0) {
-        $("#exampleInputEmail").val(data[0].EmailId);
-        $("#exampleInputFirstName").val(data[0].FirstName + " " + data[0].LastName);
-    }
-}).catch(err => {
-    console.error(err);
-});
+    getUsersById(parseInt(localStorage.getItem("UserId"))
+    ).then(data => {
+        if (data == undefined) {
+            return false;
+        }
+        if (data[0].RoleId == 2) { $("#addnewmember").hide(); $("#addteams").hide() }
+        if (data.length > 0) {
+            $("#exampleInputEmail").val(data[0].EmailId);
+            $("#exampleInputFirstName").val(data[0].FirstName + " " + data[0].LastName);
+            $("#userImage").attr('src', data[0].Photo);
+        }
+    }).catch(err => {
+        console.error(err);
+    });
 }
-getUserDetails();				 
+getUserDetails();
 // Get Worekspace By logged User
 getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
 ).then(data => {
     if (data.length > 0) {
         $("#workspacename").val(data[0].Name);
         $("#workspacedomain").val(data[0].Domain);
+       
     }
 }).catch(err => {
     console.error(err);
@@ -410,20 +421,20 @@ getWorkspaceUsersById(parseInt(localStorage.getItem("UserId"))
 $("#updatebtn").click(function () {
     document.getElementById("mainsettingpage").style.display = "none";
     document.getElementById("loader").style.display = "block";
-	var splitValue = $("#exampleInputFirstName").val();
-    var memberName = splitValue.split(" ");												   
+    var splitValue = $("#exampleInputFirstName").val();
+    var memberName = splitValue.split(" ");
     updateUserById(parseInt(localStorage.getItem("UserId")),
         {
             'EmailId': $("#exampleInputEmail").val(),
             'FirstName': memberName[0],
-            'LastName': memberName[1] == undefined ? '' : memberName[1] 													
+            'LastName': memberName[1] == undefined ? '' : memberName[1]
         }).then(data => {
             setTimeout(showPage, 500);
             document.getElementById("mainsettingpage").style.display = "block";
 
             if (data == 1) {
-				BindUser();				 
-				getUserDetails();		 
+                BindUser();
+                getUserDetails();
                 $.toast({
                     text: "Member details update Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -646,36 +657,82 @@ $("#addTeamsForm").validate({
 
 // Team Section
 $("#IdAddteams").click(function () {
+    debugger;
     var addTeamsdetails = $('form[id="addTeamsForm"]').valid();
     if (addTeamsdetails == true) {
-         // document.getElementById("mainsettingpage").style.display = "none";
-    // document.getElementById("loader").style.display = "block";
-    var Temansobj = {
-        TeamId: $("#TeamID").val(),
-        TeamName: $("#Teamname").val(),
-        Description: $("#TeamDescription").val(),
-        IsActive: $("#TeamsIsActive").prop("checked")
-    }
-    if (Temansobj.TeamId > 0) {
-        updateTeamsById(Temansobj).then(data => {
-            var SelectedUserList = [];
-           
-            var SelectedTeamUser = $("#TeamsUserSelect").val();
-            if (SelectedTeamUser && SelectedTeamUser.length > 0) {
-                for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
-                    SelectedUserList.push({
-                        TeamId: $("#TeamID").val(),
-                        UserId: SelectedTeamUser[tu],
-                        CreatedBy: 1,
-                        CreatedDate: new Date(),
+        // document.getElementById("mainsettingpage").style.display = "none";
+        // document.getElementById("loader").style.display = "block";
+        var Temansobj = {
+            TeamId: $("#TeamID").val(),
+            TeamName: $("#Teamname").val(),
+            Description: $("#TeamDescription").val(),
+            IsActive: $("#TeamsIsActive").prop("checked")
+        }
+        if (Temansobj.TeamId > 0) {
+            updateTeamsById(Temansobj).then(data => {
+                var SelectedUserList = [];
+                var SelectedTeamUser = $("#TeamsUserSelect").val();
+                if (SelectedTeamUser && SelectedTeamUser.length > 0) {
+                    for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
+                        SelectedUserList.push({
+                            TeamId: $("#TeamID").val(),
+                            UserId: SelectedTeamUser[tu],
+                            CreatedBy: 1,
+                            CreatedDate: new Date(),
+                        });
+                    }
+                    deleteTeamsUserMapping($("#TeamID").val()).then(TeamUserMappingResponseData => {
+                        addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
+
+                            if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
+                                Showtoast_Message(true);
+                                RebindTeamList();
+                                $('#TeamsModals').modal('hide');
+                            } else {
+                                Showtoast_Message(false);
+                            }
+                        }).catch(err => {
+                            console.error(err);
+                            Showtoast_Message(false);
+                        });
+                    }).catch(err => {
+                        console.error(err);
+                        Showtoast_Message(false);
                     });
+                    RebindTeamList();
+                } else {
+                    if (data && data > 0) {
+                        Showtoast_Message(true);
+                        $('#TeamsModals').modal('hide');
+                    } else {
+                        Showtoast_Message(false);
+                    }
+                    RebindTeamList();
                 }
-                deleteTeamsUserMapping($("#TeamID").val()).then(TeamUserMappingResponseData => {
+            }).catch(err => {
+                console.error(err);
+                Showtoast_Message(false);
+            });
+        } else {
+            Temansobj.CreatedBy = 1;
+            Temansobj.CreatedDate = new Date();
+            addTeams(Temansobj).then(data => {
+                var SelectedUserList = [];
+
+                var SelectedTeamUser = $("#TeamsUserSelect").val();// $("#TeamsUserSelect option:selected").val();
+                if (SelectedTeamUser && SelectedTeamUser.length > 0) {
+                    for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
+                        SelectedUserList.push({
+                            TeamId: data[0],
+                            UserId: SelectedTeamUser[tu],
+                            CreatedBy: 1,
+                            CreatedDate: new Date(),
+                        });
+                    }
                     addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
 
                         if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
                             Showtoast_Message(true);
-                            RebindTeamList();
                         } else {
                             Showtoast_Message(false);
                         }
@@ -683,68 +740,25 @@ $("#IdAddteams").click(function () {
                         console.error(err);
                         Showtoast_Message(false);
                     });
-                }).catch(err => {
-                    console.error(err);
-                    Showtoast_Message(false);
-                });
-                RebindTeamList();
-            } else {
-                if (data && data > 0) {
-                    Showtoast_Message(true);
-
+                    RebindTeamList();
+                    $('#TeamsModals').modal('hide');
                 } else {
-                    Showtoast_Message(false);
-                }
-                RebindTeamList();
-            }
-        }).catch(err => {
-            console.error(err);
-            Showtoast_Message(false);
-        });
-    } else {
-        Temansobj.CreatedBy = 1;
-        Temansobj.CreatedDate = new Date();
-        addTeams(Temansobj).then(data => {
-            var SelectedUserList = [];
-          
-            var SelectedTeamUser = $("#TeamsUserSelect").val();// $("#TeamsUserSelect option:selected").val();
-            if (SelectedTeamUser && SelectedTeamUser.length > 0) {
-                for (var tu = 0; tu < SelectedTeamUser.length; tu++) {
-                    SelectedUserList.push({
-                        TeamId: data[0],
-                        UserId: SelectedTeamUser[tu],
-                        CreatedBy: 1,
-                        CreatedDate: new Date(),
-                    });
-                }
-                addBulkTeamUserMapping(SelectedUserList).then(TeamUserMappingResponseData => {
-
-                    if (TeamUserMappingResponseData && TeamUserMappingResponseData.length) {
+                    if (data && data.length > 0) {
                         Showtoast_Message(true);
+
                     } else {
                         Showtoast_Message(false);
                     }
-                }).catch(err => {
-                    console.error(err);
-                    Showtoast_Message(false);
-                });
-                RebindTeamList();
-            } else {
-                if (data && data.length > 0) {
-                    Showtoast_Message(true);
-
-                } else {
-                    Showtoast_Message(false);
+                    RebindTeamList();
+                    $('#TeamsModals').modal('hide');
                 }
-                RebindTeamList();
-            }
-        }).catch(err => {
-            console.error(err);
-            Showtoast_Message(false);
-        });
+            }).catch(err => {
+                console.error(err);
+                Showtoast_Message(false);
+            });
+        }
     }
-    }
-   
+
 
 });
 
@@ -754,7 +768,7 @@ function AddTeams(Teamsobj) {
     $("#Teamname").val("");
     $('#TeamsIsActive').prop('checked', false);
     $("#TeamDescription").val("");
-    $('.SlectBox option:selected').each(function () {        
+    $('.SlectBox option:selected').each(function () {
         $('.SlectBox')[0].sumo.unSelectItem($(this).index());
     });
 }
@@ -776,13 +790,13 @@ function EditTeams(Teamsobj) {
 function SetTeamsValue(TeamData, TeamUserMapping) {
     var TeamData = TeamData[0];
     if (TeamUserMapping && TeamUserMapping.length > 0) {
-        $('.SlectBox option:selected').each(function () {        
+        $('.SlectBox option:selected').each(function () {
             $('.SlectBox')[0].sumo.unSelectItem($(this).index());
         });
         for (var tu = 0; tu < TeamUserMapping.length; tu++) {
             $(".SlectBox")[0].sumo.selectItem("" + TeamUserMapping[tu].UserId + "");
         }
-        $('.SlectBox')[0].sumo.reload();       
+        $('.SlectBox')[0].sumo.reload();
     }
     $("#TeamID").val(TeamData.TeamId);
     $("#Teamname").val(TeamData.TeamName);
@@ -818,7 +832,7 @@ function RebindTeamList() {
                 + ' <div class="col-md-6 col-xl-4 col-lg-5 col-sm-6">'
                 + ' <a  data-teamid=' + Items.TeamId + ' rv-data-category-TeamId=' + Items.TeamId
                 + ' class="btn-add-member-action btn-primary" id="EditTeams"'
-                + ' onclick="EditTeams(this)">Edit</a>'
+                + ' onclick="EditTeams(this)" style=color:white;cursor: pointer;>Edit</a>'
                 + ' <a href="javascript:void(0)" data-teamid=' + Items.TeamId + ' rv-data-category-TeamId=' + Items.TeamId
                 + ' class="btn-add-member-action btn-primary"'
                 + ' onclick="deleteTeamsClick(this)">Delete</a>'
@@ -919,3 +933,19 @@ function Showtoast_Message(IsSuccess, Textmessage = "") {
         });
     }
 }
+
+// search from member list
+$("#seaechmember").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#userList li").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});
+
+// search from team list
+$("#searchteam").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#TeamList li").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});
