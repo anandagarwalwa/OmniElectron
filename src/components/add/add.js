@@ -264,10 +264,10 @@ function bindLinkFromandLinkToDropdown() {
             for (var u = 0; u < model.items.length; u++) {
                 var LinksTo = model.items[u];
                 var Name = LinksTo.Description;
-                if (html) {
-                    html += '<option value=' + LinksTo.Id + '>' + Name + '</option>';
+                if (LinksTo.Id != parseInt(localStorage.getItem("nodeId"))) {
+                    html += '<option  value=' + LinksTo.Id + '>' + Name + '</option>';
                 } else {
-                    html = '<option value=' + LinksTo.Id + '>' + Name + '</option>';
+                    html += '<option class="d-none" value=' + LinksTo.Id + '>' + Name + '</option>';
                 }
             }
             $("#DataLinkToSelect").html(html);
