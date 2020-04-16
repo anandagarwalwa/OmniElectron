@@ -10,6 +10,7 @@ var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_co
 var ForceGraph = require('force-graph');
 var codeLink = '';
 var reportLink = '';
+var alertLocation = '';
 document.getElementById("loader").style.display = "none";
 var isNodeFilter = false;
 $("#divFilterBlock").hide();
@@ -49,7 +50,7 @@ $(function () {
     });
     var isClearClick = false, filterId = '';
     $('body').on('click', 'a.dynamic-box', function () {
-      //  debugger;
+        //  debugger;
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
             // Bind2DForceGraph();
@@ -73,6 +74,7 @@ $(function () {
                 .linkColor(link => {
                     return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
                 })
+                $("#divFilterBlock").hide();
         }
         else {
             if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
@@ -103,7 +105,7 @@ $(function () {
     $("#fildernode").click(function () {
         isNodeFilter = true;
         //NodeFilterGraphData();
-        // removeNodeFilterBreakdown();
+        removeNodeFilterBreakdown();
         isClearClick = true;
         updateFilteredNode(filteredLinkColor);
         $("#divFilterBlock").show();
@@ -111,19 +113,41 @@ $(function () {
 });
 
 function removeNodeFilterBreakdown() {
+    debugger;
     $("#divSearchPanel").find(".active").removeClass("active");
     // For Deselecting Breakdown
-    Graph
-        .nodeColor(node => {
-            return hex2rgb(node.nodeColor, 1);
-        })
-        .linkColor(link => hex2rgb(link.linkColor, 1))
-        // .centerAt(node.x, node.y, 1000)
-        ;
-    // remove all filter nodes & links
+    // Graph
+    //     .nodeColor(node => {
+    //         return hex2rgb(node.nodeColor, 1);
+    //     })
+    //     .linkColor(link => hex2rgb(link.linkColor, 1))
+    //     // .centerAt(node.x, node.y, 1000)
+    //     ;
+    // // remove all filter nodes & links
     highlightNodes = [];
     highlightLink = [];
     filteredLinkColor = '';
+
+    // Bind2DForceGraph();
+    // For Deselecting Breakdown
+    // Graph
+    //     .nodeColor(node => {
+    //         return hex2rgb(node.nodeColor, 1);
+    //     })
+    //     .linkColor(link => hex2rgb(link.linkColor, 1));
+    var templinks = links;
+    var tempnodes = nodes;
+    //    graphData.nodes = nodes;
+    //    graphData.nodes = nodes;
+
+    Graph
+        // .graphData(graphData)
+        .nodeColor(d => {
+            return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+        })
+        .linkColor(link => {
+            return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
+        })
 }
 
 function getFilterTag(tagtext) {
@@ -210,7 +234,7 @@ function GetLinks(isFromBreakDown) {
         userId = SessionManager.UserId;
     // Get links option selected
     getLinksForExplor(userId).then(data => {
-       // debugger;
+        // debugger;
         if (data && data.length > 0) {
             var linkData = data[0];
             var linkColor = '';
@@ -276,7 +300,7 @@ function GetNodes(isFromBreakDown) {
         if (data && data.length > 0) {
             var objNode;
             for (var u = 0; u < data.length; u++) {
-               // debugger;
+                // debugger;
                 objNode = getNodeLinkObject(data[u].Id);
                 nodes.push({
                     "id": data[u].Description,
@@ -354,18 +378,20 @@ function Bind2DForceGraph() {
             elem.style.cursor = node ? 'pointer' : null
         })
         .onNodeClick(node => {
-            if (isNodeFilter) {
+            // if (isNodeFilter) {
             $('#myModal').modal('show');
+            debugger;
             getNodeFilterData(node.nodeId).then(data => {
                 var filterData = data[0];
                 $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
                 $("#nodeDescription").text(filterData[0].nDescription);
                 $("#filterDescription").text(filterData[0].lLinkDescription);
                 $("#filterTags").text(filterData[0].lTags);
+                alertLocation = filterData[0].Location;
                 codeLink = filterData[0].lCodeLink;
                 reportLink = filterData[0].lReportLink;
             })
-             }
+            // }
             // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(8, 2000);
@@ -608,12 +634,14 @@ function NodeFilterGraphData(selId, searchText) {
         .onNodeClick(node => {
             if (isNodeFilter) {
                 $('#myModal').modal('show');
+                debugger;
                 getNodeFilterData(node.nodeId).then(data => {
                     var filterData = data[0];
                     $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
                     $("#nodeDescription").text(filterData[0].nDescription);
                     $("#filterDescription").text(filterData[0].lLinkDescription);
                     $("#filterTags").text(filterData[0].lTags);
+                    alertLocation = filterData[0].Location;
                     codeLink = filterData[0].lCodeLink;
                     reportLink = filterData[0].lReportLink;
                 })
@@ -633,10 +661,33 @@ function BreakDownNodeFilter() {
 
     Graph
         // .graphData(graphData)
+        // .nodeColor(d => {
+        //     return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+        // })
+        // .linkColor(link => {
+        //     return templinks.find(x => x.nodeId == link.nodeId).linkColor;
+        // })
+
         .nodeColor(d => {
-            return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+            if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
+                if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
+                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+                } else {
+                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 0);
+                }
+            } else {
+                return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+            }
         })
         .linkColor(link => {
-            return templinks.find(x => x.nodeId == link.nodeId).linkColor;
+            if (highlightLink.length > 0 && highlightLink && isNodeFilter) {
+                if (highlightLink.find(x => x.nodeId == link.nodeId)) {
+                    return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
+                } else {
+                    return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 0);
+                }
+            } else {
+                return templinks.find(x => x.nodeId == link.nodeId).linkColor;
+            }
         })
 }
