@@ -2516,4 +2516,7 @@ label.error
     width: 10px;
     height: 10px !important;
 }
-
+.flex-coman-section {
+    float: left;
+    width: 100%;
+}
