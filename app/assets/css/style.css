@@ -2506,5 +2506,17 @@ label.error
     float: left;
 }
 
-
-
+/* Add alert combination */
+.alert-pic-section .table-responsive {
+    overflow-x: auto !important; 
+    height: 400px;
+    overflow-y: auto !important;
+}
+.alert-pic-section ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px !important;
+}
+.flex-coman-section {
+    float: left;
+    width: 100%;
+}

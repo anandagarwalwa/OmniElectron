@@ -4,9 +4,8 @@ var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dir
 var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
 var { getTeamUserMappingByID, addBulkTeamUserMapping, deleteTeamsUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
 var { addTeams, getTeamsList, getTeamsByID, updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var defaultImgUrl = "assets/images/40306.jpg";
-
-
 
 
 document.getElementById("loader").style.display = "none";
@@ -643,18 +642,6 @@ $("#addTeamsForm").validate({
     },
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Team Section
 $("#IdAddteams").click(function () {
     debugger;
@@ -949,3 +936,122 @@ $("#searchteam").on("keyup", function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 });
+
+//------- Database Block Start --------------
+BindDataSources();
+function BindDataSources(){
+    getDatasource().then(data => {
+        var html = '<option value="0"> Select </option>';
+        if (data) {
+            $.each(data, function (key, val) {
+                html += '<option value=' + val.Id + '>' + val.Name + '</option>';                
+            });
+            $('#ddlDatasourceType').html(html);
+        }
+    });
+}
+$("#ddlDatasourceType").change(function () {
+     var selectedVal = $("#ddlDatasourceType option:selected").text();
+     if($("#ddlDatasourceType").val() == "0")
+     {
+        $("#dbBlock").hide();
+        $("#fileBlock").hide();
+     }
+     else if(selectedVal.toLowerCase().indexOf("sql") != -1){
+        $("#fileBlock").hide();
+         $("#dbBlock").show();
+     }
+     else{
+        $("#dbBlock").hide();
+        $("#fileBlock").show();
+     }  
+});
+$("#btnTestDBConnection").click(function () {
+    //Check if Selected option is MySQL
+    //Check if Selected option is MSSQL
+    //Check if Selected option is PostgreSQL
+    
+    var dbType = $("#ddlDatasourceType option:selected").text();    
+    if(dbType == "MySql"){
+        const options = {
+            client: 'mysql',
+            connection: {
+                host: $("#txtHost").val(),
+                port: $("#txtPort").val(),
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val()                
+            }
+        }        
+        const knex = require('knex')(options);
+        knex.raw('SHOW DATABASES').then(data => {
+            debugger;
+            if(data && data.length > 0){
+                var dbData = data[0];
+                var html = '';
+                for (var u = 0; u < dbData.length; u++) {
+                    html += '<option value="' + dbData[u].Database + '">' + dbData[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+    else if(dbType == "MSSql"){
+        const options = {
+            client: 'mssql',
+            connection: {
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val(),
+                server: $("#txtHost").val(),
+                options: {
+                    port: 1433
+                  }                
+            }
+        }       
+        const knex = require('knex')(options);
+        knex.raw('SELECT name as [Database] FROM master.dbo.sysdatabases').then(data => {
+            if(data && data.length > 0){
+                var html = '';
+                for (var u = 0; u < data.length; u++) {
+                    html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    } 
+    else if(dbType == "PostgreSQL"){
+          const options = {
+            client: 'postgresql',
+            connection: {
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val(),
+                host: $("#txtHost").val()                             
+            }
+        }       
+        debugger;
+        const knex = require('knex')(options);
+        knex.raw('SELECT datname FROM pg_database WHERE datistemplate = false').then(data => {
+            if(data && data.length > 0){
+                debugger;
+                var html = '';
+                for (var u = 0; u < data.length; u++) {
+                    html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            debugger;
+            console.error(err);
+        });
+
+    }
+});
+$("#btnSaveDBConfig").click(function () {
+
+});
+
+//
+//------- Database Block End --------------

@@ -1,237 +1,327 @@
 <!-- The Modal -->
 <div class="modal fade bd-example-modal-lg" id="modelFilterResult">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5>Alert-result..display_data</h5>
-                <!-- data-dismiss="modal" -->
-                <button type="button" class="close" id="btnBackFilterHome" >&times;</button>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Alert-result..display_data</h5>
+        <!-- data-dismiss="modal" -->
+        <button type="button" class="close" id="btnBackFilterHome">&times;</button>
+      </div>
+      <div class="row">
+
+        <div class="coman-result-section p-3 ">
+
+          <div class="col-xl-6 ml-auto mt-1">
+            <div class="form-tab-section">
+              <div class="form-group">
+                <label for="sel1">Tab:</label>
+                <select class="form-control" id="tablist" name="tablist">
+                  <!-- <option value="0">Dataset</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option> -->
+                </select>
+              </div>
             </div>
-                <div class="row">
-                    <div class="coman-result-section p-5 d-flex">
-                        <div class="col-xl-3">
-                            <div class="alert-left-section">
-                                <div class="alert-header">
-                                    <h6>What to set alert to?</h6>
-                                </div>
-                                <div class="alert-btn-popup dropup">
-                                    <button type="button" class="btn btn-group-lg dropdown-toggle" 
-                                    data-toggle="dropdown">order date</button>
-
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Link 1</a>
-                                        <a class="dropdown-item" href="#">Link 2</a>
-                                        <a class="dropdown-item" href="#">Link 3</a>
-                                      </div>                                           
-                                           
-                                </div>
-                                <!--alert-btn-Popup
-                                <div class="alert-popup">    
-                                    <div class="modal fade" id="filter-result">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                            
-                                           
-                                                <div class="modal-header">
-                                                <h4 class="modal-title">Modal Heading</h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                </div>
-                                                
-                                              
-                                                <div class="modal-body">
-                                                Modal body..
-                                                </div>
-                                                
-                                                
-                                                
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
-
-                                <div class="alert-check-box">
-                                    <form>
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="optradio"> <span class="text-one">Up to Date</span>
-                                            </label>
-                                          </div>
-                                          <div class="form-check">
-                                            <label class="form-check-label">
-                                              <input type="radio" class="form-check-input" name="optradio"> <span class="text-two"> Missing Data </span>
-                                            </label>
-                                          </div>
-                                          
-                                    </form>
-                                </div>
-
-                                <!----Alert-Title-->
-                                <div class="alert-header alert-header-one">
-                                    <h6>Tie alert to metric?</h6>
-                                </div>
-                                <div class="alert-btn-popup alert-btn-popup-one dropdown">
-                                    <button type="button" class="btn btn-group-lg dropdown-toggle" 
-                                    data-toggle="dropdown">Bookings</button>
-
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Link 1</a>
-                                        <a class="dropdown-item" href="#">Link 2</a>
-                                        <a class="dropdown-item" href="#">Link 3</a>
-                                      </div>                                            
-                                           
-                                </div>
-
-                                <!----Alert-Btn-Popup-One-
-                                <div class="alert-popup">    
-                                    <div class="modal fade" id="filter-result-one">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                            
-                                               
-                                                <div class="modal-header">
-                                                <h4 class="modal-title">Modal Heading</h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                </div>
-                                                
-                                               
-                                                <div class="modal-body">
-                                                Modal body......
-                                                </div>
-                                                
-                                                
-                                                
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>-->
-
-                           
-                                <div class="alert-dropdown-section">
-                                    <div class="alert-form-one">
-                                        <form>
-                                            <div class="form-group">
-                                               
-                                                <select class="form-control" id="sel1" name="sellist1">
-                                                  <option>Greater Than</option>
-                                                  <option>2</option>
-                                                  
-                                                </select>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <div class="alert-form-Two">
-                                        <form>
-                                            <div class="form-group">
-                                                
-                                                <input type="number" class="form-control"  placeholder="60" id="usr">
-                                              </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- route-link  route-href="filterScratch" -->
-                                <div class="filter-footer-btn">
-                                    <a style="color: white;cursor: pointer;" id="btnfilterResult" class="btn btn-group-lg">
-                                        Set Schedule
-                                    </a>
-                                </div>
-                            </div>
-                         </div>
-                         <div class="col-xl-9">
-                             <div class="alert-pic-section">
-                                 <!-- <img src="assets/images/excel-file.png" class="img-fluid"> -->
-                                 <div class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
-                                    <table class="table table-striped">
-                                        <thead>
-                                          <tr>
-                                            <th>Lastname</th>
-                                            <th>Sales</th>
-                                            <th>Country</th>
-                                            <th>Quarter</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <td>Smith</td>
-                                            <td>$16,753.00</td>
-                                            <td>UK</td>
-                                            <td>Qtr 3</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Johnson</td>
-                                            <td>$14,808.00</td>
-                                            <td>USA</td>
-                                            <td>Qtr 4</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Williams</td>
-                                            <td>$10,644.00</td>
-                                            <td>UK</td>
-                                            <td>Qtr 2</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Jones</td>
-                                            <td>$1,390.00</td>
-                                            <td>USA</td>
-                                            <td>Qtr 3</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Brown</td>
-                                            <td>$4,865.00</td>
-                                            <td>USA</td>
-                                            <td>Qtr 4</td>
-                                          </tr>
-                                          <tr>
-                                            <td>Williams</td>
-                                            <td>$12,438,00</td>
-                                            <td>UK</td>
-                                            <td>Qtr 1</td>
-                                          </tr>
-
-                                          <tr>
-                                            <td>Johnson</td>
-                                            <td>$9,339.00</td>
-                                            <td>UK</td>
-                                            <td>Qtr 2</td>
-                                          </tr>
-
-                                          <tr>
-                                            <td>Smith</td>
-                                            <td>$18,919.00</td>
-                                            <td>USA</td>
-                                            <td>Qtr 3</td>
-                                          </tr>
-
-                                          <tr>
-                                            <td>Jones</td>
-                                            <td>$9,213.00</td>
-                                            <td>USA</td>
-                                            <td>Qtr 4</td>
-                                          </tr>
-
-                                          <tr>
-                                            <td>Williams</td>
-                                            <td>$12,438,00</td>
-                                            <td>UK</td>
-                                            <td>Qtr 1</td>
-                                          </tr>
-
-                                        </tbody>
-                                      </table>
-                                    
-                                 </div>
-                             </div>
-                         </div>
-                    </div>
+          </div>
+          <div class="d-flex flex-coman-section">
+            <div class="col-xl-3">
+              <div class="alert-left-section">
+                <div class="alert-header">
+                  <h6>What to set alert to?</h6>
                 </div>
+                <div class="alert-btn-popup dropup">
+                  <button type="button" id="orderDateChangeName" class="btn btn-group-lg dropdown-toggle"
+                    data-toggle="dropdown">Click here to add</button>
+
+                  <div class="dropdown-menu" id="orderDatesheetList">
+                    <!-- <a class="dropdown-item" href="#">Link 1</a>
+                                      <a class="dropdown-item" href="#">Link 2</a>
+                                      <a class="dropdown-item" href="#">Link 3</a> -->
+                  </div>
+
+                </div>
+                <!--alert-btn-Popup
+                              <div class="alert-popup">    
+                                  <div class="modal fade" id="filter-result">
+                                      <div class="modal-dialog modal-lg">
+                                          <div class="modal-content">
+                                          
+                                         
+                                              <div class="modal-header">
+                                              <h4 class="modal-title">Modal Heading</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+                                              
+                                            
+                                              <div class="modal-body">
+                                              Modal body..
+                                              </div>
+                                              
+                                              
+                                              
+                                              
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>-->
+
+                <!-- <div class="alert-check-box">
+                  <form>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio"> <span class="text-one">Up to
+                          Date</span>
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio"> <span class="text-two"> Missing
+                          Data </span>
+                      </label>
+                    </div>
+
+                  </form>
+                </div> -->
+
+
+                <div class="granularity-section" id="setalertid">
+                  <div class="granularity-section-left">
+                    <div class="form-group">
+                      <label for="sel1">Granularity</label>
+                      <select class="form-control" id="granularity" name="granularity">
+                        <option value="0">day</option>
+                        <option>week</option>
+                        <option>month</option>
+                        <option>quarter</option>
+                        <option>year</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="granularity-section-right">
+                    <div class="granularity-frame-title">
+                      <p>Timeframe</p>
+                    </div>
+                    <div class="slidecontainer granularity-slider">
+
+                      <!-- <input type="range" min="1" max="100" value="50">  -->
+                      <input type="text" class="js-range-slider" name="my_range" value="" />
+                      <input type="hidden" class="js-input-from" value="0" id="tFrom" />
+                      <input type="hidden" class="js-input-to" value="0" id="tTo" />
+                    </div>
+                  </div>
+                </div>
+
+                <!----Alert-Title-->
+                <div class="alert-header alert-header-one">
+                  <h6 style="margin-top: 20px;">Tie alert to metric?</h6>
+                </div>
+                <div class="alert-btn-popup alert-btn-popup-one dropdown">
+                  <button type="button" id="bookingsChangeName" class="btn btn-group-lg dropdown-toggle"
+                    data-toggle="dropdown">Click here to add</button>
+
+                  <div class="dropdown-menu" id="bookingsSheetList">
+                    <!-- <a class="dropdown-item" href="#">Link 1</a>
+                                      <a class="dropdown-item" href="#">Link 2</a>
+                                      <a class="dropdown-item" href="#">Link 3</a> -->
+                  </div>
+
+                </div>
+
+                <!----Alert-Btn-Popup-One-
+                              <div class="alert-popup">    
+                                  <div class="modal fade" id="filter-result-one">
+                                      <div class="modal-dialog modal-lg">
+                                          <div class="modal-content">
+                                          
+                                             
+                                              <div class="modal-header">
+                                              <h4 class="modal-title">Modal Heading</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              </div>
+                                              
+                                             
+                                              <div class="modal-body">
+                                              Modal body......
+                                              </div>
+                                              
+                                              
+                                              
+                                              
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>-->
+
+
+                <div class="alert-dropdown-section" id="setmetricid">
+                  <div class="alert-form-one">
+                    <form>
+                      <div class="form-group">
+
+                        <select class="form-control" id="sel1" name="sellist1">
+                          <option>less than</option>
+                          <option>greater than</option>
+
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="alert-form-Two">
+                    <form>
+                      <div class="form-group">
+
+                        <input type="number" class="form-control" placeholder="60" id="usr">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- Add Alert -->
+                <div class="alert-header alert-header-one">
+                  <h6 style="margin-top: 20px;">Add Alert?</h6>
+                </div>
+                <div class="alert-btn-popup alert-btn-popup-one dropdown">
+                  <button type="button" id="addAlertName" class="btn btn-group-lg dropdown-toggle"
+                    data-toggle="dropdown">Click here to add</button>
+
+                  <div class="dropdown-menu" id="addAlertSheetList">
+
+                  </div>
+
+                </div>
+                <div class="alert-dropdown-section" id="addAlerticid">
+                  <div class="alert-form-one">
+                    <form>
+                      <div class="form-group">
+
+                        <select class="form-control" id="sel1" name="sellist1">
+                          <option>equals</option>
+                          <option>does not equal</option>
+                          <option>contains</option>
+                          <option>does not contain</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+
+                  <div class="alert-form-Two">
+                    <form>
+                      <div class="form-group">
+                        <select class="form-control" id="sel1" name="sellist1">
+                          <option>Table</option>
+                          <option>Chairs</option>
+                        </select>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <!-- route-link  route-href="filterScratch" -->
+                <div class="filter-footer-btn" >
+                  <a style="color: white;cursor: pointer;margin-top: 20px;" id="btnfilterResult" class="btn btn-group-lg">
+                    Set Schedule
+                  </a>
+                </div>
+              </div>
             </div>
+            <div class="col-xl-9">
+              <div class="alert-pic-section pt-0">
+                <!-- <img src="assets/images/excel-file.png" class="img-fluid"> -->
+                <div
+                  class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl"
+                  id="dtable">
+                  <!-- <table class="table table-striped">
+                                      <thead>
+                                        <tr>
+                                          <th>Lastname</th>
+                                          <th>Sales</th>
+                                          <th>Country</th>
+                                          <th>Quarter</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>Smith</td>
+                                          <td>$16,753.00</td>
+                                          <td>UK</td>
+                                          <td>Qtr 3</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Johnson</td>
+                                          <td>$14,808.00</td>
+                                          <td>USA</td>
+                                          <td>Qtr 4</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Williams</td>
+                                          <td>$10,644.00</td>
+                                          <td>UK</td>
+                                          <td>Qtr 2</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Jones</td>
+                                          <td>$1,390.00</td>
+                                          <td>USA</td>
+                                          <td>Qtr 3</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Brown</td>
+                                          <td>$4,865.00</td>
+                                          <td>USA</td>
+                                          <td>Qtr 4</td>
+                                        </tr>
+                                        <tr>
+                                          <td>Williams</td>
+                                          <td>$12,438,00</td>
+                                          <td>UK</td>
+                                          <td>Qtr 1</td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>Johnson</td>
+                                          <td>$9,339.00</td>
+                                          <td>UK</td>
+                                          <td>Qtr 2</td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>Smith</td>
+                                          <td>$18,919.00</td>
+                                          <td>USA</td>
+                                          <td>Qtr 3</td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>Jones</td>
+                                          <td>$9,213.00</td>
+                                          <td>USA</td>
+                                          <td>Qtr 4</td>
+                                        </tr>
+
+                                        <tr>
+                                          <td>Williams</td>
+                                          <td>$12,438,00</td>
+                                          <td>UK</td>
+                                          <td>Qtr 1</td>
+                                        </tr>
+
+                                      </tbody>
+                                    </table> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<script src="../src/components/filter/filter-result.js"></script> 
+</div>
+<!-- <div id="dtable"></div> -->
+<script src="../src/components/filter/filter-result.js"></script>
+<script src="../src/components/filter/filter-weeklyReport-1.js"></script>
 
-   
-    <!-- //$('.modal-backdrop').css('display','none'); -->
-
+<!-- //$('.modal-backdrop').css('display','none'); -->

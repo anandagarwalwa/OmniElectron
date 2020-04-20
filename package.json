@@ -46,6 +46,7 @@
         "babel-preset-es2015": "^6.24.1",
         "bootstrap": "^4.3.1",
         "d3": "^5.15.0",
+        "electron-installer-windows": "^3.0.0",
         "font-awesome": "^4.7.0",
         "force-graph": "^1.26.5",
         "fs-jetpack": "^2.1.0",
@@ -55,7 +56,9 @@
         "knex": "^0.20.10",
         "mysql": "^2.18.1",
         "popper.js": "^1.14.3",
-        "tinybind": "^1.0.0"
+        "read-excel-file": "^4.0.6",
+        "tinybind": "^1.0.0",
+        "xlsx": "^0.15.6"
     },
     "devDependencies": {
         "@babel/core": "^7.5.5",
