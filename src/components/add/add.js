@@ -3,7 +3,7 @@ var { getUsers } = require(__dirname + '\\server\\controllers\\user_controller.j
 var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { getChannels } = require(__dirname + '\\server\\controllers\\channels_controller.js');
-var { getLinks, updateLinksbyid, addLinks } = require(__dirname + '\\server\\controllers\\links_controller.js');
+var { getLinks, updateLinksbyid, addLinks, getDataconfigLink } = require(__dirname + '\\server\\controllers\\links_controller.js');
 var { getDatacategory } = require(__dirname + '\\server\\controllers\\datacategory_controller.js');
 var { addNodes, updateNodesbyid, getNodesByDataCategoryId } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\controllers\\analysis_controller.js');
@@ -538,7 +538,8 @@ $("#btnDataLink").click(function () {
                 'CreatedDate': new Date(),
                 'Tag': $("#datalinkTag").val(),
                 'Codelink': $("#datalinkCode").val(),
-                'ReportLink': $("#datalinkReport").val()
+                'ReportLink': $("#datalinkReport").val(),
+                'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
             }).then(data => {
                 $.toast({
                     text: "Data Link updated Successfully.", // Text that is to be shown in the toast
@@ -578,7 +579,8 @@ $("#btnDataLink").click(function () {
                     'CreatedDate': new Date(),
                     'Tag': $("#datalinkTag").val(),
                     'Codelink': $("#datalinkCode").val(),
-                    'ReportLink': $("#datalinkReport").val()
+                    'ReportLink': $("#datalinkReport").val(),
+                    'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
                 }
             ).then(data => {
                 $.toast({
@@ -845,3 +847,24 @@ $("#btnTest").click(function () {
         }
     }
 });
+
+// get config data link
+$("#dataConfigId").hide();
+$("#DataLinkDatasourceSelect").change(function () {
+    var getDataSourceConfigList = [];
+    var html = '';
+    getDataconfigLink($(this).children("option:selected").val()).then(data => {
+        $("#dataConfigId").show();
+        getDataSourceConfigList = data[0];
+        if (getDataSourceConfigList.length > 0 && getDataSourceConfigList) {
+            for (var i = 0; i < getDataSourceConfigList.length; i++) {
+                html += '<option value="' + getDataSourceConfigList[i].Id + '">' + getDataSourceConfigList[i].ConfigName + '</option>';
+            }
+            $("#DatasourceConfigSelect").html(html);
+        } else {
+            $('#DatasourceConfigSelect').children().remove();
+            $('#DatasourceConfigSelect').append('<option value="0" id="foo">no data found</option>');
+            $('#foo').focus();
+        }
+    })
+})

@@ -16,7 +16,8 @@ const selectableProps = [
     'ConfigName',
     'CreatedBy',
     'CreatedDate',
-    'IsActive'
+    'IsActive',
+    'Location'
 ] 
 
 module.exports = knex => {
