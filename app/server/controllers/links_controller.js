@@ -24,7 +24,7 @@ const getLinksForExplor = (userId) => {
         " left join nodes nFrom on nFrom.Id = l.LinksFrom " +
         " left join nodes nTo on nTo.Id = l.LinksTo " +
         " left join channels c on c.Id=l.ChannelId " +
-        " left join datasources ds on ds.Id=l.datasourceId " + 
+        " left join datasources ds on ds.Id=l.datasourceId " +
         " left join nodes nSelf on nSelf.Id = l.NodeId ";
     if (userId)
         query += ' where l.CreatedBy=' + userId;
@@ -43,11 +43,17 @@ const deleteLinksbyid = (nodeId) => {
     return Links.destroy({ Id: nodeId })
 }
 
+const getDataconfigLink = (datasourceId) => {
+    let query = "SELECT * FROM datasourcedbconfig WHERE DatasourceId =" + datasourceId;
+    return Links.raw(query);
+}
+
 module.exports = {
     getLinksByID,
     addLinks,
     updateLinksbyid,
     deleteLinksbyid,
     getLinks,
-    getLinksForExplor
+    getLinksForExplor,
+    getDataconfigLink
 }

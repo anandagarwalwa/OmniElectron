@@ -2,8 +2,11 @@
 var xlsxFile = require('read-excel-file/node');
 // var gsjson = require('google-spreadsheet-to-json');
 var gshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.js');
-var csv = require('csvtojson');
-
+var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
+// var csv = require('csvtojson');
+var csv = require('csv2json-convertor');
+var getAlertLocationFileData = [];
+var columnList = [];
 $(document).ready(function () {
     $('#modelFilterResult').modal('show');
     $("#btnfilterResult").click(function () {
@@ -24,11 +27,18 @@ $(document).ready(function () {
 var fileExtention = alertLocation.substr((alertLocation.lastIndexOf('.') + 1));
 var listOfgoogleSheet = [];
 var googleSpreadsheetId = alertLocation.substring(39, 83);
+debugger;
 if (fileExtention == "csv") {
     getCSVFile();
 }
 else if (fileExtention == "xlsx") {
     getExcelFile();
+}
+else if (dataConfigId > 0 && dataConfigId) {
+    getConfigDataSourceDB(dataConfigId).then(data => {
+        var configData = data[0];
+        dataSourceConfigData(configData[0]);
+    });
 }
 else {
     getGoogleSheet();
@@ -53,6 +63,7 @@ function getExcelFile() {
     var worksheet = workbook.Sheets[sheet_name_list[0].Sheet];
     var headers = {};
     var data = [];
+    debugger;
     for (var z in worksheet) {
         if (z[0] === '!') continue;
         //parse out the column, row, and value
@@ -79,6 +90,7 @@ function getExcelFile() {
     // data.shift();
     excelData.push(data);
     displaysheetdetails(data);
+    getAlertLocationFileData = data;
     selectedHeaderValueDisplay();
     $('#tablist').on('change', function (e) {
         $("#tablist").val()
@@ -114,22 +126,20 @@ function getExcelFile() {
         excelData.push(data);
         //console.log(data);
         displaysheetdetails(data);
+        getAlertLocationFileData = data;
     });
 }
 
 // get CSV file
 function getCSVFile() {
-    csv()
-        .fromFile(alertLocation)
-        .then((csvObj) => {
-            console.log(csvObj);
-            $("#tablist").html("");
-            var path = require('path');
-            var sheetname = path.parse(alertLocation).name;
-            var html = '<option value=' + 0 + '>' + sheetname + '</option>';
-            $("#tablist").html(html);
-            displaysheetdetails(csvObj);
-        });
+    var csvObj = csv.csvtojson(alertLocation);
+    $("#tablist").html("");
+    var path = require('path');
+    var sheetname = path.parse(alertLocation).name;
+    var html = '<option value=' + 0 + '>' + sheetname + '</option>';
+    $("#tablist").html(html);
+    displaysheetdetails(csvObj);
+    getAlertLocationFileData = csvObj;
     selectedHeaderValueDisplay();
 }
 
@@ -145,11 +155,9 @@ function getGoogleSheet() {
             $("#tablist").html("");
             var html = '';
             for (var i = 0; i < listOfgoogleSheet.length; i++) {
-                debugger;
                 html += '<option value="' + i + '">' + listOfgoogleSheet[i] + '</option>';
             }
             $("#tablist").html(html);
-            console.log(listOfgoogleSheet);
         })
         .catch(function (err) {
             console.log(err.stack)
@@ -161,6 +169,7 @@ function getGoogleSheet() {
     }).then(function (googleSheetObj) {
         googleSheetObj = googleSheetObj[0];
         displaysheetdetails(googleSheetObj);
+        getAlertLocationFileData = googleSheetObj;
     });
     selectedHeaderValueDisplay();
     $('#tablist').on('change', function (e) {
@@ -171,6 +180,7 @@ function getGoogleSheet() {
         }).then(function (googleSheetObj) {
             googleSheetObj = googleSheetObj[parseInt($("#tablist").val())];
             displaysheetdetails(googleSheetObj);
+            getAlertLocationFileData = googleSheetObj;
         });
     });
 }
@@ -251,21 +261,63 @@ function getHeaderList(headerList) {
 // set dropdown value for excel/csv & google sheet
 function selectedHeaderValueDisplay() {
     $(document).on('click', 'a.dropdown-item.bookingsList', function () {
-        debugger
         $('#bookingsChangeName').html($(this).text());
         $("#setmetricid").show();
     });
 
     $(document).on('click', 'a.dropdown-item.orderDataList', function () {
-        debugger
         $('#orderDateChangeName').html($(this).text());
         $("#setalertid").show();
     });
 
     $(document).on('click', 'a.dropdown-item.addAlertList', function () {
-        debugger
         $('#addAlertName').html($(this).text());
         $("#addAlerticid").show();
+        var html = '';
+        for (var i = 1; i < getAlertLocationFileData.length; i++) {
+            if (html.toLowerCase().indexOf(getAlertLocationFileData[i][$(this).text()]) == -1)
+                html += '<option value="' + getAlertLocationFileData[i][$(this).text()] + '">' + getAlertLocationFileData[i][$(this).text()] + '</option>';
+        }
+        $("#selectcoloumnId").html(html);
     });
 }
 
+// get Data from Datasource Config
+function dataSourceConfigData(configData) {
+    debugger;
+    if (configData.DataSourceName.toLowerCase().indexOf("sql") != -1) {
+        const options = {
+            client: configData.DataSourceName.toLowerCase(),
+            connection: {
+                host: configData.Host,
+                port: configData.Port,
+                user: configData.UserName,
+                password: configData.Password,
+                database: configData.DatabaseName
+            }
+        }
+        const knex = require('knex')(options);
+        knex.raw(alertLocation).then(data => {
+            debugger;
+            if (data && data.length > 0) {
+                var dbData = data[0];
+                displaysheetdetails(dbData);
+                getAlertLocationFileData = dbData;
+                selectedHeaderValueDisplay();
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+        var html = '<option value=' + 0 + '>' + configData.DatabaseName + '</option>';
+        $("#tablist").html(html);
+    } else if (configData.Location.substr((configData.Location.lastIndexOf('.') + 1)) == "xlsx") {
+        alertLocation = configData.Location
+        getExcelFile();
+    } else if (configData.Location.substr((configData.Location.lastIndexOf('.') + 1)) == "csv") {
+        alertLocation = configData.Location
+        getCSVFile();
+    } else {
+        googleSpreadsheetId = configData.Location.substring(39, 83);
+        getGoogleSheet();
+    }
+}

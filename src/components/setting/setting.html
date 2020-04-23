@@ -392,8 +392,8 @@
                             <div class="tab-Two-main-section">
                                 <div class="tab-two-top-section">
                                     <div class="tab-two-btn">
-                                        <button href="#" class="btn btn-group-lg btn-primary" id="adddatabase"
-                                            data-toggle="modal" data-target="#DatabaseModals"  onclick="AddDatabase(this)" >Add Database</button>
+                                        <button href="#" class="btn btn-group-lg btn-primary" id="addDatabase"
+                                            data-toggle="modal" data-target="#DatabaseModals"   >Add Database</button>
                                     </div>
                                     <div class="tab-two-btn-content">
                                         <!-- The Modal -->
@@ -418,7 +418,7 @@
                                                                         id="txtConfigName" name="ConfigName" 
                                                                         placeholder="Configuration Name">
                                                                     <input type="hidden" id="DatabaseID" name="DatabaseID"
-                                                                        value="0">
+                                                                        >
                                                                 </div>
                                                                 <!----Dropdown--->
                                                                 <div class="form-group">
@@ -462,7 +462,8 @@
                                                                     <!----Dropdown--->
                                                                     <div class="form-group">
                                                                         <label for="ddlDatabaseList">Database</label>
-                                                                           <select class="form-control" id="ddlDatabaseList" name="ddlDatabaseList">                                                                           
+                                                                           <select class="form-control" id="ddlDatabaseList" name="ddlDatabaseList"> 
+                                                                           <option value="0">select</option>                                                                          
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -485,7 +486,7 @@
 
                                                     <!-- Modal footer -->
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary col-xl-6" id="btnSaveDBConfig">Add</button>
+                                                        <button type="submit" class="btn btn-primary col-xl-6" id="btnSaveDBConfig">Add</button>
                                                         <button type="button" class="btn btn-danger col-xl-6"
                                                             data-dismiss="modal">Close</button>
                                                     </div>                                                    
@@ -498,7 +499,7 @@
                                         <div id="custom-search-input">
                                             <div class="input-group col-md-11 col-lg-9 col-11">
                                                 <input type="text" class="  search-query form-control"
-                                                    placeholder="Search" id="searchteam">
+                                                    placeholder="Search" id="searchDatabase">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-danger" type="button">
                                                         <span class=" fa fa-search"></span>
@@ -509,7 +510,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-two-nav">
-                                    <ul id="TeamList">                                        
+                                    <ul id="databaseList">                                        
                                     </ul>
                                 </div>
                             </div>

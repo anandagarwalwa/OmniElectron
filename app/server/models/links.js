@@ -21,7 +21,8 @@ const selectableProps = [
     'CreatedDate',
     'Tag',
     'Codelink',
-    'ReportLink'
+    'ReportLink',
+    'DataSourceConfigId'
 ]
 
 module.exports = knex => {

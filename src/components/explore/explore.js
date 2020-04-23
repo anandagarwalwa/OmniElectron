@@ -11,6 +11,7 @@ var ForceGraph = require('force-graph');
 var codeLink = '';
 var reportLink = '';
 var alertLocation = '';
+var dataConfigId = 0;
 document.getElementById("loader").style.display = "none";
 var isNodeFilter = false;
 $("#divFilterBlock").hide();
@@ -74,7 +75,7 @@ $(function () {
                 .linkColor(link => {
                     return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
                 })
-                $("#divFilterBlock").hide();
+            $("#divFilterBlock").hide();
         }
         else {
             if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
@@ -388,6 +389,7 @@ function Bind2DForceGraph() {
                 $("#filterDescription").text(filterData[0].lLinkDescription);
                 $("#filterTags").text(filterData[0].lTags);
                 alertLocation = filterData[0].Location;
+                dataConfigId = filterData[0].DataSourceConfig;
                 codeLink = filterData[0].lCodeLink;
                 reportLink = filterData[0].lReportLink;
             })
@@ -642,6 +644,7 @@ function NodeFilterGraphData(selId, searchText) {
                     $("#filterDescription").text(filterData[0].lLinkDescription);
                     $("#filterTags").text(filterData[0].lTags);
                     alertLocation = filterData[0].Location;
+                    dataConfigId = filterData[0].DataSourceConfig;
                     codeLink = filterData[0].lCodeLink;
                     reportLink = filterData[0].lReportLink;
                 })

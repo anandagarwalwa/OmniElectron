@@ -337,7 +337,7 @@
             </div>
             <!-- Modal body -->
         <div class="modal-body">
-             <div class="form-main-section add-link-form">
+             <div class="form-main-section add-link-form" style="height: 540px;overflow-y: auto;">
                 <form id="addDataLinkForm" method="post">
                     <input id="hdnDataLinkId" type="hidden">
                     <div class="form-group">
@@ -360,6 +360,12 @@
                     <div class="form-group">
                         <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Data Source</label>
                         <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
+                        </select>
+                    </div>
+
+                     <div class="form-group" id="dataConfigId">
+                        <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Data Source Config</label>
+                        <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DatasourceConfigSelect" id="DatasourceConfigSelect">
                         </select>
                     </div>
 
