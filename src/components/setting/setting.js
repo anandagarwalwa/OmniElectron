@@ -4,9 +4,9 @@ var { addWorkspace, getWorkspaceUsersById, updateWorkspaceById } = require(__dir
 var { getRoles } = require(__dirname + '\\server\\controllers\\roles_controller.js');
 var { getTeamUserMappingByID, addBulkTeamUserMapping, deleteTeamsUserMapping } = require(__dirname + '\\server\\controllers\\teamusermapping_controller.js');
 var { addTeams, getTeamsList, getTeamsByID, updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
+var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
+var { addDatasourceDBConfig,updateDatasourceDBConfigUserById,getDatasourceDBConfig,getDatabaseDBConfigUsersById,deleteDatabaseDBConfigUser } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
 var defaultImgUrl = "assets/images/40306.jpg";
-
-
 
 
 document.getElementById("loader").style.display = "none";
@@ -643,18 +643,6 @@ $("#addTeamsForm").validate({
     },
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Team Section
 $("#IdAddteams").click(function () {
     debugger;
@@ -949,3 +937,423 @@ $("#searchteam").on("keyup", function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 });
+
+//search from database list
+$("#searchDatabase").on("keyup", function () {
+    var value = $(this).val().toLowerCase();
+    $("#databaseList li").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});
+
+//------- Database Block Start --------------
+RebindDatabaseList();
+function RebindDatabaseList() {
+    debugger;
+    getDatasourceDBConfig().then(ResponseDatabaseList => {
+        var html = "";
+        $("#databaseList").html("");
+        for (var d = 0; d < ResponseDatabaseList.length; d++) {
+            var Items = ResponseDatabaseList[d];
+            var value = ResponseDatabaseList[d].IsActive.readUIntLE();
+            if (value == 1) {
+                ResponseDatabaseList[d].IsActiveStatus = 'Active';
+            } else {
+                ResponseDatabaseList[d].IsActiveStatus = 'In Active';
+            }
+            html += '<li>'
+                + '<div class="col-md-12 pt-2">'
+                + ' <div class="row">'
+                + ' <div class="col-md-3 col-xl-4 col-lg-3 col-sm-3">'
+                + ' <h6>' + Items.ConfigName + '</h6>'
+                + ' </div>'
+                + '  <div class="col-md-3 col-xl-4 col-lg-4 col-sm-3">'
+                + ' <h6>' + Items.IsActiveStatus + '</h6>'
+                + ' </div>'
+                + ' <div class="col-md-6 col-xl-4 col-lg-5 col-sm-6">'
+                + ' <a  data-databaseUserid=' + Items.Id + ' rv-data-category-TeamId=' + Items.Id
+                + ' class="btn-add-member-action btn-primary" id="EditDatabase"'
+                + ' onclick="EditDatebase(this)" style=color:white;cursor: pointer;>Edit</a>'
+                + ' <a href="javascript:void(0)" data-databaseUserid=' + Items.Id + ' rv-data-category-TeamId=' + Items.Id
+                + ' class="btn-add-member-action btn-primary"'
+                + ' onclick="deleteDatabadeClick(this)">Delete</a>'
+                + ' </div>'
+                + ' </div>'
+                + ' </div>'
+                + ' </li>'
+        }
+        $("#databaseList").html(html);
+    }).catch(error => {
+
+    });
+}
+
+function deleteDatabadeClick(databaseobj)
+{
+
+    var id = $(databaseobj).attr("data-databaseUserid");;
+    $.confirm({
+        title: 'Delete Confirmation?',
+        content: 'Are you sure you want to delete this Database?',
+        type: 'green',
+        buttons: {
+            ok: {
+                text: "Yes",
+                btnClass: 'btn-primary',
+                keys: ['enter'],
+                action: function () {
+                    deleteDatabaseDBConfigUser(id).then(data => {
+                        RebindDatabaseList();
+                        $.toast({
+                            text: "Database deleted Successfully.", // Text that is to be shown in the toast
+                            heading: 'Success Message', // Optional heading to be shown on the toast
+                            icon: 'success', // Type of toast icon
+                            showHideTransition: 'fade', // fade, slide or plain
+                            allowToastClose: true, // Boolean value true or false
+                            hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                            stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                            position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                            textAlign: 'left',  // Text alignment i.e. left, right or center
+                            loader: false,  // Whether to show loader or not. True by default
+                            loaderBg: '#9EC600',  // Background color of the toast loader
+                            beforeShow: function () { }, // will be triggered before the toast is shown
+                            afterShown: function () { }, // will be triggered after the toat has been shown
+                            beforeHide: function () { }, // will be triggered before the toast gets hidden
+                            afterHidden: function () { }  // will be triggered after the toast has been hidden
+                        });
+                    });
+                }
+            },
+            cancel: function () {
+
+            }
+        }
+    });
+
+}
+
+
+
+
+function EditDatebase(databaseobj)
+{
+    debugger
+     $('#DatabaseModals').modal('show');
+     var id = $(databaseobj).attr("data-databaseUserid");
+    getDatabaseDBConfigUsersById(id).then(data => {
+        console.log(data);
+         $("#txtConfigName").val(data[0].ConfigName);
+         $("#DatabaseID").val(data[0].Id);
+    $("#ddlDatasourceType").val(data[0].DataSourceId);
+
+    if(data[0].DataSourceId == 4 || data[0].DataSourceId == 3)
+    {
+        $("#fileBlock").show();
+        $("#dbBlock").hide();  
+    }
+    else
+    {
+        $("#fileBlock").hide();
+        $("#dbBlock").show();   
+    }
+    $("#txtHost").val(data[0].Host);
+    $("#txtPort").val(data[0].Port);
+    $("#txtUser").val(data[0].UserName);
+    $("#txtPassword").val(data[0].Password);
+    $("#ddlDatabaseList").val(data[0].DatabaseName);
+    $("#txtLocation").val(data[0].Location);                  
+    if (data[0].IsActive.readUIntLE() == 1) {
+        isActive=data[0].IsActive.readUIntLE();
+        $('#DatabaseIsActive').prop('checked', true);
+    } else {
+        isActive=0;
+        $('#DatabaseIsActive').prop('checked', false);
+    }
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+
+BindDataSources();
+function BindDataSources(){
+    getDatasource().then(data => {
+        var html = '<option value="0"> Select </option>';
+        if (data) {
+            $.each(data, function (key, val) {
+                html += '<option value=' + val.Id + '>' + val.Name + '</option>';                
+            });
+            $('#ddlDatasourceType').html(html);
+        }
+    });
+}
+$("#ddlDatasourceType").change(function () {
+     var selectedVal = $("#ddlDatasourceType option:selected").text();
+     if($("#ddlDatasourceType").val() == "0")
+     {
+        $("#dbBlock").hide();
+        $("#fileBlock").hide();
+     }
+     else if(selectedVal.toLowerCase().indexOf("sql") != -1){
+        $("#fileBlock").hide();
+         $("#dbBlock").show();
+         $("#txtLocation").val("");
+     }
+     else{
+        $("#dbBlock").hide();
+        $("#fileBlock").show();
+        $("#txtHost").val("");
+        $("#txtPort").val("");
+        $("#txtUser").val("");
+        $("#txtPassword").val("");
+        $("#ddlDatabaseList").val(0);
+     }  
+});
+$("#btnTestDBConnection").click(function () {
+    //Check if Selected option is MySQL
+    //Check if Selected option is MSSQL
+    //Check if Selected option is PostgreSQL
+    
+    var dbType = $("#ddlDatasourceType option:selected").text();    
+    if(dbType == "MySql"){
+        const options = {
+            client: 'mysql',
+            connection: {
+                host: $("#txtHost").val(),
+                port: $("#txtPort").val(),
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val()                
+            }
+        }        
+        const knex = require('knex')(options);
+        knex.raw('SHOW DATABASES').then(data => {
+            debugger;
+            if(data && data.length > 0){
+                var dbData = data[0];
+                var html = '';
+                for (var u = 0; u < dbData.length; u++) {
+                    html += '<option value="' + dbData[u].Database + '">' + dbData[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+    else if(dbType == "MSSql"){
+        const options = {
+            client: 'mssql',
+            connection: {
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val(),
+                server: $("#txtHost").val(),
+                options: {
+                    port: 1433
+                  }                
+            }
+        }       
+        const knex = require('knex')(options);
+        knex.raw('SELECT name as [Database] FROM master.dbo.sysdatabases').then(data => {
+            if(data && data.length > 0){
+                var html = '';
+                for (var u = 0; u < data.length; u++) {
+                    html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    } 
+    else if(dbType == "PostgreSQL"){
+          const options = {
+            client: 'postgresql',
+            connection: {
+                user: $("#txtUser").val(),
+                password: $("#txtPassword").val(),
+                host: $("#txtHost").val()                             
+            }
+        }       
+        debugger;
+        const knex = require('knex')(options);
+        knex.raw('SELECT datname FROM pg_database WHERE datistemplate = false').then(data => {
+            if(data && data.length > 0){
+                debugger;
+                var html = '';
+                for (var u = 0; u < data.length; u++) {
+                    html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
+                }
+                $("#ddlDatabaseList").html(html);
+            }
+        }).catch(err => {
+            debugger;
+            console.error(err);
+        });
+
+    }
+});
+
+
+var isActive = "";
+$('#DatabaseIsActive').on('change', function () {
+    isActive = this.checked ? 1 : 0;
+}).change();
+
+function resetDatabaseModel() {
+     $("#txtConfigName").val("");
+    $("#ddlDatasourceType").val(0);
+    $("#txtHost").val("");
+    $("#txtPort").val("");
+    $("#txtUser").val("");
+    $("#txtPassword").val("");
+    $("#ddlDatabaseList").val(0);
+    $("#txtLocation").val("");                  
+    isActive="";
+}
+
+$("#addDatabase").click(function () {
+    $("#dbBlock").hide();
+    $("#fileBlock").hide();
+    resetDatabaseModel();
+});
+
+
+$("#btnSaveDBConfig").click(function () {
+
+$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+    return arg !== value;
+}, "Value must not equal arg.");
+
+
+    $("#addDatabaseForm").validate({
+    ignore: [],
+    rules: {
+        ConfigName: { required: false },
+       ddlDatasourceType: {  valueNotEquals: "0" },
+        // Location: {  required: false },
+        txtHost: {  required: false },
+        txtPort: {  required: false },
+        txtUser:{required: false},
+        // txtPassword:{required: false},
+       // ddlDatabaseList:{ valueNotEquals: "0"}
+    },
+    messages: {
+        ConfigName: {
+            required: "This field is required"
+        },
+        ddlDatasourceType: {
+           valueNotEquals: "Please select a Datasource!"
+        },
+        // Location: {
+        //     required: 'This field is required',
+        // },
+         txtHost: {
+            required: 'This field is required',
+        },
+         txtPort: {
+            required: 'This field is required',
+        },
+         txtUser: {
+            required: 'This field is required',
+        },
+        //  txtPassword: {
+        //     required: 'This field is required',
+        // },
+        // ddlDatabaseList: {
+        //    valueNotEquals: "Please select a Database!"
+        // },
+    },
+});   
+ var addDatabasedetails = $('form[id="addDatabaseForm"]').valid();
+ debugger;
+    if (addDatabasedetails == true) {
+         if ($("#DatabaseID").val() != 0 || $("#DatabaseID").val() != "") {
+            updateDatasourceDBConfigUserById($("#DatabaseID").val(), {
+                'ConfigName': $("#txtConfigName").val(),
+                    'DatasourceId': $("#ddlDatasourceType").val(),
+                    'Host': $("#txtHost").val(),
+                    'Port': $("#txtPort").val(),
+                    'UserName': $("#txtUser").val(),
+                    'Password':$("#txtPassword").val(),
+                    'DatabaseName':$("#ddlDatabaseList").val(),
+                    'Location':$("#txtLocation").val(),                    
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date(),
+                    'IsActive': isActive
+            }).then(data => {
+                $("#DatabaseModals").modal('hide');
+                RebindDatabaseList();
+                $.toast({
+                    text: "Database details updated Successfully.", // Text that is to be shown in the toast
+                    heading: 'Success Message', // Optional heading to be shown on the toast
+                    icon: 'success', // Type of toast icon
+                    showHideTransition: 'fade', // fade, slide or plain
+                    allowToastClose: true, // Boolean value true or false
+                    hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                    stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                    textAlign: 'left',  // Text alignment i.e. left, right or center
+                    loader: false,  // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600',  // Background color of the toast loader
+                    beforeShow: function () { }, // will be triggered before the toast is shown
+                    afterShown: function () { }, // will be triggered after the toat has been shown
+                    beforeHide: function () { }, // will be triggered before the toast gets hidden
+                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                });
+                resetDatabaseModel();
+            })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+        else {
+            addDatasourceDBConfig(
+                {
+                    'ConfigName': $("#txtConfigName").val(),
+                    'DatasourceId': $("#ddlDatasourceType").val(),
+                    'Host': $("#txtHost").val(),
+                    'Port': $("#txtPort").val(),
+                    'UserName': $("#txtUser").val(),
+                    'Password':$("#txtPassword").val(),
+                    'DatabaseName':$("#ddlDatabaseList").val(),
+                     'Location':$("#txtLocation").val(),           
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date(),
+                    'IsActive': isActive
+                }
+            ).then(data => {
+                $("#DatabaseModals").modal('hide');
+               RebindDatabaseList();
+                $.toast({
+                    text: "Database details save Successfully.", // Text that is to be shown in the toast
+                    heading: 'Success Message', // Optional heading to be shown on the toast
+                    icon: 'success', // Type of toast icon
+                    showHideTransition: 'fade', // fade, slide or plain
+                    allowToastClose: true, // Boolean value true or false
+                    hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                    stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                    textAlign: 'left',  // Text alignment i.e. left, right or center
+                    loader: false,  // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600',  // Background color of the toast loader
+                    beforeShow: function () { }, // will be triggered before the toast is shown
+                    afterShown: function () { }, // will be triggered after the toat has been shown
+                    beforeHide: function () { }, // will be triggered before the toast gets hidden
+                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                });
+               resetDatabaseModel();
+            })
+                .catch(err => {
+                    console.error(err);
+                    resetDatabaseModel();
+                });
+        }
+    }
+    else
+    {
+        alert("not working");
+    }
+});
+
+//
+//------- Database Block End --------------

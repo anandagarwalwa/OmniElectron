@@ -16,6 +16,8 @@
                             role="tab" aria-controls="v-pills-messages" aria-selected="false">workspace</a>
                         <a class="nav-link" id="v-pills-team-tab" data-toggle="pill" href="#v-pills-team" role="tab"
                             aria-controls="v-pills-team" aria-selected="false">Teams</a>
+                        <a class="nav-link" id="v-pills-database-tab" data-toggle="pill" href="#v-pills-database" role="tab"
+                            aria-controls="v-pills-database" aria-selected="false">Databases</a>
 
                     </div>
                     <div class="tab-content col-xl-10 col-sm-9 col-lg-9 col-md-9 col-12" id="v-pills-tabContent">
@@ -51,7 +53,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
                             aria-labelledby="v-pills-profile-tab">
                             <div class="tab-Two-main-section">
@@ -255,9 +256,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
                         <div class="tab-pane fade" id="v-pills-team" role="tabpanel" aria-labelledby="v-pills-team-tab">
                             <div class="tab-Two-main-section">
                                 <div class="tab-two-top-section">
@@ -385,6 +383,134 @@
                                                 </div>
                                             </div>
                                         </li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="v-pills-database" role="tabpanel" aria-labelledby="v-pills-database-tab">
+                            <div class="tab-Two-main-section">
+                                <div class="tab-two-top-section">
+                                    <div class="tab-two-btn">
+                                        <button href="#" class="btn btn-group-lg btn-primary" id="addDatabase"
+                                            data-toggle="modal" data-target="#DatabaseModals"   >Add Database</button>
+                                    </div>
+                                    <div class="tab-two-btn-content">
+                                        <!-- The Modal -->
+                                        <div class="modal fade" id="DatabaseModals" tabindex="-1" role="dialog"
+                                            aria-labelledby="DatabaseModals" aria-hidden="true">
+
+                                            <div class="modal-dialog modal-md">
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Add Database</h4>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <!-- Modal body -->
+                                                    <div class="modal-body modal-my-content">
+                                                        <div class="member-form-section">
+                                                            <form id="addDatabaseForm" method="post">
+                                                                <div class="form-group">
+                                                                    <label for="ConfigName">Configuration name</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="txtConfigName" name="ConfigName" 
+                                                                        placeholder="Configuration Name">
+                                                                    <input type="hidden" id="DatabaseID" name="DatabaseID"
+                                                                        >
+                                                                </div>
+                                                                <!----Dropdown--->
+                                                                <div class="form-group">
+                                                                    <label for="ddlDatasourceType">Datasource Type</label>
+                                                                        <select class="form-control" name="ddlDatasourceType" id="ddlDatasourceType">                                                                        
+                                                                    </select>
+                                                                </div>
+                                                                <div id="dbBlock" style="display: none;">
+                                                                    <div class="form-group">
+                                                                        <label for="txtHost">Host/Server</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="txtHost" name="txtHost"
+                                                                            aria-describedby="emailHelp"
+                                                                            placeholder="Host/Server">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="txtPort">Port</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="txtPort" name="txtPort"
+                                                                            aria-describedby="emailHelp"
+                                                                            placeholder="Port">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="txtUser">User</label>
+                                                                        <input type="text" class="form-control"
+                                                                            id="txtUser" name="txtUser"
+                                                                            aria-describedby="emailHelp"
+                                                                            placeholder="User">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="txtPassword">Password</label>
+                                                                        <input type="password" class="form-control"
+                                                                            id="txtPassword" name="txtPassword"
+                                                                            aria-describedby="emailHelp"
+                                                                            placeholder="Password">
+                                                                    </div>
+                                                                    <div class="form-group" style="text-align: right;">
+                                                                        <button type="button" class="btn btn-group-lg btn-primary" id="btnTestDBConnection">Load database</button>
+                                                                    </div>
+                                                                    
+                                                                    <!----Dropdown--->
+                                                                    <div class="form-group">
+                                                                        <label for="ddlDatabaseList">Database</label>
+                                                                           <select class="form-control" id="ddlDatabaseList" name="ddlDatabaseList"> 
+                                                                           <option value="0">select</option>                                                                          
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group" id="fileBlock" style="display: none;">
+                                                                    <label for="Location">Location</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="txtLocation" name="Location" 
+                                                                        placeholder="Location">                                                                    
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label
+                                                                        class="rememberme mt-checkbox mt-checkbox-outline mb-0">
+                                                                        <input type="checkbox" name="remember"
+                                                                            id="DatabaseIsActive" value="1">
+                                                                        <span></span>&nbsp;</label> Is Active
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary col-xl-6" id="btnSaveDBConfig">Add</button>
+                                                        <button type="button" class="btn btn-danger col-xl-6"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-search">
+                                        <div id="custom-search-input">
+                                            <div class="input-group col-md-11 col-lg-9 col-11">
+                                                <input type="text" class="  search-query form-control"
+                                                    placeholder="Search" id="searchDatabase">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-danger" type="button">
+                                                        <span class=" fa fa-search"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-two-nav">
+                                    <ul id="databaseList">                                        
                                     </ul>
                                 </div>
                             </div>

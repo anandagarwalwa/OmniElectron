@@ -2,28 +2,23 @@
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'Links'
-const tableName = 'links'
+const name = 'DatasourceDBConfig'
+const tableName = 'datasourcedbconfig'
 
 const selectableProps = [
     'Id',
-    'Description',
-    'Owner',
-    'TeamId',
     'DataSourceId',
-    'Location',
-    'ChannelId',
-    'LinksTo',
-    'LinksFrom',
-    'IsConfluencePage',
-    'NodeId',
+    'Host',
+    'Port',
+    'UserName',
+    'Password',
+    'DatabaseName',
+    'ConfigName',
     'CreatedBy',
     'CreatedDate',
-    'Tag',
-    'Codelink',
-    'ReportLink',
-    'DataSourceConfigId'
-]
+    'IsActive',
+    'Location'
+] 
 
 module.exports = knex => {
     const guts = createGuts({

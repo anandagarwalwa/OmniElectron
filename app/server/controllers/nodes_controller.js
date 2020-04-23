@@ -40,7 +40,7 @@ const deleteNodesbyid = (nodeId) => {
 const getNodeFilterData = (nodeid) => {
     let query = "SELECT n.Description AS nDescription, u.FirstName AS uFirstname, u.LastName AS uLastName, u.Photo AS uUserImage, " +
         "c.Name AS cChannelName, t.TeamName AS tTeamName, d.Name AS dDatasource , l.Description AS lLinkDescription, " +
-        "l.CodeLink AS lCodeLink, l.ReportLink AS lReportLink, l.Tag AS lTags FROM nodes AS n " +
+        "l.CodeLink AS lCodeLink, l.ReportLink AS lReportLink, l.Tag AS lTags, l.Location AS Location, l.DataSourceConfigId as DataSourceConfig FROM nodes AS n " +
         "INNER JOIN users AS u ON n.Owner = u.UserId " +
         "INNER JOIN links AS l ON n.Id = l.NodeId " +
         "INNER JOIN datasources AS d ON l.DataSourceId = d.Id " +
