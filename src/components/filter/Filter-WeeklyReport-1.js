@@ -109,13 +109,6 @@ $(document).ready(function () {
         }
     });
 
-
-
-
-
-
-
-
     $("#btnFilterWeeklyReport").click(function () {
         var addFilterWeeklyReportDetails = $('form[id="addFilterWeeklyReportForm"]').valid();
         if (addFilterWeeklyReportDetails == true) {
