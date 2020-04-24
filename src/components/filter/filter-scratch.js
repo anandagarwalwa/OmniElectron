@@ -1,14 +1,104 @@
 'use strict';
 var { addAlertMaster } = require(__dirname + '\\server\\controllers\\alertmaster_controller.js');
-
-
-
 $(document).ready(function () {
     $('#modeFitlerScratch').modal('hide');
     $("#btnBackFilterResult").click(function(){
         $('#modeFitlerScratch').modal('hide');
         $('#modelFilterResult').modal('show');
     });
+
+    //schedule select view dropdown
+    $("#startingList").html("");
+    $("#startingList").removeAttr("style");
+    $("#daliyList").css("width", "50%");
+    $("#daliyList").html('at <input  type="text" id="timepicker" class="form-control" />');
+    $(function () {
+            $('#timepicker').datetimepicker({
+                 format:'H:i',
+                datepicker:false
+            });
+        });
+
+    $('#everylist').change(function() {
+        var everylist = $("#everylist").val();
+        if ( everylist == 1) {
+            $("#startingList").html("");
+            $("#startingList").removeAttr("style");
+            $("#daliyList").css("width", "50%");
+            $("#daliyList").html('at <input  type="text" id="timepicker" class="form-control" />');
+            $(function () {
+                $('#timepicker').datetimepicker({
+                     format:'H:i',
+                    datepicker:false
+                });
+            });
+        }
+        else
+        {
+            $("#daliyList").html("");
+            $("#daliyList").removeAttr("style");
+            $("#startingList").css("width", "50%");
+            $("#startingList").html('Starting  at <input  type="text" id="datepicker" class="form-control" />');
+            $(function () {
+                $('#datepicker').datetimepicker({
+                    format:'d-m-Y',
+                    timepicker:false
+                });
+            });
+        }
+    
+    });
+
+
+    //End  
+
+    //selected radio button view 
+    $("#radioSelectedTxtView").html('<div class="form-group">'+
+            '<label class="float-left" for="emailTitle">Email Title</label>'+
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">'+
+        '</div>'+
+        '<div class="form-group">'+
+            '<label class="float-left" for="email">Recipients</label>'+
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">'+
+        '</div>'+
+        '<div class="form-group">'+
+            '<label class="float-left" for="pwd">EmailBody</label>'+
+            '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">'+
+        '</div>');
+    $('input').on('change', function() {
+        var radioBtnValue = $('input[name=notificationOptRadio]:checked').val();
+        if (radioBtnValue == "Email") {
+            $("#radioSelectedTxtView").html("");
+            $("#radioSelectedTxtView").html('<div class="form-group">'+
+            '<label class="float-left" for="emailTitle">Email Title</label>'+
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">'+
+        '</div>'+
+        '<div class="form-group">'+
+            '<label class="float-left" for="email">Recipients</label>'+
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">'+
+        '</div>'+
+        '<div class="form-group">'+
+            '<label class="float-left" for="pwd">EmailBody</label>'+
+            '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">'+
+        '</div>');
+        }
+        else{
+            $("#radioSelectedTxtView").html("");
+            $("#radioSelectedTxtView").html('<div class="form-group">'+
+            '<label class="float-left" for="email">Recipients</label>'+
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="txtrecipients" name="txtrecipients">'+
+            '</div>'+
+            '<div class="form-group">'+
+            '<label class="float-left" for="emailTitle">Channels</label>'+
+                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="channels" name="channels">'+
+            '</div>'+
+            '<div class="form-group">'+
+                '<label class="float-left" for="pwd">Message</label>'+
+                '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="message" name="message">'+
+            '</div>');
+        } 
+     });
+    //End
 
     var $timeFrame = $(".js-range-slider");
     var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
