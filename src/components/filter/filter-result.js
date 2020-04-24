@@ -6,6 +6,8 @@ var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\data
 var { addAlertschedule } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
 // var csv = require('csvtojson');
 var csv = require('csv2json-convertor');
+var nodemailer = require('nodemailer');
+var schedule = require('node-schedule');
 var getAlertLocationFileData = [];
 var columnList = [];
 $(document).ready(function () {
@@ -383,6 +385,57 @@ $("#addFilterWeeklyReportForm").validate({
             required: "This field is required"
         }
     }
+});
+
+
+// for sending email
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'manojn.wa@gmail.com',
+        pass: 'Manoj&webashlar'
+    }
+});
+
+const mailOptions = {
+    from: 'manojn.wa@gmail.com', // sender address
+    to: 'nipanemanoj342@gmail.com', // list of receivers
+    subject: 'test mail', // Subject line
+    html: '<h1>this is a test mail.</h1>'// plain text body
+};
+
+$("#btnFilterWeeklyReport").click(function () {
+    debugger;
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    })
+});
+
+
+// for set schedul
+// debugger;
+// var schedule = require('schedulejs'),
+//     tasks = [
+//         { id: 1, duration: 1, resources: ['A'] }
+//     ],
+//     resources = [
+//         { id: 'A' }
+//     ];
+
+// schedule.create(tasks, resources, null, new Date());
+
+var j = schedule.scheduleJob('*/1 * * * *', function (fireDate) {
+    debugger;
+    console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    })
 });
 
 function tets() {
