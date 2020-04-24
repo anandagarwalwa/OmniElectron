@@ -3,13 +3,16 @@ var xlsxFile = require('read-excel-file/node');
 // var gsjson = require('google-spreadsheet-to-json');
 var gshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.js');
 var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
+var { addAlertschedule } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
 // var csv = require('csvtojson');
 var csv = require('csv2json-convertor');
+var nodemailer = require('nodemailer');
+var schedule = require('node-schedule');
 var getAlertLocationFileData = [];
 var columnList = [];
 $(document).ready(function () {
     $('#modelFilterResult').modal('show');
-    $("#btnfilterResult").click(function () {
+    $("#btnFilterWeeklyReport").click(function () {
         $('#modelFilterResult').modal('hide');
         $('#modeFitlerScratch').modal('show');
     });
@@ -21,13 +24,63 @@ $(document).ready(function () {
     $("#setalertid").hide();
     $("#setmetricid").hide();
     $("#addAlerticid").hide();
-});
 
+    // Timeframe slider
+    var $timeFrame = $(".js-range-slider");
+    var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
+        instance,
+        min = 0,
+        max = 100;
+    $timeFrame.ionRangeSlider({
+        skin: "modern",
+        type: "double",
+        from: 10,
+        to: 100,
+        grid: false,
+        onStart: function (data) {
+            $tFrom.prop("value", data.from);
+            $tTo.prop("value", data.to);
+        },
+        onChange: function (data) {
+            $tFrom.prop("value", data.from);
+            $tTo.prop("value", data.to);
+        }
+    });
+    instance = $timeFrame.data("ionRangeSlider");
+    $tFrom.on("change keyup", function () {
+        var val = $(this).prop("value");
+
+        // validate
+        if (val < min) {
+            val = min;
+        } else if (val > max) {
+            val = max;
+        }
+
+        instance.update({
+            from: val
+        });
+    });
+    $tTo.on("change keyup", function () {
+        var val = $(this).prop("value");
+
+        // validate
+        if (val < min) {
+            val = min;
+        } else if (val > max) {
+            val = max;
+        }
+
+        instance.update({
+            to: val
+        });
+    });
+});
+var slider = $(".js-range-slider").data("ionRangeSlider");
 // read location file
 var fileExtention = alertLocation.substr((alertLocation.lastIndexOf('.') + 1));
 var listOfgoogleSheet = [];
 var googleSpreadsheetId = alertLocation.substring(39, 83);
-debugger;
 if (fileExtention == "csv") {
     getCSVFile();
 }
@@ -55,7 +108,6 @@ function getExcelFile() {
     $("#tablist").html("");
     var html = '';
     for (var i = 0; i < sheet_name_list.length; i++) {
-        debugger;
         html += '<option value="' + sheet_name_list[i].Sheet + '">' + sheet_name_list[i].Sheet + '</option>';
     }
     $("#tablist").html(html);
@@ -63,7 +115,6 @@ function getExcelFile() {
     var worksheet = workbook.Sheets[sheet_name_list[0].Sheet];
     var headers = {};
     var data = [];
-    debugger;
     for (var z in worksheet) {
         if (z[0] === '!') continue;
         //parse out the column, row, and value
@@ -210,7 +261,6 @@ function displaysheetdetails(data) {
         th.innerHTML = col[i];
         tr.appendChild(th);
     }
-    debugger;
     // ADD JSON DATA TO THE TABLE AS ROWS.
     for (var i = 1; i < data.length; i++) {
 
@@ -284,7 +334,6 @@ function selectedHeaderValueDisplay() {
 
 // get Data from Datasource Config
 function dataSourceConfigData(configData) {
-    debugger;
     if (configData.DataSourceName.toLowerCase().indexOf("sql") != -1) {
         const options = {
             client: configData.DataSourceName.toLowerCase(),
@@ -298,7 +347,6 @@ function dataSourceConfigData(configData) {
         }
         const knex = require('knex')(options);
         knex.raw(alertLocation).then(data => {
-            debugger;
             if (data && data.length > 0) {
                 var dbData = data[0];
                 displaysheetdetails(dbData);
@@ -320,4 +368,130 @@ function dataSourceConfigData(configData) {
         googleSpreadsheetId = configData.Location.substring(39, 83);
         getGoogleSheet();
     }
+}
+
+// Set Alert schedular
+$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+    return arg !== value;
+}, "Value must not equal arg.");
+
+$("#addFilterWeeklyReportForm").validate({
+    ignore: [],
+    rules: {
+        orderDatesheetList: { required: true },
+    },
+    messages: {
+        orderDatesheetList: {
+            required: "This field is required"
+        }
+    }
+});
+
+
+// for sending email
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'manojn.wa@gmail.com',
+        pass: 'Manoj&webashlar'
+    }
+});
+
+const mailOptions = {
+    from: 'manojn.wa@gmail.com', // sender address
+    to: 'nipanemanoj342@gmail.com', // list of receivers
+    subject: 'test mail', // Subject line
+    html: '<h1>this is a test mail.</h1>'// plain text body
+};
+
+$("#btnFilterWeeklyReport").click(function () {
+    debugger;
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    })
+});
+
+
+// for set schedul
+// debugger;
+// var schedule = require('schedulejs'),
+//     tasks = [
+//         { id: 1, duration: 1, resources: ['A'] }
+//     ],
+//     resources = [
+//         { id: 'A' }
+//     ];
+
+// schedule.create(tasks, resources, null, new Date());
+
+var j = schedule.scheduleJob('*/1 * * * *', function (fireDate) {
+    debugger;
+    console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    })
+});
+
+function tets() {
+    $("#btnFilterWeeklyReport").click(function () {
+        // var addFilterWeeklyReportDetails = $('form[id="addFilterWeeklyReportForm"]').valid();
+        // if (addFilterWeeklyReportDetails == true) {
+        addAlertschedule(
+            {
+                UserId: parseInt(localStorage.getItem("UserId")),
+                NodeId: alertNodeId,
+                SetAlertTo: $("#orderDateChangeName").text(),
+                Granularity: $("#granularity").val(),
+                TimeframeFrom: parseInt($("#tFrom").val()),
+                TimeframeTo: parseInt($("#tTo").val()),
+                AlertToMetric: $("#bookingsChangeName").text(),
+                MetricCriteria: $("#matricConditionList").val(),
+                MetricValue: parseInt($("#matricValue").val()),
+                AlertFilter: $("#addAlertName").text(),
+                FilterCriteria: $("#filterConditionList").val(),
+                FilterValue: $("#selectcoloumnId").val(),
+                CreatedDate: new Date(),
+                DateRun: new Date(),
+                AlertFailure: 0
+            }
+        ).then(data => {
+            $.toast({
+                text: "Add filter weeklyRepoort save Successfully.", // Text that is to be shown in the toast
+                heading: 'Success Message', // Optional heading to be shown on the toast
+                icon: 'success', // Type of toast icon
+                showHideTransition: 'fade', // fade, slide or plain
+                allowToastClose: true, // Boolean value true or false
+                hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                textAlign: 'left',  // Text alignment i.e. left, right or center
+                loader: false,  // Whether to show loader or not. True by default
+                loaderBg: '#9EC600',  // Background color of the toast loader
+                beforeShow: function () { }, // will be triggered before the toast is shown
+                afterShown: function () { }, // will be triggered after the toat has been shown
+                beforeHide: function () { }, // will be triggered before the toast gets hidden
+                afterHidden: function () { }  // will be triggered after the toast has been hidden
+            });
+            $("#orderDate").val("0");
+            $("#granularity").val("0");
+            $("#booking").val("0");
+            $("#tFrom").val("0");
+            $("#tTo").val("100");
+            slider.reset();
+            $("#matricConditionList").val("0");
+            $("#matricValue").val("");
+            $("#product").val("0");
+            $("#filterConditionList").val("0");
+            $("#filterValue").val("");
+        }).catch(err => {
+            console.error(err);
+        });
+        // }
+    });
 }

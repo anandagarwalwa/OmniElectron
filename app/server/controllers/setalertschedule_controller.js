@@ -1,6 +1,6 @@
 'use strict'
 
-const { AlertDetail } = require('../models')
+const { Alertschedule } = require('../models')
 
 const {
     createError,
@@ -9,15 +9,15 @@ const {
 } = require('../helpers/error_helper')
 
 
-const getAlertDetailByID = (id) => {
-    return AlertDetail.find({ Id: id });
+const getAlertscheduleByID = (id) => {
+    return Alertschedule.find({ Id: id });
     //return Analysis.findAll();
 }
 
 
-const addAlertDetail = (data) => {
+const addAlertschedule = (data) => {
     debugger;
-    return AlertDetail.create(data)
+    return Alertschedule.create(data)
     // .then(data => {
     //     console.log(data);
     // }).catch(err => {
@@ -25,8 +25,8 @@ const addAlertDetail = (data) => {
     // });
 }
 
-const updateAlertDetailbyID = (id, data) => {
-    return AlertDetail.update({ Id: id }, data);
+const updateAlertschedulebyID = (id, data) => {
+    return Alertschedule.update({ Id: id }, data);
     // .then(data => {
     //     console.log(data);
     // }).catch(err => {
@@ -34,8 +34,8 @@ const updateAlertDetailbyID = (id, data) => {
     // });
 }
 
-const deleteAlertDetailbyID = (nodeId) => {
-    return AlertDetail.destroy({ Id: Id })
+const deleteAlertschedulebyID = (nodeId) => {
+    return Alertschedule.destroy({ Id: Id })
     // .then(data => {
     //     console.log(data);
     // }).catch(err => {
@@ -44,8 +44,8 @@ const deleteAlertDetailbyID = (nodeId) => {
 }
 
 module.exports = {
-    getAlertDetailByID,
-    addAlertDetail,
-    updateAlertDetailbyID,
-    deleteAlertDetailbyID
+    getAlertscheduleByID,
+    addAlertschedule,
+    updateAlertschedulebyID,
+    deleteAlertschedulebyID
 }
