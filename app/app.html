@@ -4,9 +4,10 @@
 <head>
     <title></title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="assets/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/jquery.toast.css">
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="assets/css/sumoselect.css"></link>
     <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css"></link>
     <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css"></link>
+
     <style>
         #main-side {
             display: block;
@@ -122,7 +124,7 @@
                 <ul class="list-unstyled components">
                     <li class="active timeline-ico explore-icon">
                         <a route-link route-href="explore" id="explorenode">
-                             <img src="assets/images/Explore.svg" class="img-fluid">
+                            <img src="assets/images/Explore.svg" class="img-fluid">
                             Explore
                         </a>
                     </li>
@@ -140,7 +142,7 @@
                         </a>
                     </li>
                     <li>
-                        <a route-link route-href="explore"  id="fildernode">
+                        <a route-link route-href="explore" id="fildernode">
                             <i class="fas fa-filter"></i>
                             Filter
                         </a>
@@ -207,8 +209,8 @@
                                 </div> -->
 
                                 <div class="dropdown">
-                                    <button type="button" class="btn  dropdown-toggle"
-                                        data-toggle="dropdown" style="margin-top: 9px;">
+                                    <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown"
+                                        style="margin-top: 9px;">
                                         <span id="usernameid"></span>
                                     </button>
                                     <img id="userimage" src="assets/images/40306.jpg"
@@ -253,16 +255,18 @@
         </div>
     </section>
 
-
+    
     <script src="./assets/js/jquery-3.4.1.slim.min.js"></script>
     <script src="./assets/js/jquery-3.4.1.min.js"></script>
     <script src="./assets/js/jquery.validate.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.datetimepicker.full.min.js"></script>
     <script src="assets/js/all.js"></script>
     <script src="./main.js"></script>
     <script src="assets/js/route.js"></script>
-    <script src="assets/js/jquery.sumoselect.js"></script>    
+    <script src="assets/js/jquery.sumoselect.js"></script>
     <script>
         var views = {
             explore: [{
@@ -303,11 +307,11 @@
             filterResult: [{
                 selector: "#content",
                 templateUrl: '../src/components/filter/filter-result.html'
-            }, ],
+            },],
             filterScratch: [{
                 selector: "#content",
                 templateUrl: '../src/components/filter/filter-scratch.html'
-            }, ],
+            },],
             defaultView: {
                 view: 'explore'
             }
@@ -325,7 +329,14 @@
     <script type="text/javascript" src="assets/js/jquery.toast.js"></script>
     <script type="text/javascript" src="assets/js/ion.rangeSlider.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap-tagsinput.js"></script>
-    
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <!-- <script type="text/javascript" src="later.min.js"></script>
+    <script type="text/javascript" src="schedule.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/schedulejs/0.6.3/schedule.min.js"></script>
+    <script type="text/javascript">
+    // schedule namespace is available
+    </script>
 </body>
 
 </html>
