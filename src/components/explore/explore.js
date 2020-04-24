@@ -11,6 +11,7 @@ var ForceGraph = require('force-graph');
 var codeLink = '';
 var reportLink = '';
 var alertLocation = '';
+var alertNodeId = 0;
 var dataConfigId = 0;
 document.getElementById("loader").style.display = "none";
 var isNodeFilter = false;
@@ -392,6 +393,7 @@ function Bind2DForceGraph() {
                 dataConfigId = filterData[0].DataSourceConfig;
                 codeLink = filterData[0].lCodeLink;
                 reportLink = filterData[0].lReportLink;
+                alertNodeId = node.nodeId;
             })
             // }
             // Center/zoom on node
@@ -647,6 +649,7 @@ function NodeFilterGraphData(selId, searchText) {
                     dataConfigId = filterData[0].DataSourceConfig;
                     codeLink = filterData[0].lCodeLink;
                     reportLink = filterData[0].lReportLink;
+                    alertNodeId = node.nodeId;
                 })
             }
             Graph.centerAt(node.x, node.y, 1000);

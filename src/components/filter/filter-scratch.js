@@ -2,14 +2,15 @@
 var { addAlertMaster } = require(__dirname + '\\server\\controllers\\alertmaster_controller.js');
 
 
-
+$(function () {
+    $("#datepicker").datepicker();
+});
 $(document).ready(function () {
     $('#modeFitlerScratch').modal('hide');
-    $("#btnBackFilterResult").click(function(){
+    $("#btnBackFilterResult").click(function () {
         $('#modeFitlerScratch').modal('hide');
         $('#modelFilterResult').modal('show');
     });
-
     var $timeFrame = $(".js-range-slider");
     var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
         instance,
