@@ -1,7 +1,7 @@
 <!-- The Modal -->
 <div class="modal fade bd-example-modal-lg" id="modelFilterResult">
   <div class="modal-dialog modal-lg">
-    <form id="addFilterWeeklyReportForm" method="post">
+    <form id="addFilterResultForm" method="post">
       <div class="modal-content">
         <div class="modal-header">
           <h5>Alert-result..display_data</h5>
@@ -30,6 +30,7 @@
                   <div class="alert-btn-popup dropup">
                     <button type="button" id="orderDateChangeName" class="btn btn-group-lg dropdown-toggle"
                       data-toggle="dropdown">Click here to add</button>
+                      <label id="errororderDate" class="error"></label>
                     <div class="dropdown-menu" id="orderDatesheetList">
                     </div>
                   </div>
@@ -38,7 +39,8 @@
                       <div class="form-group">
                         <label for="sel1">Granularity</label>
                         <select class="form-control" id="granularity" name="granularity">
-                          <option value="0">day</option>
+                          <option value="0">select</option>
+                          <option>day</option>
                           <option>week</option>
                           <option>month</option>
                           <option>quarter</option>
@@ -51,9 +53,9 @@
                         <p>Timeframe</p>
                       </div>
                       <div class="slidecontainer granularity-slider">
-                        <input type="text" class="js-range-slider" name="my_range" value="" />
-                        <input type="hidden" class="js-input-from" value="0" id="tFrom" />
-                        <input type="hidden" class="js-input-to" value="0" id="tTo" />
+                        <input type="text" class="js-range"  name="my_range" value="" />
+                        <input type="hidden" class="js-input-from" name="tFrom" value="0" id="tFrom" />
+                        <input type="hidden" class="js-input-to" name="tTo" value="0" id="tTo" />
                       </div>
                     </div>
                   </div>
@@ -65,30 +67,28 @@
                   <div class="alert-btn-popup alert-btn-popup-one dropdown">
                     <button type="button" id="bookingsChangeName" class="btn btn-group-lg dropdown-toggle"
                       data-toggle="dropdown">Click here to add</button>
+                      <label id="errorbookings" class="error"></label>
                     <div class="dropdown-menu" id="bookingsSheetList">
                     </div>
                   </div>
                   <div class="alert-dropdown-section" id="setmetricid">
                     <div class="alert-form-one">
-                      <form>
                         <div class="form-group">
 
-                          <select class="form-control" id="matricConditionList" name="sellist1">
+                          <select class="form-control" id="matricConditionList" name="matricConditionList">
+                            <option value="0">select</option>
                             <option value="less than">less than</option>
                             <option value="greater than">greater than</option>
 
                           </select>
                         </div>
-                      </form>
                     </div>
 
                     <div class="alert-form-Two">
-                      <form>
                         <div class="form-group">
 
-                          <input type="number" class="form-control" placeholder="60" id="matricValue">
+                          <input type="number" class="form-control" placeholder="60" name="matricValue" id="matricValue">
                         </div>
-                      </form>
                     </div>
                   </div>
 
@@ -99,7 +99,7 @@
                   <div class="alert-btn-popup alert-btn-popup-one dropdown">
                     <button type="button" id="addAlertName" class="btn btn-group-lg dropdown-toggle"
                       data-toggle="dropdown">Click here to add</button>
-
+                      <label id="erroraddAlertName" class="error"></label>
                     <div class="dropdown-menu" id="addAlertSheetList">
 
                     </div>
@@ -107,33 +107,33 @@
                   </div>
                   <div class="alert-dropdown-section" id="addAlerticid">
                     <div class="alert-form-one">
-                      <form>
                         <div class="form-group">
 
                           <select class="form-control" id="filterConditionList" name="filterConditionList">
+                            <option value="0">select</option>
                             <option value="equals">equals</option>
                             <option value="does not equal">does not equal</option>
                             <option value="contains">contains</option>
                             <option value="does not contain">does not contain</option>
                           </select>
                         </div>
-                      </form>
+                      
                     </div>
 
                     <div class="alert-form-Two">
-                      <form>
+                      
                         <div class="form-group">
                           <select class="form-control" id="selectcoloumnId" name="selectcoloumnId">
 
                           </select>
                         </div>
-                      </form>
+                      
                     </div>
                   </div>
 
                   <!-- route-link  route-href="filterScratch" -->
                   <div class="filter-footer-btn">
-                    <button type="button" style="margin-top: 15px;" href="#" id="btnFilterWeeklyReport" class="btn btn-group-lg">Set
+                    <button type="button" style="margin-top: 15px;" href="#" id="btnFilterResultReport" class="btn btn-group-lg">Set
                       Schedule</button>
                   </div>
                 </div>
