@@ -6,159 +6,162 @@ $(document).ready(function () {
         $('#modeFitlerScratch').modal('hide');
         $('#modelFilterResult').modal('show');
     });
-
     //schedule select view dropdown
     $("#startingList").html("");
     $("#startingList").removeAttr("style");
     $("#daliyList").css("width", "50%");
-    $("#daliyList").html('at <input  type="text" id="timepicker" class="form-control" />');
+    $("#daliyList").html('at <input  type="text" id="timepicker" name="timepicker"  class="form-control" />');
     $(function () {
-            $('#timepicker').datetimepicker({
-                 format:'H:i',
-                datepicker:false
-            });
+        $('#timepicker').datetimepicker({
+            format: 'H:i',
+            datepicker: false
         });
+    });
 
-    $('#everylist').change(function() {
+    $('#everylist').change(function () {
         var everylist = $("#everylist").val();
-        if ( everylist == 1) {
+        if (everylist == 1) {
             $("#startingList").html("");
             $("#startingList").removeAttr("style");
             $("#daliyList").css("width", "50%");
-            $("#daliyList").html('at <input  type="text" id="timepicker" class="form-control" />');
+            $("#daliyList").html('at <input  type="text" id="timepicker" name="timepicker"  class="form-control" />');
             $(function () {
                 $('#timepicker').datetimepicker({
-                     format:'H:i',
-                    datepicker:false
+                    format: 'H:i',
+                    datepicker: false
                 });
             });
         }
-        else
-        {
+        else {
             $("#daliyList").html("");
             $("#daliyList").removeAttr("style");
             $("#startingList").css("width", "50%");
-            $("#startingList").html('Starting  at <input  type="text" id="datepicker" class="form-control" />');
+            $("#startingList").html('Starting  at <input  type="text" id="datepicker"  name="datepicker" class="form-control" />');
             $(function () {
                 $('#datepicker').datetimepicker({
-                    format:'d-m-Y',
-                    timepicker:false
+                    format: 'd-m-Y',
+                    timepicker: false
                 });
             });
         }
-    
+
     });
 
 
     //End  
 
     //selected radio button view 
-    $("#radioSelectedTxtView").html('<div class="form-group">'+
-            '<label class="float-left" for="emailTitle">Email Title</label>'+
-            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">'+
-        '</div>'+
-        '<div class="form-group">'+
-            '<label class="float-left" for="email">Recipients</label>'+
-            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">'+
-        '</div>'+
-        '<div class="form-group">'+
-            '<label class="float-left" for="pwd">EmailBody</label>'+
-            '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">'+
+    $("#radioSelectedTxtView").html('<div class="form-group">' +
+        '<label class="float-left" for="emailTitle">Email Title</label>' +
+        '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">' +
+        '</div>' +
+        '<div class="form-group">' +
+        '<label class="float-left" for="email">Recipients</label>' +
+        '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">' +
+        '</div>' +
+        '<div class="form-group">' +
+        '<label class="float-left" for="pwd">EmailBody</label>' +
+        '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">' +
         '</div>');
-    $('input').on('change', function() {
+    $('input[type=radio]').on('change', function () {
         var radioBtnValue = $('input[name=notificationOptRadio]:checked').val();
         if (radioBtnValue == "Email") {
             $("#radioSelectedTxtView").html("");
-            $("#radioSelectedTxtView").html('<div class="form-group">'+
-            '<label class="float-left" for="emailTitle">Email Title</label>'+
-            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">'+
-        '</div>'+
-        '<div class="form-group">'+
-            '<label class="float-left" for="email">Recipients</label>'+
-            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">'+
-        '</div>'+
-        '<div class="form-group">'+
-            '<label class="float-left" for="pwd">EmailBody</label>'+
-            '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">'+
-        '</div>');
+            $("#radioSelectedTxtView").html('<div class="form-group">' +
+                '<label class="float-left" for="emailTitle">Email Title</label>' +
+                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="float-left" for="email">Recipients</label>' +
+                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="float-left" for="pwd">EmailBody</label>' +
+                '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">' +
+                '</div>');
         }
-        else{
+        else {
             $("#radioSelectedTxtView").html("");
-            $("#radioSelectedTxtView").html('<div class="form-group">'+
-            '<label class="float-left" for="email">Recipients</label>'+
-            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="txtrecipients" name="txtrecipients">'+
-            '</div>'+
-            '<div class="form-group">'+
-            '<label class="float-left" for="emailTitle">Channels</label>'+
-                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="channels" name="channels">'+
-            '</div>'+
-            '<div class="form-group">'+
-                '<label class="float-left" for="pwd">Message</label>'+
-                '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="message" name="message">'+
-            '</div>');
-        } 
-     });
+            $("#radioSelectedTxtView").html('<div class="form-group">' +
+                '<label class="float-left" for="email">Recipients</label>' +
+                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="slackRecipients" name="slackRecipients">' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="float-left" for="emailTitle">Channels</label>' +
+                '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="channels" name="channels">' +
+                '</div>' +
+                '<div class="form-group">' +
+                '<label class="float-left" for="pwd">Message</label>' +
+                '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="message" name="message">' +
+                '</div>');
+        }
+    });
+
+
     //End
 
-    var $timeFrame = $(".js-range-slider");
-    var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
-        instance,
-        min = 0,
-        max = 1000;
+    // var $timeFrame = $(".js-range-slider");
+    // var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
+    //     instance,
+    //     min = 0,
+    //     max = 1000;
 
-    $timeFrame.ionRangeSlider({
-        skin: "modern",
-        type: "double",
-        min: 0,
-        max: 1000,
-        from: 200,
-        to: 500,
-        grid: false,
-        onStart: function (data) {
-            $tFrom.prop("value", data.from);
-            $tTo.prop("value", data.to);
-        },
-        onChange: function (data) {
-            $tFrom.prop("value", data.from);
-            $tTo.prop("value", data.to);
-        }
+    // $timeFrame.ionRangeSlider({
+    //     skin: "modern",
+    //     type: "double",
+    //     min: 0,
+    //     max: 1000,
+    //     from: 200,
+    //     to: 500,
+    //     grid: false,
+    //     onStart: function (data) {
+    //         $tFrom.prop("value", data.from);
+    //         $tTo.prop("value", data.to);
+    //     },
+    //     onChange: function (data) {
+    //         $tFrom.prop("value", data.from);
+    //         $tTo.prop("value", data.to);
+    //     }
 
-    });
-    instance = $timeFrame.data("ionRangeSlider");
+    // });
+    // instance = $timeFrame.data("ionRangeSlider");
 
-    $tFrom.on("change keyup", function () {
-        var val = $(this).prop("value");
+    // $tFrom.on("change keyup", function () {
+    //     var val = $(this).prop("value");
 
-        // validate
-        if (val < min) {
-            val = min;
-        } else if (val > max) {
-            val = max;
-        }
+    //     // validate
+    //     if (val < min) {
+    //         val = min;
+    //     } else if (val > max) {
+    //         val = max;
+    //     }
 
-        instance.update({
-            from: val
-        });
-    });
+    //     instance.update({
+    //         from: val
+    //     });
+    // });
 
 
-    $tTo.on("change keyup", function () {
-        var val = $(this).prop("value");
+    // $tTo.on("change keyup", function () {
+    //     var val = $(this).prop("value");
 
-        // validate
-        if (val < min) {
-            val = min;
-        } else if (val > max) {
-            val = max;
-        }
+    //     // validate
+    //     if (val < min) {
+    //         val = min;
+    //     } else if (val > max) {
+    //         val = max;
+    //     }
 
-        instance.update({
-            to: val
-        });
-    });
+    //     instance.update({
+    //         to: val
+    //     });
+    // });
 
-    var slider = $(".js-range-slider").data("ionRangeSlider");
+    // var slider = $(".js-range-slider").data("ionRangeSlider");
 
+
+
+    //validation 
     $.validator.addMethod("valueNotEquals", function (value, element, arg) {
         return arg !== value;
     }, "Value must not equal arg.");
@@ -169,11 +172,15 @@ $(document).ready(function () {
         rules: {
             //desc: { required: true },
             everylist: { valueNotEquals: "0" },
-            weeklist: { valueNotEquals: "0" },
-            starting: { valueNotEquals: "0" },
+            timepicker: { required: true },
+            datepicker: { required: true },
+            emailTitle: { required: true },
             recipients: { required: true },
             emailBody: { required: true },
-            timeFrame: { required: true },
+            slackRecipients: { required: true },
+            channels: { required: true },
+            message: { required: true }
+
         },
         messages: {
             // desc: {
@@ -182,11 +189,14 @@ $(document).ready(function () {
             everylist: {
                 valueNotEquals: "Please select one every"
             },
-            weeklist: {
-                valueNotEquals: "Please select one week"
+            timepicker: {
+                required: "Please select Time"
             },
-            starting: {
-                valueNotEquals: "Please select one starting"
+            datepicker: {
+                required: "Please select Date"
+            },
+            emailTitle: {
+                required: "This field is required"
             },
             recipients: {
                 required: "This field is required"
@@ -194,28 +204,70 @@ $(document).ready(function () {
             emailBody: {
                 required: "This field is required"
             },
-            timeFrame: {
+            slackRecipients: {
+                required: "This field is required"
+            },
+            message: {
                 required: "This field is required"
             }
+
         }
     });
 
+    function resetScheduleAndNotification() {
+        //reset Schedule
+        $("#startingList").html("");
+        $("#startingList").removeAttr("style");
+        $("#daliyList").css("width", "50%");
+        $("#daliyList").html('at <input  type="text" id="timepicker"  class="form-control" />');
+        $(function () {
+            $('#timepicker').datetimepicker({
+                format: 'H:i',
+                datepicker: false
+            });
+        });
+        //reset notification 
+        $("#Email").prop("checked", true);
+        $("#radioSelectedTxtView").html('<div class="form-group">' +
+            '<label class="float-left" for="emailTitle">Email Title</label>' +
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailTitle" name="emailTitle">' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<label class="float-left" for="email">Recipients</label>' +
+            '<input type="text" class="form-control form-ip-one col-sm-6 col-md-7 col-lg-7 col-xl-7" id="recipients" name="recipients">' +
+            '</div>' +
+            '<div class="form-group">' +
+            '<label class="float-left" for="pwd">EmailBody</label>' +
+            '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">' +
+            '</div>');
+    }
 
     $("#btnFilterScratch").click(function () {
         var addFilterScratchDetails = $('form[id="addFilterScratchForm"]').valid();
+        var startingDate = "";
+        if ($("#datepicker").val() == undefined) {
+            var startingDate = null;
+        }
+        else {
+            startingDate = new Date($("#datepicker").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+        }
         if (addFilterScratchDetails == true) {
             addAlertMaster(
                 {
-                    // Description: $("#").val(),
-                    // NodeId: $("#").val(),
-                    // DataSourceId:$("#").val() ,
-                    //subDataSourceName:$("#").val(),
+                    alertId: parseInt(localStorage.getItem("alertId")),
+                    ScheduleType: $("#everylist").val(),
+                    AtTime: $("#timepicker").val(),
+                    StartingDate: startingDate,//new Date($("#datepicker").val().replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
                     NotificationType: $("input[name='notificationOptRadio']:checked").val(),
                     Recipieants: $("#recipients").val(),
+                    EmailTitle: $("#emailTitle").val(),
                     EmailBody: $("#emailBody").val(),
+                    SlackRecipieants: $("#slackRecipients").val(),
+                    Channels: $("#channels").val(),
+                    Message: $("#message").val(),
                     IsIncludeData: $('#isIncludeData').is(":checked") == 1 ? true : false,
-                    NotifyTimeFrameFrom: $("#tFrom").val(),
-                    NotifyTimeFrameTo: $("#tTo").val(),
+                    // NotifyTimeFrameFrom: $("#tFrom").val(),
+                    // NotifyTimeFrameTo: $("#tTo").val(),
                     CreatedBy: parseInt(localStorage.getItem("UserId")),
                     CreatedDate: new Date()
                 }
@@ -237,15 +289,20 @@ $(document).ready(function () {
                     beforeHide: function () { }, // will be triggered before the toast gets hidden
                     afterHidden: function () { }  // will be triggered after the toast has been hidden
                 });
-                $("#everylist").val("0");
-                $("#weeklist").val("0");
-                $("#starting").val("0");
+                $("#everylist").val("1");
+                resetScheduleAndNotification();
+                $("#timepicker").val("");
+                $("#datepicker").val("");
                 $("#recipients").val("");
+                $("#emailTitle").val("");
                 $("#emailBody").val("");
+                $("#slackRecipients").val("");
+                $("#channels").val("");
+                $("#message").val("");
                 $('#isIncludeData').prop('checked', false);
-                $("#tFrom").val("200");
-                $("#tTo").val("500")
-                slider.reset();
+                // $("#tFrom").val("200");
+                // $("#tTo").val("500");
+                //slider.reset();
             }).catch(err => {
                 console.error(err);
             });
