@@ -51,7 +51,7 @@
         "force-graph": "^1.26.5",
         "fs-jetpack": "^2.1.0",
         "fs-plus": "^3.1.1",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jquery-confirm": "^3.3.4",
         "knex": "^0.20.10",
         "mysql": "^2.18.1",
