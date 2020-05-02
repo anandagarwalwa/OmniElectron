@@ -5,14 +5,15 @@
 
 import path from "path";
 import url from "url";
-import { app, Menu } from "electron";
+import { app, Menu, Tray } from "electron";
 import { devMenuTemplate } from "./menu/dev_menu_template";
 import { editMenuTemplate } from "./menu/edit_menu_template";
 import createWindow from "./helpers/window";
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from "env";
-
+let appIcon = null;
+//const appIcon = new Tray(path.join(__dirname, 'assets', 'images/appicon.png'));//'/app/assets/images/appicon.png'
 const setApplicationMenu = () => {
   const menus = [editMenuTemplate];
   if (env.name !== "production") {
@@ -44,6 +45,38 @@ app.on("ready", () => {
       slashes: true
     })
   );
+
+  var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Show App', click: function () {
+        mainWindow.show();
+      }
+    },
+    {
+      label: 'Quit', click: function () {
+        mainWindow.destroy();
+        app.quit();
+      }
+    }
+  ]);
+  appIcon = new Tray(path.join(__dirname, 'assets', 'images/appicon.png'));
+  appIcon.setToolTip('Electron.js App');
+  appIcon.setContextMenu(contextMenu);
+  //show window on tray icon click etc....
+
+  mainWindow.on('close', function (event) {
+    debugger;
+    event.preventDefault();
+    mainWindow.hide();
+  });
+
+  mainWindow.on('restore', () => {
+    mainWindow.setSkipTaskbar(false)
+  });
+
+  mainWindow.on('minimize', () => {
+    mainWindow.setSkipTaskbar(true)
+  });
 
   // if (env.name === "development") {
   //   mainWindow.openDevTools();
