@@ -1,0 +1,403 @@
+
+
+
+@media(max-width:1199px){
+    .pic-font-section .dropdown.show::before{right: 43px !important;}
+  }
+  
+  @media(min-width:992px) and (max-width:1235px){
+    .filter-scratch-form .form-control{width: 20% !important;}
+  }
+  
+  @media(min-width:750px) and (max-width:850px){
+    .filter-scratch-form .form-control{width: 20% !important;}
+  }
+  
+  
+  @media(min-width:1025px) and (max-width:1220px){
+    .main-sidebar .sidenav{width: 171px !important;}
+  }
+  
+  @media(min-width:1032px) and (max-width:1056px){
+    .main-sidebar .sidenav{width: 155px !important;}
+  }
+  
+  @media(min-width:856px) and (max-width:930px){
+    .main-sidebar .sidenav{width: 130px !important;}
+  }
+  
+  @media(min-width:768px) and (max-width:1024px){
+    .login-section{
+      margin-bottom: 10rem !important;
+      margin-top: 7rem !important;;
+    }
+    .confluge-title h6{font-size: 14px !important;}
+    .submit-btn {
+      float: left;
+      width: 100%;
+  }
+  
+  }
+  
+  @media(min-width:576px) and (max-width:767px){
+    .username {
+      font-size: 15px !important;
+  }
+  .btn-add-member-action{padding: 6px 10px !important;}
+  .nav-link {
+    display: block;
+    padding: .5rem 5px;
+    font-size: 13px !important;
+  }
+  .filter-scratch-form .form-control{width: 24% !important;}
+  
+  }
+  
+  
+  @media (min-width: 320px) and (max-width: 991px) {
+    .navigation .navbar-nav {
+      flex-direction: row !important;
+      float:right;
+    }
+    .navigation .navbar .collapse:not(.show) {
+      display: inline-block !important;
+      flex-basis: 70% !important;
+    }
+  
+    .navigation .navbar { 
+      padding: 0.5rem 0rem !important;
+    }
+      .login-section{
+      margin-top: 8rem !important;
+      margin-bottom: 1rem !important;
+    }	
+  
+  }
+  
+  @media(min-width:1024px) and (max-width:1024px){
+    #main-side{display: block;}
+  }
+  
+  @media (min-width: 991px) and (max-width: 1024px) {
+    .main-sidebar .sidenav {
+      width: 155px !important;
+    }
+    .tags-section{width: 100% !important;}
+    
+  }
+  @media(max-width:860px){
+    .coman-result-section{flex-direction: column !important;}
+    .Weekly-report-section-new{flex-direction: row !important;}
+  }
+  
+  @media(max-width:670px){
+    .Weekly-report-section {
+      flex-direction: column !important;
+  }
+  .form-tab-section .form-group{
+    justify-content: center !important;
+  }
+  .coman-result-section{flex-direction: column !important;}
+  .Weekly-report-section-new{flex-direction: row !important;}
+  }
+  
+  @media(max-width:810px){
+    .table-section-main .table td, .table-section-main .table th{
+      padding: .3rem !important;
+    }
+  }
+  
+  @media (min-width: 852px) and (max-width: 991px) {
+    .main-sidebar .sidenav {
+      width: 140px !important;
+    }
+    .main-sidebar .sidenav a {
+      padding: 10px 8px 10px 10px !important;
+      font-size: 14px !important;
+    }
+    #sidebar ul li a {
+      padding: 10px 10px !important;
+      font-size: 0.55em !important;
+    }
+    .navigation li a svg {
+      font-size: 15px !important;
+    }
+    .pic-font-section .dropdown.show::before {
+      right: 50px !important;
+    }
+    .tab-two-top-section::before {
+      width: 89% !important;
+    }
+    .tab-form-section {
+      width: 63% !important;
+    }
+    .timeline-ico img.img-fluid{width: 25px !important;}
+    .tags-section{width: 100% !important;}
+    .Onear-section h6{
+      font-size: 13px !important;
+    }
+    .table-title h6{font-size: 13px !important;}
+  
+  
+  }
+  @media (min-width: 768px) and (max-width: 850px) {
+    .main-sidebar .sidenav {
+      width: 135px !important;
+    }
+    .search-main input[type="text"] {
+      padding: 3px 19px 3px 30px !important;
+      font-size: 16px !important;
+    }
+    .search-main svg.svg-inline--fa.fa-search.fa-w-16 {
+      top: 8px !important;
+    }
+    .main-sidebar .sidenav a {
+      padding: 8px 8px 8px 8px !important;
+      font-size: 13px !important;
+    }
+    .main-sidebar .sidenav {
+      left: 52px !important;
+    }
+    #sidebar ul li a {
+      font-size: 0.55em !important;
+      padding: 10px 0px !important;
+    }
+    .navigation li a svg {
+      font-size: 18px !important;
+    }
+    .timeline-ico img.img-fluid{width: 25px !important;}
+    .explore-icon img{width: 20px !important;}
+  }
+  
+  @media (min-width: 768px) and (max-width: 991px) {
+    .pic-font-section .dropdown-menu {
+      position: absolute !important;
+    }
+    .pic-font-section {
+      width: 186px !important;
+    }
+    .dropdown-notification .dropdown-menu {
+      position: absolute;
+    }
+    .pic-font-section .dropdown.show::before{
+      right: 29px !important;
+    }
+    .filter-scratch-check-box .form-check{width: 220px !important;}
+    .navigation .bg-dark{padding: 0px !important;}
+    .main-explore-section .form-control{font-size: 12px !important;}
+
+    .searchBox{height: 30px !important; margin-top: 0px!important;}
+    .dropdown-notification{margin-top: 0px !important;}
+    .pic-font-section .dropdown-toggle{margin-top: 0px !important;}
+    
+  }
+  
+  @media (min-width: 320px) and (max-width: 768px) {
+    /* #sidebarCollapse{display: block !important;}    */
+    .collapse-btn-hide {
+      display: block !important;
+    }
+    #sidebar {
+      margin-left: 0px !important;
+    }
+  
+    #demo-one {
+      display: block !important;
+      margin-left: 36px;
+    }
+    .navbar-brand {
+      position: absolute !important;
+      left: 10px !important;
+    }
+    .main-sidebar .sidenav {
+      left: 50px !important;
+    }
+    #sidebar ul li a {
+      padding: 10px 0 !important;
+      font-size: 0.55em !important;
+    }
+    .navigation li a svg {
+      font-size: 15px !important;
+    }
+    .main-sidebar {
+      display: none !important;
+    }
+    .tab-section .d-flex {
+      display: block !important;
+    }
+    .pic-font-section {
+      width: 187px !important;
+    }
+    .pic-font-section .dropdown-menu {
+      position: absolute;
+    }
+    .dropdown-notification .dropdown-menu {
+      position: absolute;
+    }
+    .pic-font-section .dropdown.show::before {
+      right: 30px !important;
+    }
+    .filter-scratch-form .form-control{margin-right: 10px !important;}
+    .filter-scratch-check-box .form-check{width: 210px !important;}
+    .table-section-main .table td, .table-section-main .table th{
+      padding: .3rem !important;
+    }
+    .container-content{
+      padding-left: 0 !important;
+    }
+  }
+  
+  
+  @media(min-width:771px) and (max-width:848px){
+    #sidebar ul li a{padding: 10px 2px !important;}
+    .tags-section{width: 100% !important;}
+    .table-title h6{font-size: 13px !important;}
+    .Onear-section h6{font-size: 13px !important;}
+    .searchBox{height: 30px !important; margin-top: 0px!important;}
+    .dropdown-notification{margin-top: 0px !important;}
+    .pic-font-section .dropdown-toggle{margin-top: 0px !important;}
+  }
+   
+  @media(min-width:576px) and (max-width:805px){
+    .timeline-new-responsive {
+      flex-direction: column !important;
+  }
+  .responsive-time-sec {
+    max-width: 100% !important;
+}
+  } 
+  
+  @media (min-width: 481px) and (max-width: 575px) {
+    .responsive-section .d-flex {
+      display: block !important;
+      
+    }
+    .tab-section .d-flex{
+      flex-direction: column !important;
+    }
+    .tab-form-section{width: 80% !important;}
+    .filter-scratch-form .form-inline{ display: inline-block !important;}
+    .filter-scratch-form label{float: left !important;}
+    .filter-scratch-form .form-control{width: 23% !important; float: left;}
+    .filter-scratch-check-box .form-check{width: 130px !important;}
+    .filter-scratch-check-box .form-check .form-check-input{right: 0px !important;}
+
+    
+  }
+  
+  @media (min-width: 320px) and (max-width: 480px) {
+    .responsive-section .d-flex {
+      display: block !important;
+    }
+    #sidebar ul li a {
+      padding: 10px 0 !important;
+      font-size: 0.55em !important;
+    }
+    .navigation li a svg {
+      font-size: 15px !important;
+    }
+    .tab-section .d-flex {
+      display: block !important;
+      flex-direction:column;
+    }
+    .tab-section{padding: 3px !important;}
+    .tab-one-main-section .tab-form-section {
+      width: 100%;
+    }
+    .tab-two-top-section {
+      display: block !important;
+    }
+    .tab-search {
+      margin-top: 10px;
+    }
+    .tab-search .input-group {
+      padding-left: 0px !important;
+    }
+    .bell-icon-modal-section .modal-content {
+      width: 90% !important;
+    }
+    .dropdown-notification .dropdown-menu {
+      right: -44px !important;
+      min-width: 10rem !important;
+    }
+    .login-section-main{flex-direction: column !important;}
+    
+  }
+  
+  @media (min-width: 320px) and (max-width: 425px) {
+    .navbar-brand {
+      display: none;
+      margin-left: 0px;
+    }
+    .login-section-main{
+      flex-direction: column;
+      
+    }
+    .login-main-section{padding: 10px !important;}
+    
+  }
+  @media all and (max-width: 768px) {
+  
+    #demo-one {
+      margin-left: 36px;
+    }
+    .navbar-brand{
+      margin-left: 0px;
+      top: 0px;
+    }
+    .form-section .col-xl-6 {
+      padding-right: 0;
+  }
+  .tab-section .d-flex{
+    display: flex !important;
+  }
+  .timeline-ico img.img-fluid{width: 30px !important;}
+  .explore-icon img.img-fluid{width: 20px !important;}
+  
+  .table-title h6{
+    font-size: 12px !important;
+  }
+  .tags-section{width: 85% !important;}
+  .Onear-section h6{font-size: 13px !important;}
+  .responsive-activity {
+    max-width: 100% !important;
+  }
+  #TeamList h6 {
+    font-size: 13px;
+    line-height: 13px;
+  }
+  .searchBox{height: 30px !important; margin-top: 0px!important;}
+    .dropdown-notification{margin-top: 0px !important;}
+    .pic-font-section .dropdown-toggle{margin-top: 0px !important;}
+  
+  }
+  
+  @media(min-width:375px) and (max-width:375px){
+    .searchBox:hover > .searchInput{width: 87px !important;}
+    .pic-font-section{width: 155px !important;}
+  }
+  
+  @media(max-width:320px){
+    .coman-drop-down{flex-direction: column;}
+    .form-section .col-xl-6 {
+      padding-right: 0;
+  }
+  #demo-one{margin-left: 0;}
+  .alert-check-box .form-check{width: 210px !important;}
+  }
+  
+  
+  
+  
+  @media(min-width:768px) and (max-width:768px){
+    .navbar-brand{margin-left: 0;}
+    .tab-section .d-flex{
+      display: flex !important;
+    }
+  }
+  
+  @media(max-width:725px){
+    .table-section-main .table td, .table-section-main .table th{
+      padding: .1rem !important;
+    }
+  }
