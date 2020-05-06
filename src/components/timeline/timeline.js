@@ -129,7 +129,7 @@ function newChart(){
                 image:__dirname +"\\assets\\images\\test_loss_2.png"
             }, {
                 type: TimelineChart.TYPE.POINT,
-                at: new Date([2016, 5, 15]),
+                at: new Date([2016, 6, 15]),
                 image:__dirname +"\\assets\\images\\test_win_2.png"
             }, {
                 type: TimelineChart.TYPE.POINT,

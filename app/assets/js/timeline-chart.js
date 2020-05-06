@@ -1,4 +1,3 @@
-debugger;
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
         define(['module'], factory);
@@ -140,13 +139,16 @@ debugger;
             //     return x(d.at);
             // }).attr('cy', groupHeight / 2).attr('r', 5);
 
-            var dots = groupDotItems.append("image")
+            //Specified Images
+            var dots = groupDotItems.append("svg:image")
             .attr("x", function (d) {
                      return x(d.at);
                  })
-            .attr("y", groupHeight / 6)
-            .attr("height", "40px")
-            .attr("width", "50px")           
+                 .attr('class', withCustom('dot'))
+            .attr("y", groupHeight / 2)
+            .attr("height", groupHeight / 2)
+            .attr("width", groupHeight / 2)       
+            .attr("preserveAspectRatio", "none")    
             .attr("xlink:href", function(d) {return d.image});
 
             if (options.tip) {
@@ -191,7 +193,9 @@ debugger;
                 }
 
                 svg.select('.x.axis').call(xAxis);
-
+                svg.selectAll('image.dot').attr('x', function (d) {
+                    return x(d.at);
+                });
                 svg.selectAll('circle.dot').attr('cx', function (d) {
                     return x(d.at);
                 });
