@@ -3,6 +3,11 @@ var d3 = require('d3v3');
 var { getTimelineChartData } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 document.getElementById("loader").style.display = "none";
 
+let maxRange;
+let minRange;
+let from;
+let to;
+
 $('#sidebarCollapse').on('click', function () {
   $('#sidebar').toggleClass('active');
 });
@@ -33,7 +38,7 @@ $(selector).on("click", function () {
 });
 
 var lang = "en-US";
-var year = 2018;
+var year = 2020;
 
 function dateToTS(date) {
   return date.valueOf();
@@ -49,19 +54,16 @@ function tsToDate(ts) {
   });
 }
 
-$("#demo_1").ionRangeSlider({
-  skin: "flat",
-  type: "double",
-  grid: true,
-  min: dateToTS(new Date(year, 10, 1)),
-  max: dateToTS(new Date(year, 11, 1)),
-  from: dateToTS(new Date(year, 10, 8)),
-  to: dateToTS(new Date(year, 10, 23)),
-  prettify: tsToDate
-});
-
-
-
+// $("#demo_1").ionRangeSlider({
+//   skin: "flat",
+//   type: "double",
+//   grid: true,
+//   min: dateToTS(new Date(year, 10, 1)),
+//   max: dateToTS(new Date(year, 11, 1)),
+//   from: dateToTS(new Date(year, 10, 8)),
+//   to: dateToTS(new Date(year, 10, 23)),
+//   prettify: tsToDate
+// });
 
 function openSearch() {
   document.getElementById("myOverlay").style.display = "block";
@@ -100,15 +102,18 @@ window.onclick = function (event) {
   }
 }
 
-//newChart();
-getTimelineDetails();
 
+getTimelineDetails();
 var timelineListObj = [];
 function getTimelineDetails() {
+  debugger
   var userId = undefined;
-    if (!SessionManager.IsAdmin)
-        userId = SessionManager.UserId;
-  getTimelineChartData(userId).then(data => {
+  if (!SessionManager.IsAdmin)
+    userId = SessionManager.UserId;
+
+  getTimelineChartData(userId, from, to).then(data => {
+    debugger
+    timelineListObj = [];
     var dataObj = data[0];
     var imgpath = "";
     for (var i = 0; i < dataObj.length; i++) {
@@ -131,75 +136,99 @@ function getTimelineDetails() {
         }]
       })
     }
+    console.log(timelineListObj)
+    var formattedData = FormatData(timelineListObj);
+    SetSliderRange(timelineListObj);
+    bindChartData(formattedData);
+
   }).catch(err => {
     console.error(err);
   });
 }
 
+function FormatData(timelineList) {
+  var data = [];
+  if (timelineList.length > 0) {
+    for (var i = 0; i < timelineList.length; i++) {
+      var dataObj = {
+        type: TimelineChart.TYPE.POINT,
+        at: timelineList[i].data[0].at,
+        image: timelineList[i].data[0].image
+      }
+      var selected = data.filter(m => m.label == timelineList[i].label);
+      if (selected.length > 0) {
+        var dt = selected[0].data;
+        dt.push(dataObj);
+      }
+      else {
+        var obj = {
+          "label": timelineList[i].label,
+          "data": [dataObj]
+        }
+        data.push(obj);
+      }
+    }
+  }
+  return data;
+}
+
+function SetSliderRange(timelineList) {
+  var dateList = timelineList.map(function (v, i) {
+    return v.data[0].at;
+  })
+  var sortedDateList = dateList.sort((a, b) => a - b);
+
+  if (sortedDateList.length > 0) {
+    if (!maxRange || !minRange) {
+      minRange = sortedDateList[0];
+      maxRange = sortedDateList[sortedDateList.length - 1];
+    }
+
+    $("#demo_1").ionRangeSlider({
+      skin: "flat",
+      type: "double",
+      grid: true,
+      min: dateToTS(minRange),
+      max: dateToTS(maxRange),
+      from: dateToTS(minRange),
+      to: dateToTS(maxRange),
+      prettify: tsToDate,
+      // onChange: changeResult,
+      onFinish: changeResult
+    });
+  }
+}
+
+
 function bindChartData(data) {
+  $("#timeline6").html('');
+
   var element = document.getElementById('timeline6');
-  // var data = [
-  //   {
-  //     label: 'Email',
-  //     data: [{
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 5, 1]),
-  //       image: __dirname + "\\assets\\images\\analysis_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 6, 1]),
-  //       image: __dirname + "\\assets\\images\\test_win_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 7, 1]),
-  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 8, 1]),
-  //       image: __dirname + "\\assets\\images\\test_win_2.png"
-  //     }]
-  //   },
-  //   {
-  //     label: 'Search',
-  //     data: [{
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 5, 11]),
-  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 6, 15]),
-  //       image: __dirname + "\\assets\\images\\test_win_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 7, 10]),
-  //       image: __dirname + "\\assets\\images\\analysis_2.png"
-  //     }]
-  //   },
-  //   {
-  //     label: 'Display',
-  //     data: [{
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 5, 1]),
-  //       image: __dirname + "\\assets\\images\\analysis_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 6, 1]),
-  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 7, 1]),
-  //       image: __dirname + "\\assets\\images\\test_win_2.png"
-  //     }, {
-  //       type: TimelineChart.TYPE.POINT,
-  //       at: new Date([2016, 8, 1]),
-  //       image: __dirname + "\\assets\\images\\analysis_2.png"
-  //     }]
-  //   }
-  // ];
+  console.log('element', element);
+
   var timeline = new TimelineChart(element, data, {
     enableLiveTimer: true,
-    tip: function (d) {
-      return d.at || `${d.from}<br>${d.to}`;
-    }
-  }).onVizChange(e => console.log(e));
+    // tip: function (d) {
+    //   return d.at || `${d.from}<br>${d.to}`;
+    // }
+  }).onVizChange(e => console.log('e', e));
+}
+
+var changeResult = function (data) {
+  debugger
+  var fromDate = new Date(data.from);
+  var toDate = new Date(data.to);
+  from = FormatDate(fromDate);
+  to = FormatDate(toDate);
+  getTimelineDetails();
+};
+
+function FormatDate(dt) {
+  var y = dt.getFullYear()
+  var m = dt.getMonth() + 1;
+  var d = dt.getDate()
+
+  var formattedDate = y + "-" + m + "-" + d;
+  formattedDate = "'" + formattedDate + "'";
+  return formattedDate;
 }
