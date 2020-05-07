@@ -100,15 +100,17 @@ window.onclick = function (event) {
   }
 }
 
-newChart();
+//newChart();
 getTimelineDetails();
 
 var timelineListObj = [];
 function getTimelineDetails() {
-  getTimelineChartData(1).then(data => {
+  var userId = undefined;
+    if (!SessionManager.IsAdmin)
+        userId = SessionManager.UserId;
+  getTimelineChartData(userId).then(data => {
     var dataObj = data[0];
     var imgpath = "";
-    debugger;
     for (var i = 0; i < dataObj.length; i++) {
       if (dataObj[i].IsAnalysis == 1) {
         imgpath = __dirname + "\\assets\\images\\analysis_2.png";
@@ -123,7 +125,7 @@ function getTimelineDetails() {
       timelineListObj.push({
         label: dataObj[i].ChannelName,
         data: [{
-          type: 'TimelineChart.TYPE.POINT',
+          type: TimelineChart.TYPE.POINT,
           at: dataObj[i].Date,
           image: imgpath
         }]
@@ -133,67 +135,67 @@ function getTimelineDetails() {
     console.error(err);
   });
 }
-function newChart() {
+
+function bindChartData(data) {
   var element = document.getElementById('timeline6');
-  var data = [
-    {
-      label: 'Email',
-      data: [{
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 5, 1]),
-        image: __dirname + "\\assets\\images\\analysis_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 6, 1]),
-        image: __dirname + "\\assets\\images\\test_win_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 7, 1]),
-        image: __dirname + "\\assets\\images\\test_loss_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 8, 1]),
-        image: __dirname + "\\assets\\images\\test_win_2.png"
-      }]
-    },
-    {
-      label: 'Search',
-      data: [{
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 5, 11]),
-        image: __dirname + "\\assets\\images\\test_loss_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 6, 15]),
-        image: __dirname + "\\assets\\images\\test_win_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 7, 10]),
-        image: __dirname + "\\assets\\images\\analysis_2.png"
-      }]
-    },
-    {
-      label: 'Display',
-      data: [{
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 5, 1]),
-        image: __dirname + "\\assets\\images\\analysis_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 6, 1]),
-        image: __dirname + "\\assets\\images\\test_loss_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 7, 1]),
-        image: __dirname + "\\assets\\images\\test_win_2.png"
-      }, {
-        type: TimelineChart.TYPE.POINT,
-        at: new Date([2016, 8, 1]),
-        image: __dirname + "\\assets\\images\\analysis_2.png"
-      }]
-    }
-  ];
-  debugger;
+  // var data = [
+  //   {
+  //     label: 'Email',
+  //     data: [{
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 5, 1]),
+  //       image: __dirname + "\\assets\\images\\analysis_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 6, 1]),
+  //       image: __dirname + "\\assets\\images\\test_win_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 7, 1]),
+  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 8, 1]),
+  //       image: __dirname + "\\assets\\images\\test_win_2.png"
+  //     }]
+  //   },
+  //   {
+  //     label: 'Search',
+  //     data: [{
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 5, 11]),
+  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 6, 15]),
+  //       image: __dirname + "\\assets\\images\\test_win_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 7, 10]),
+  //       image: __dirname + "\\assets\\images\\analysis_2.png"
+  //     }]
+  //   },
+  //   {
+  //     label: 'Display',
+  //     data: [{
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 5, 1]),
+  //       image: __dirname + "\\assets\\images\\analysis_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 6, 1]),
+  //       image: __dirname + "\\assets\\images\\test_loss_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 7, 1]),
+  //       image: __dirname + "\\assets\\images\\test_win_2.png"
+  //     }, {
+  //       type: TimelineChart.TYPE.POINT,
+  //       at: new Date([2016, 8, 1]),
+  //       image: __dirname + "\\assets\\images\\analysis_2.png"
+  //     }]
+  //   }
+  // ];
   var timeline = new TimelineChart(element, data, {
     enableLiveTimer: true,
     tip: function (d) {
