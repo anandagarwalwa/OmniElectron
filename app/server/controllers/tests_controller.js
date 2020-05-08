@@ -43,7 +43,7 @@ const deleteTestsbyid = (nodeId) => {
 
 const getTimelineChartData = (userId,from='',to='') => {
     
-    let query = "Select x.*,c.Name as ChannelName,t.TeamName,l.Code as LocaleCode FROM ( " +
+    let query = "Select x.*,c.Name as ChannelName,t.TeamName,l.Code as LocaleCode,c.Color FROM ( " +
         "SELECT Id,TeamId, ChannelId,LocaleId,TestsDate as Date,IsDidTestWin,0 as IsAnalysis,CreatedBy FROM tests UNION " +
         "SELECT Id,TeamId, ChannelId,LocaleId,AnalysisDate as Date,0 as IsDidTestWin,1 as IsAnalysis,CreatedBy FROM analysis ) as x " +
         "left join channels c on c.Id=x.ChannelId " +

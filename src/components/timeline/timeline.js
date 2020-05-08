@@ -3,10 +3,15 @@ var d3 = require('d3v3');
 var { getTimelineChartData } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 document.getElementById("loader").style.display = "none";
 
-let maxRange;
-let minRange;
-let from;
-let to;
+var minRange;
+var maxRange;
+var from;
+var to;
+
+var dbDataObject = [];
+var timelineListObj = [];
+var teamListObject = [];
+var localCodeListObject = [];
 
 $('#sidebarCollapse').on('click', function () {
   $('#sidebar').toggleClass('active');
@@ -102,29 +107,37 @@ window.onclick = function (event) {
   }
 }
 
-
 getTimelineDetails();
-var timelineListObj = [];
+
 function getTimelineDetails() {
-  debugger
+  timelineListObj = [];
+  teamListObject = [];
+  localCodeListObject = [];
+
   var userId = undefined;
   if (!SessionManager.IsAdmin)
     userId = SessionManager.UserId;
 
   getTimelineChartData(userId, from, to).then(data => {
-    debugger
+    console.log('data', data);
     timelineListObj = [];
     var dataObj = data[0];
+    dbDataObject = dataObj;
+
     var imgpath = "";
+    var imageType = "";
     for (var i = 0; i < dataObj.length; i++) {
       if (dataObj[i].IsAnalysis == 1) {
         imgpath = __dirname + "\\assets\\images\\analysis_2.png";
+        imageType = "analysis";
       }
       if (dataObj[i].IsAnalysis == 0) {
-        if (dataObj[i].IsAnalysis.IsDidTestWin) {
+        if (dataObj[i].IsDidTestWin.toString() == "1") {
           imgpath = __dirname + "\\assets\\images\\test_win_2.png";
+          imageType = "win";
         } else {
           imgpath = __dirname + "\\assets\\images\\test_loss_2.png";
+          imageType = "loss";
         }
       }
       timelineListObj.push({
@@ -132,28 +145,53 @@ function getTimelineDetails() {
         data: [{
           type: TimelineChart.TYPE.POINT,
           at: dataObj[i].Date,
-          image: imgpath
+          image: imgpath,
+          color: dataObj[i].Color,
+          imageType: imageType
+        }]
+      })
+
+      teamListObject.push({
+        label: dataObj[i].TeamName,
+        data: [{
+          type: TimelineChart.TYPE.POINT,
+          at: dataObj[i].Date,
+          image: imgpath,
+          color: dataObj[i].Color,
+          imageType: imageType
+        }]
+      })
+
+      localCodeListObject.push({
+        label: dataObj[i].LocaleCode,
+        data: [{
+          type: TimelineChart.TYPE.POINT,
+          at: dataObj[i].Date,
+          image: imgpath,
+          color: dataObj[i].Color,
+          imageType: imageType
         }]
       })
     }
-    console.log(timelineListObj)
-    var formattedData = FormatData(timelineListObj);
+
+    var formattedData = FormatDataByBreakDown();
     SetSliderRange(timelineListObj);
-    bindChartData(formattedData);
 
   }).catch(err => {
     console.error(err);
   });
 }
 
-function FormatData(timelineList) {
+function FormatTimeLineData(timelineList) {
   var data = [];
   if (timelineList.length > 0) {
     for (var i = 0; i < timelineList.length; i++) {
       var dataObj = {
         type: TimelineChart.TYPE.POINT,
         at: timelineList[i].data[0].at,
-        image: timelineList[i].data[0].image
+        image: timelineList[i].data[0].image,
+        color: timelineList[i].data[0].color,
+        imageType: timelineList[i].data[0].imageType
       }
       var selected = data.filter(m => m.label == timelineList[i].label);
       if (selected.length > 0) {
@@ -202,12 +240,9 @@ function SetSliderRange(timelineList) {
 
 function bindChartData(data) {
   $("#timeline6").html('');
-
   var element = document.getElementById('timeline6');
-  console.log('element', element);
-
   var timeline = new TimelineChart(element, data, {
-    enableLiveTimer: true,
+    enableLiveTimer: true
     // tip: function (d) {
     //   return d.at || `${d.from}<br>${d.to}`;
     // }
@@ -215,7 +250,6 @@ function bindChartData(data) {
 }
 
 var changeResult = function (data) {
-  debugger
   var fromDate = new Date(data.from);
   var toDate = new Date(data.to);
   from = FormatDate(fromDate);
@@ -232,3 +266,105 @@ function FormatDate(dt) {
   formattedDate = "'" + formattedDate + "'";
   return formattedDate;
 }
+
+
+function FormatDataByBreakDown(isChangeHtml = true) {
+  var formattedData;
+  var html = '';
+  var breakdownValue = $("#ddlBreakDown").val();
+  if (breakdownValue == "1") {
+    formattedData = FormatTimeLineData(timelineListObj);
+    if (formattedData) {
+      $.each(formattedData, function (key, val) {
+        html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+      });
+    }
+  }
+  else if (breakdownValue == "2") {
+    formattedData = FormatTimeLineData(teamListObject);
+    if (formattedData) {
+      $.each(formattedData, function (key, val) {
+        html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.label + '</a>';
+      });
+    }
+  }
+  else if (breakdownValue == "3") {
+    formattedData = FormatTimeLineData(localCodeListObject);
+    if (formattedData) {
+      $.each(formattedData, function (key, val) {
+        html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.label + '</a>';
+      });
+    }
+  }
+  else {
+    formattedData = FormatTimeLineData(timelineListObj);
+    if (formattedData) {
+      $.each(formattedData, function (key, val) {
+        html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:' + val.color + '"></i> ' + val.label + '</a>';
+      });
+    }
+  }
+
+  if (isChangeHtml) {
+    $('#divSearchPanel').html(html);
+  }
+
+  bindChartData(formattedData);
+  console.log("formattedData", formattedData);
+  return formattedData;
+}
+
+var isClearClick = false;
+var filterId = '';
+$('body').on('click', 'a.drop-box', function () {
+
+  $("#divSearchPanel").find(".active").removeClass("active");
+  if (isClearClick && filterId == $(this).attr("data-val")) {
+    isClearClick = false;
+    var formattedData = FormatDataByBreakDown(false);
+    bindChartData(formattedData);
+  }
+  else {
+    isClearClick = true;
+    filterId = $(this).attr("data-val");
+    $(this).addClass("active");
+
+    var formattedData = FormatDataByBreakDown(false);
+    formattedData = formattedData.filter(f => f.label === filterId);
+    bindChartData(formattedData);
+  }
+});
+
+
+var isImgClick = false;
+var imgFilterId = '';
+$('body').on('click', 'a.icon-box', function () {
+  $("#iconList").find(".active").removeClass("active");
+  if (isImgClick && imgFilterId == $(this).attr("data-val")) {
+    isImgClick = false;
+    var formattedData = FormatDataByBreakDown(false);
+    bindChartData(formattedData);
+  }
+  else {
+    isImgClick = true;
+    imgFilterId = $(this).attr("data-val");
+    $(this).addClass("active");
+
+    var formattedData = FormatDataByBreakDown(false);
+    debugger
+    var filteredData = formattedData;
+    filteredData= JSON.stringify(filteredData);
+    filteredData = JSON.parse(filteredData);
+    for (var i = 0; i < formattedData.length; i++) {
+      filteredData[i].data = [];
+      for (var j = 0; j < formattedData[i].data.length; j++) {
+        var dt = formattedData[i].data[j];
+        if (dt.imageType === imgFilterId) {
+          filteredData[i].data.push(dt);
+        }
+      }
+    }
+    // formattedData = formattedData.filter(f => f.label === imgFilterId);
+    bindChartData(filteredData);
+  }
+});

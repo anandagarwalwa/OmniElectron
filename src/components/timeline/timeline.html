@@ -1,6 +1,6 @@
 <style>
     #main-side {
-        display: block;
+        display: block !important;
     }
 
     .timeline-ico img.img-fluid {
@@ -91,94 +91,166 @@
         font-style: oblique;
         font-size: smaller;
     }
-    
-#timeline6 {
-    width: 100%;
-    height: 150px;
-    background: rgb(218, 218, 218);
-    opacity: 0.9;
-    border-radius: 5px;
-    border: 1px solid #2b2b2b;
-}
+
+    #timeline6 {
+        width: 100%;
+        height: 150px;
+        background: rgb(218, 218, 218);
+        opacity: 0.9;
+        border-radius: 5px;
+        border: 1px solid #2b2b2b;
+    }
+
+    .explore-sidenav {
+        background: rgba(84, 84, 95, 0.8) !important;
+    }
+
+    .container-content {
+        max-width: 1200px !important;
+        padding-left: 220px;
+    }
+
+
+    .box-content-pic img {
+        height: 490px !important;
+        width: 100%;
+    }
+
+    .box-content-pic {
+        float: left;
+        width: 100%;
+    }
+
+    .explor-container {
+        padding-top: 20px;
+    }
+
+    a .active {
+        background-color: #656565;
+    }
+
+    #divSearchPanel {
+        margin-top: 70px;
+    }
+
+    .position-explore {
+        position: relative;
+    }
+
+    .box-content-pic {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .coman-drop-explore {
+        z-index: 1;
+        background: transparent !important;
+    }
+
+    .explore-content {
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .icon-box.active{
+        background:lightgray !important;
+    }
 </style>
 
-<div class="container-fluid">
-    <div class="row">       
-        <div class="col-xl-12 col-lg-12 col-12 col-md-12  pl-0 pr-0 mt-5 responsive-section">           
-
+<div class="container-fluid explor-container">
+    <div class="row">
+        <div class="col-lg-2 mt-5 responsive-section">
+            <div class="main-sidebar collapse" id="main-side">
+                <div class="sidenav explore-sidenav">
+                    <div class="search-main">
+                        <input type="text" name="search" id="txtSearch" placeholder="Search..">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div id="divSearchPanel">
+                        <a href="javascript:void" class="drop-box"> <i class="fas fa-circle co-org"></i> Search</a>
+                        <a href="javascript:void" class="drop-box"> <i class="fas fa-circle co-pink"></i> Email</a>
+                        <a href="javascript:void" class="drop-box"> <i class="fas fa-circle co-blue"></i> Display</a>
+                        <a href="javascript:void" class="drop-box"> <i class="fas fa-circle co-green"></i> Tv</a>
+                        <a href="javascript:void" class="drop-box"> <i class="fas fa-circle col-yellow"></i> Other</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-10  pl-0 pr-0 mt-5 responsive-section">
             <div class="row">
                 <div
-                            class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
-                            <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
-                                <div class="main-explore-section">
-                                    <form>
-                                        <div class="explorefilter-sec" id="divFilterBlock">
-                                            <label for="filterBlockContainer">Filter</label>
-                                            <div id="filterBlockContainer" class="bootstrap-tagsinput">
+                    class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
+                    <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
+                        <div class="main-explore-section">
+                            <form>
+                                <div class="explorefilter-sec" id="divFilterBlock">
+                                    <label for="filterBlockContainer">Filter</label>
+                                    <div id="filterBlockContainer" class="bootstrap-tagsinput">
 
-                                            </div>
-                                            <!-- <select class="form-control" id="exampleFormControlSelect1">
+                                    </div>
+                                    <!-- <select class="form-control" id="exampleFormControlSelect1">
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
                                                 <option>Display</option>
                                             </select> -->
-                                        </div>
-                                    </form>
                                 </div>
-                            </div>
-    
-    
-                            <!---DropDown-Two-->
-                            <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
-                                <div class="main-explore-section">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="ddlBreakDown">Breakdown</label>
-                                            <select class="form-control" id="ddlBreakDown">
-                                                <option value="1">Channel</option>
-                                                <!-- <option value="2">Domain</option> -->
-                                                <option value="3">Team</option>
-                                                <option value="4">Data Tool</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            </form>
                         </div>
+                    </div>
+
+
+                    <!---DropDown-Two-->
+                    <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
+                        <div class="main-explore-section">
+                            <form>
+                                <div class="form-group">
+                                    <label for="ddlBreakDown">Breakdown</label>
+                                    <select class="form-control" id="ddlBreakDown" onchange="FormatDataByBreakDown()">
+                                        <option value="1">Channel</option>
+                                        <option value="2">Team</option>
+                                        <option value="3">LocalCode</option>
+                                        <!-- <option value="4">Data Tool</option> -->
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-           <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div class="coman-timeline-tab-sec  d-flex">
-                    <div class="col-xl-10 col-lg-9 col-md-9 col-sm-8 p-0">
-                       <div class="time-line-chart-sec">
-                            <!-- <div class="chart-Timeline">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="coman-timeline-tab-sec  d-flex">
+                        <div class="col-xl-10 col-lg-9 col-md-9 col-sm-8 p-0">
+                            <div class="time-line-chart-sec">
+                                <!-- <div class="chart-Timeline">
                                 <img src="images/hgyb2.png" class="img-fluid d-block mx-auto">
                             </div> -->
-                            <!-- Tab panes -->
+                                <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div id="home1" class="container tab-pane active"><br>
-                                            <div class="chart-range-sec mx-auto">
-                                                <input type="text" class="" id="demo_1" name="my_range" value="" />
-                                            </div>
-                                            <div class="chart-Timeline">
+                                        <div class="chart-range-sec mx-auto">
+                                            <input type="text" class="" id="demo_1" name="my_range" value="" />
+                                        </div>
+                                        <div class="chart-Timeline">
                                             <!-- <img src="images/hgyb2.png" class="img-fluid d-block mx-auto"> 
                                             <canvas id="bar-chart" width="100%" height="35%"></canvas>-->
                                             <div id="timeline6"></div>
-                                        </div>  
-                                         
+                                        </div>
+
                                     </div>
                                     <div id="menu3" class="container tab-pane fade"><br>
                                         <div class="chart-range-sec mx-auto">
                                             <input type="text" class="" id="demo_2" name="my_range" value="" />
                                         </div>
-                                            <div class="chart-Timeline">
+                                        <div class="chart-Timeline">
                                             <!-- <img src="images/hgyb2.png" class="img-fluid d-block mx-auto">
                                             <canvas id="bar-chart-one" width="100%" height="35%"></canvas> -->
                                             <div id="timeline7"></div>
-                                        </div>    
-                                       
+                                        </div>
+
                                     </div>
                                     <div id="menu4" class="container tab-pane fade"><br>
                                         <div class="chart-range-sec mx-auto">
@@ -189,39 +261,45 @@
                                             <canvas id="bar-chart-two" width="100%" height="35%"></canvas> -->
                                             <div id="timeline8"></div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
-                       </div>
-                    </div>
-
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4 pr-0">
-                        <div class="key-title-section">
-                            <h5>Key</h5>
+                            </div>
                         </div>
-                        <div class="Time-line-tab-pill">
-                            <ul class="nav nav-pills flex-column" role="tablist">
-                                <li class="nav-item">
-                                <a class="nav-link  change-color-black" data-toggle="pill" href="#home1"><span class="time-line-icon"><img src="assets/images/analysis_2.png" class="img-fluid"></span> Analysis</a>
-                                </li>
-                                <li class="nav-item">
-                                <a class="nav-link chage-color-green" data-toggle="pill" href="#menu3"><span class="time-line-icon"><img src="assets/images/test_win_2.png" class="img-fluid"></span>test-won</a>
-                                </li>
-                                <li class="nav-item">
-                                <a class="nav-link chage-color-red" data-toggle="pill" href="#menu4"><span class="time-line-icon"><img src="assets/images/test_loss_2.png" class="img-fluid"></span>test-lost</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
 
+                        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-4 pr-0">
+                            <div class="key-title-section">
+                                <h5>Key</h5>
+                            </div>
+                            <div class="Time-line-tab-pill">
+                                <ul class="nav nav-pills flex-column" role="tablist" id="iconList">
+                                    <li class="nav-item">
+                                        <a class="nav-link icon-box change-color-black" data-val="analysis" href="javascript:void"><span
+                                                class="time-line-icon"><img src="assets/images/analysis_2.png"
+                                                    class="img-fluid"></span> Analysis</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link icon-box chage-color-green" data-val="win" href="javascript:void"><span
+                                                class="time-line-icon"><img src="assets/images/test_win_2.png"
+                                                    class="img-fluid"></span>test-won</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link icon-box chage-color-red" data-val="loss" href="javascript:void"><span
+                                                class="time-line-icon"><img src="assets/images/test_loss_2.png"
+                                                    class="img-fluid"></span>test-lost</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-           </div>
         </div>
 
     </div>
 </div>
-<link rel="stylesheet" type="text/css" href="assets/css/Timeline-Responsive.css"> 
-<link rel="stylesheet" type="text/css" href="assets/css/Timeline.css"> 
+<link rel="stylesheet" type="text/css" href="assets/css/Timeline-Responsive.css">
+<link rel="stylesheet" type="text/css" href="assets/css/Timeline.css">
 <link rel="stylesheet" type="text/css" href="assets/css/timeline-chart.css">
 <script src="../src/components/timeline/timeline.js"></script>
