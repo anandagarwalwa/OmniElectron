@@ -38,7 +38,7 @@
     }();
 
     var TimelineChart = function () {
-        function TimelineChart(element, data, opts) {
+        function TimelineChart(element, data, opts, range = null) {
             _classCallCheck(this, TimelineChart);
 
             var self = this;
@@ -53,6 +53,11 @@
 
             var minDt = d3.min(allElements, this.getPointMinDt);
             var maxDt = d3.max(allElements, this.getPointMaxDt);
+
+            if (range != null && range.min && range.max) {
+                minDt = range.min;
+                maxDt = range.max;
+            }
 
             var elementWidth = options.width || element.clientWidth;
             var elementHeight = options.height || element.clientHeight;
@@ -98,6 +103,7 @@
                 var groupLabels = svg.selectAll('.group-label').data(data).enter().append('text').attr('class', 'group-label').attr('x', 0).attr('y', function (d, i) {
                     return groupHeight * i + groupHeight / 2 + 5.5;
                 }).attr('dx', '0.5em').text(function (d) {
+                    console.log('d',d)
                     return d.label;
                 });
 
@@ -127,13 +133,13 @@
             });
 
             var groupDotItems = svg.selectAll('.group-dot-item').data(data).enter().append('g').attr('clip-path', 'url(#chart-content)').attr('class', 'item')
-            .attr('transform', function (d, i) {
-                return 'translate(0, ' + groupHeight * i + ')';
-            }).selectAll('.dot').data(function (d) {
-                return d.data.filter(function (_) {
-                    return _.type === TimelineChart.TYPE.POINT;
-                });
-            }).enter();
+                .attr('transform', function (d, i) {
+                    return 'translate(0, ' + groupHeight * i + ')';
+                }).selectAll('.dot').data(function (d) {
+                    return d.data.filter(function (_) {
+                        return _.type === TimelineChart.TYPE.POINT;
+                    });
+                }).enter();
 
             // var dots = groupDotItems.append('circle').attr('class', withCustom('dot')).attr('cx', function (d) {
             //     return x(d.at);
@@ -141,15 +147,15 @@
 
             //Specified Images
             var dots = groupDotItems.append("svg:image")
-            .attr("x", function (d) {
-                     return x(d.at);
-                 })
-                 .attr('class', withCustom('dot'))
-            .attr("y", groupHeight / 2)
-            .attr("height", groupHeight / 2)
-            .attr("width", groupHeight / 2)       
-            .attr("preserveAspectRatio", "none")    
-            .attr("xlink:href", function(d) {return d.image});
+                .attr("x", function (d) {
+                    return x(d.at);
+                })
+                .attr('class', withCustom('dot'))
+                .attr("y", groupHeight / 4.4)
+                .attr("height", groupHeight / 1.2)
+                .attr("width", groupHeight / 1.5)
+                .attr("preserveAspectRatio", "xMinYMax")
+                .attr("xlink:href", function (d) { return d.image });
 
             if (options.tip) {
                 if (d3.tip) {

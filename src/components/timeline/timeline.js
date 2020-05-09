@@ -207,6 +207,14 @@ function FormatTimeLineData(timelineList) {
       }
     }
   }
+
+  console.log('data', data);
+  data.sort(function (a, b) {
+    return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
+  })
+
+  console.log('f_data', data);
+
   return data;
 }
 
@@ -240,13 +248,19 @@ function SetSliderRange(timelineList) {
 
 function bindChartData(data) {
   $("#timeline6").html('');
+
+  var range={};
+  if (maxRange && minRange) {
+    range.min = minRange;
+    range.max = maxRange;
+  }
   var element = document.getElementById('timeline6');
   var timeline = new TimelineChart(element, data, {
     enableLiveTimer: true
     // tip: function (d) {
     //   return d.at || `${d.from}<br>${d.to}`;
     // }
-  }).onVizChange(e => console.log('e', e));
+  }, range).onVizChange(e => console.log('e', e));
 }
 
 var changeResult = function (data) {
@@ -323,6 +337,7 @@ $('body').on('click', 'a.drop-box', function () {
     isClearClick = false;
     var formattedData = FormatDataByBreakDown(false);
     bindChartData(formattedData);
+    $("#lblFilter").text("");
   }
   else {
     isClearClick = true;
@@ -332,6 +347,7 @@ $('body').on('click', 'a.drop-box', function () {
     var formattedData = FormatDataByBreakDown(false);
     formattedData = formattedData.filter(f => f.label === filterId);
     bindChartData(formattedData);
+    $("#lblFilter").text(filterId);
   }
 });
 
@@ -353,7 +369,7 @@ $('body').on('click', 'a.icon-box', function () {
     var formattedData = FormatDataByBreakDown(false);
     debugger
     var filteredData = formattedData;
-    filteredData= JSON.stringify(filteredData);
+    filteredData = JSON.stringify(filteredData);
     filteredData = JSON.parse(filteredData);
     for (var i = 0; i < formattedData.length; i++) {
       filteredData[i].data = [];
