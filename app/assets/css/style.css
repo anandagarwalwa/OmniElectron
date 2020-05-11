@@ -101,7 +101,8 @@ ul li{list-style-type: none;}
 }
 #graph canvas {
     width: 100% !important;
-    height: 100% !important;
+    height: 90vh !important;
+    /* height:100vh !important */
 }
 /*
 #sidebar {

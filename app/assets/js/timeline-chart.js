@@ -42,6 +42,7 @@
             _classCallCheck(this, TimelineChart);
 
             var self = this;
+            var rowGap = 10;
 
             element.classList.add('timeline-chart');
 
@@ -72,15 +73,57 @@
             var width = elementWidth - margin.left - margin.right;
             var height = elementHeight - margin.top - margin.bottom;
 
+            console.log('height', height);
+            if (height > (40 * data.length)) {
+                height = 40 * data.length;
+            }
+
             var groupWidth = options.hideGroupLabels ? 0 : 200;
 
-            var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width]);
+            var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width * .96]);
 
             var xAxis = d3.svg.axis().scale(x).orient('bottom').tickSize(-height);
 
             var zoom = d3.behavior.zoom().x(x).on('zoom', zoomed);
 
             var svg = d3.select(element).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')').call(zoom);
+
+            var groupHeight = height / data.length;
+            console.log('groupHeight', groupHeight);
+
+            svg.selectAll('.group-section').data(data).enter().append('rect')
+                .attr('class', 'row-section')
+                .attr('x', 0)
+                .attr('y', function (d, i) {
+                    console.log(i);
+                    return groupHeight * (i + 1);
+                }).attr('height', rowGap)
+                .attr('width', width - 1);
+
+            svg.selectAll('.group-section').data(data).enter().append('rect')
+                .attr('class', function (d, i) {
+                    return i % 2 == 0 ? "evenRow" : "oddRow";
+                })
+                .attr('x', 200)
+                .attr('y', function (d, i) {
+                    console.log(i);
+                    return groupHeight * i + rowGap;
+                }).attr('height', groupHeight - rowGap)
+                .attr('width', width - groupWidth - 1);
+
+            svg.selectAll('.group-section').data(data).enter().append('rect')
+                .attr('style', function (d, i) {
+                    if (d.data.length == 0) {
+                        return "fill: transparent";
+                    }
+                    return "fill: " + d.data[0].color ;
+                })
+                .attr('x', 0)
+                .attr('y', function (d, i) {
+                    console.log(i);
+                    return groupHeight * i + rowGap;
+                }).attr('height', groupHeight - rowGap)
+                .attr('width', groupWidth - 1);
 
             svg.append('defs').append('clipPath').attr('id', 'chart-content').append('rect').attr('x', groupWidth).attr('y', 0).attr('height', height).attr('width', width - groupWidth);
 
@@ -92,23 +135,25 @@
                 self.now = svg.append('line').attr('clip-path', 'url(#chart-content)').attr('class', 'vertical-marker now').attr("y1", 0).attr("y2", height);
             }
 
-            var groupHeight = height / data.length;
-            var groupSection = svg.selectAll('.group-section').data(data).enter().append('line').attr('class', 'group-section').attr('x1', 0).attr('x2', width).attr('y1', function (d, i) {
-                return groupHeight * (i + 1);
-            }).attr('y2', function (d, i) {
-                return groupHeight * (i + 1);
-            });
+            // var groupHeight = height / data.length;
+            // var groupSection = svg.selectAll('.group-section').data(data).enter().append('line')
+            //             .attr('class', 'group-section').attr('x1', 0).attr('x2', width).attr('y1', function (d, i) {
+            //     return groupHeight * (i + 1);
+            // }).attr('y2', function (d, i) {
+            //     return groupHeight * (i + 1);
+            // });
 
             if (!options.hideGroupLabels) {
                 var groupLabels = svg.selectAll('.group-label').data(data).enter().append('text').attr('class', 'group-label').attr('x', 0).attr('y', function (d, i) {
                     return groupHeight * i + groupHeight / 2 + 5.5;
                 }).attr('dx', '0.5em').text(function (d) {
-                    console.log('d',d)
+                    // console.log('d',d)
                     return d.label;
                 });
 
                 var lineSection = svg.append('line').attr('x1', groupWidth).attr('x2', groupWidth).attr('y1', 0).attr('y2', height).attr('stroke', 'black');
             }
+
 
             var groupIntervalItems = svg.selectAll('.group-interval-item').data(data).enter().append('g').attr('clip-path', 'url(#chart-content)').attr('class', 'item').attr('transform', function (d, i) {
                 return 'translate(0, ' + groupHeight * i + ')';

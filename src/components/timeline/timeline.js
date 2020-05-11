@@ -249,7 +249,7 @@ function SetSliderRange(timelineList) {
 function bindChartData(data) {
   $("#timeline6").html('');
 
-  var range={};
+  var range = {};
   if (maxRange && minRange) {
     range.min = minRange;
     range.max = maxRange;
@@ -268,6 +268,10 @@ var changeResult = function (data) {
   var toDate = new Date(data.to);
   from = FormatDate(fromDate);
   to = FormatDate(toDate);
+
+  maxRange = toDate;
+  minRange = fromDate;
+
   getTimelineDetails();
 };
 
@@ -321,6 +325,9 @@ function FormatDataByBreakDown(isChangeHtml = true) {
 
   if (isChangeHtml) {
     $('#divSearchPanel').html(html);
+    isImgClick = false;
+    imgFilterId = '';
+    $("#iconList").find(".active").removeClass("active");
   }
 
   bindChartData(formattedData);
@@ -331,7 +338,6 @@ function FormatDataByBreakDown(isChangeHtml = true) {
 var isClearClick = false;
 var filterId = '';
 $('body').on('click', 'a.drop-box', function () {
-
   $("#divSearchPanel").find(".active").removeClass("active");
   if (isClearClick && filterId == $(this).attr("data-val")) {
     isClearClick = false;
@@ -349,6 +355,9 @@ $('body').on('click', 'a.drop-box', function () {
     bindChartData(formattedData);
     $("#lblFilter").text(filterId);
   }
+  isImgClick = false;
+  imgFilterId = '';
+  $("#iconList").find(".active").removeClass("active");
 });
 
 
@@ -382,5 +391,21 @@ $('body').on('click', 'a.icon-box', function () {
     }
     // formattedData = formattedData.filter(f => f.label === imgFilterId);
     bindChartData(filteredData);
+  }
+
+  isClearClick = false;
+  filterId = '';
+  $("#divSearchPanel").find(".active").removeClass("active");
+});
+
+function serchExplore() {
+  var value = $('#txtSearch').val().toLowerCase();
+  $("#divSearchPanel .drop-box").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  });
+}
+$('#txtSearch').keyup(function (e) {
+  if (e.keyCode != 13) {
+      serchExplore();
   }
 });

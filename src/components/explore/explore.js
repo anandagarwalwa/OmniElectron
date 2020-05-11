@@ -57,6 +57,7 @@ $(function () {
         if (isClearClick && filterId == $(this).attr("data-val")) {
             // Bind2DForceGraph();
             isClearClick = false;
+            debugger
             // For Deselecting Breakdown
             // Graph
             //     .nodeColor(node => {

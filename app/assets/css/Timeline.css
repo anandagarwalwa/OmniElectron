@@ -3037,6 +3037,8 @@ label.error
 #timeline6 {
     float: left;
     width: 100%;
+    min-height:38vh;
+    max-height:42vh;
 }
 .chart-Timeline #timeline6 svg,.chart-Timeline #timeline7 svg,.chart-Timeline #timeline8 svg {
     margin: auto;
@@ -3073,4 +3075,12 @@ label.error
       height:20px; width:20px; float:left;
     }
 
-
+.row-section{
+    fill:white !important;
+}
+.oddRow{
+    fill:darkgray !important;
+}
+.evenRow{
+    fill:lightgraY !important;
+}
