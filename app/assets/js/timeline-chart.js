@@ -1,4 +1,4 @@
-(function (global, factory) {
+(function(global, factory) {
     if (typeof define === "function" && define.amd) {
         define(['module'], factory);
     } else if (typeof exports !== "undefined") {
@@ -10,7 +10,7 @@
         factory(mod);
         global.TimelineChart = mod.exports;
     }
-})(this, function (module) {
+})(this, function(module) {
     'use strict';
 
     function _classCallCheck(instance, Constructor) {
@@ -19,7 +19,7 @@
         }
     }
 
-    var _createClass = function () {
+    var _createClass = function() {
         function defineProperties(target, props) {
             for (var i = 0; i < props.length; i++) {
                 var descriptor = props[i];
@@ -30,14 +30,14 @@
             }
         }
 
-        return function (Constructor, protoProps, staticProps) {
+        return function(Constructor, protoProps, staticProps) {
             if (protoProps) defineProperties(Constructor.prototype, protoProps);
             if (staticProps) defineProperties(Constructor, staticProps);
             return Constructor;
         };
     }();
 
-    var TimelineChart = function () {
+    var TimelineChart = function() {
         function TimelineChart(element, data, opts, range = null) {
             _classCallCheck(this, TimelineChart);
 
@@ -48,7 +48,7 @@
 
             var options = this.extendOptions(opts);
 
-            var allElements = data.reduce(function (agg, e) {
+            var allElements = data.reduce(function(agg, e) {
                 return agg.concat(e.data);
             }, []);
 
@@ -72,15 +72,18 @@
 
             var width = elementWidth - margin.left - margin.right;
             var height = elementHeight - margin.top - margin.bottom;
+            if (isNaN(height)) {
+                height = 40 * data.length;
+            }
 
             console.log('height', height);
-            if (height > (40 * data.length)) {
+            if (data.length > 0 && height > (40 * data.length)) {
                 height = 40 * data.length;
             }
 
             var groupWidth = options.hideGroupLabels ? 0 : 200;
 
-            var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width * .96]);
+            var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width * 0.96]);
 
             var xAxis = d3.svg.axis().scale(x).orient('bottom').tickSize(-height);
 
@@ -89,53 +92,52 @@
             var svg = d3.select(element).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')').call(zoom);
 
             var groupHeight = height / data.length;
-            console.log('groupHeight', groupHeight);
 
             svg.selectAll('.group-section').data(data).enter().append('rect')
                 .attr('class', 'row-section')
                 .attr('x', 0)
-                .attr('y', function (d, i) {
-                    console.log(i);
+                .attr('y', function(d, i) {
                     return groupHeight * (i + 1);
                 }).attr('height', rowGap)
                 .attr('width', width - 1);
 
             svg.selectAll('.group-section').data(data).enter().append('rect')
-                .attr('class', function (d, i) {
+                .attr('class', function(d, i) {
                     return i % 2 == 0 ? "evenRow" : "oddRow";
                 })
                 .attr('x', 200)
-                .attr('y', function (d, i) {
-                    console.log(i);
+                .attr('y', function(d, i) {
                     return groupHeight * i + rowGap;
                 }).attr('height', groupHeight - rowGap)
                 .attr('width', width - groupWidth - 1);
 
             svg.selectAll('.group-section').data(data).enter().append('rect')
-                .attr('style', function (d, i) {
+                .attr('style', function(d, i) {
                     if (d.data.length == 0) {
-                        return "fill: transparent";
+                        return "fill: gray";
                     }
-                    return "fill: " + d.data[0].color ;
+                    return "fill: " + d.data[0].color;
                 })
                 .attr('x', 0)
-                .attr('y', function (d, i) {
-                    console.log(i);
+                .attr('y', function(d, i) {
                     return groupHeight * i + rowGap;
                 }).attr('height', groupHeight - rowGap)
                 .attr('width', groupWidth - 1);
 
-            svg.append('defs').append('clipPath').attr('id', 'chart-content').append('rect').attr('x', groupWidth).attr('y', 0).attr('height', height).attr('width', width - groupWidth);
+            svg.append('defs').append('clipPath').attr('id', 'chart-content').append('rect').attr('x', groupWidth)
+                .attr('y', 10).attr('height', height).attr('width', width - groupWidth);
 
-            svg.append('rect').attr('class', 'chart-bounds').attr('x', groupWidth).attr('y', 0).attr('height', height).attr('width', width - groupWidth);
+            svg.append('rect').attr('class', 'chart-bounds').attr('x', groupWidth).attr('y', rowGap).attr('height', height)
+                .attr('width', width - groupWidth);
 
-            svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + height + ')').call(xAxis);
+            svg.append('g').attr('class', 'x axis').attr('transform', 'translate(0,' + (height + rowGap) + ')').call(xAxis);
 
             if (options.enableLiveTimer) {
-                self.now = svg.append('line').attr('clip-path', 'url(#chart-content)').attr('class', 'vertical-marker now').attr("y1", 0).attr("y2", height);
+                self.now = svg.append('line').attr('clip-path', 'url(#chart-content)').attr('class', 'vertical-marker now')
+                    .attr("y1", 0).attr("y2", height);
             }
 
-            // var groupHeight = height / data.length;
+            var groupHeight = height / data.length;
             // var groupSection = svg.selectAll('.group-section').data(data).enter().append('line')
             //             .attr('class', 'group-section').attr('x1', 0).attr('x2', width).attr('y1', function (d, i) {
             //     return groupHeight * (i + 1);
@@ -144,44 +146,43 @@
             // });
 
             if (!options.hideGroupLabels) {
-                var groupLabels = svg.selectAll('.group-label').data(data).enter().append('text').attr('class', 'group-label').attr('x', 0).attr('y', function (d, i) {
+                var groupLabels = svg.selectAll('.group-label').data(data).enter().append('text').attr('class', 'group-label').attr('x', 0).attr('y', function(d, i) {
                     return groupHeight * i + groupHeight / 2 + 5.5;
-                }).attr('dx', '0.5em').text(function (d) {
-                    // console.log('d',d)
+                }).attr('dx', '0.5em').text(function(d) {
                     return d.label;
                 });
 
-                var lineSection = svg.append('line').attr('x1', groupWidth).attr('x2', groupWidth).attr('y1', 0).attr('y2', height).attr('stroke', 'black');
+                var lineSection = svg.append('line').attr('x1', groupWidth).attr('x2', groupWidth).attr('y1', rowGap).attr('y2', height).attr('stroke', 'black');
             }
 
 
-            var groupIntervalItems = svg.selectAll('.group-interval-item').data(data).enter().append('g').attr('clip-path', 'url(#chart-content)').attr('class', 'item').attr('transform', function (d, i) {
+            var groupIntervalItems = svg.selectAll('.group-interval-item').data(data).enter().append('g').attr('clip-path', 'url(#chart-content)').attr('class', 'item').attr('transform', function(d, i) {
                 return 'translate(0, ' + groupHeight * i + ')';
-            }).selectAll('.dot').data(function (d) {
-                return d.data.filter(function (_) {
+            }).selectAll('.dot').data(function(d) {
+                return d.data.filter(function(_) {
                     return _.type === TimelineChart.TYPE.INTERVAL;
                 });
             }).enter();
 
             var intervalBarHeight = 0.8 * groupHeight;
             var intervalBarMargin = (groupHeight - intervalBarHeight) / 2;
-            var intervals = groupIntervalItems.append('rect').attr('class', withCustom('interval')).attr('width', function (d) {
+            var intervals = groupIntervalItems.append('rect').attr('class', withCustom('interval')).attr('width', function(d) {
                 return Math.max(options.intervalMinWidth, x(d.to) - x(d.from));
-            }).attr('height', intervalBarHeight).attr('y', intervalBarMargin).attr('x', function (d) {
+            }).attr('height', intervalBarHeight).attr('y', intervalBarMargin).attr('x', function(d) {
                 return x(d.from);
             });
 
-            var intervalTexts = groupIntervalItems.append('text').text(function (d) {
+            var intervalTexts = groupIntervalItems.append('text').text(function(d) {
                 return d.label;
-            }).attr('fill', 'white').attr('class', withCustom('interval-text')).attr('y', groupHeight / 2 + 5).attr('x', function (d) {
+            }).attr('fill', 'white').attr('class', withCustom('interval-text')).attr('y', groupHeight / 2 + 5).attr('x', function(d) {
                 return x(d.from);
             });
 
             var groupDotItems = svg.selectAll('.group-dot-item').data(data).enter().append('g').attr('clip-path', 'url(#chart-content)').attr('class', 'item')
-                .attr('transform', function (d, i) {
+                .attr('transform', function(d, i) {
                     return 'translate(0, ' + groupHeight * i + ')';
-                }).selectAll('.dot').data(function (d) {
-                    return d.data.filter(function (_) {
+                }).selectAll('.dot').data(function(d) {
+                    return d.data.filter(function(_) {
                         return _.type === TimelineChart.TYPE.POINT;
                     });
                 }).enter();
@@ -192,7 +193,7 @@
 
             //Specified Images
             var dots = groupDotItems.append("svg:image")
-                .attr("x", function (d) {
+                .attr("x", function(d) {
                     return x(d.at);
                 })
                 .attr('class', withCustom('dot'))
@@ -200,7 +201,8 @@
                 .attr("height", groupHeight / 1.2)
                 .attr("width", groupHeight / 1.5)
                 .attr("preserveAspectRatio", "xMinYMax")
-                .attr("xlink:href", function (d) { return d.image });
+                .attr("dataVal", function(d) { return JSON.stringify(d) })
+                .attr("xlink:href", function(d) { return d.image });
 
             if (options.tip) {
                 if (d3.tip) {
@@ -225,7 +227,7 @@
             }
 
             function withCustom(defaultClass) {
-                return function (d) {
+                return function(d) {
                     return d.customClass ? [d.customClass, defaultClass].join(' ') : defaultClass;
                 };
             }
@@ -244,19 +246,19 @@
                 }
 
                 svg.select('.x.axis').call(xAxis);
-                svg.selectAll('image.dot').attr('x', function (d) {
+                svg.selectAll('image.dot').attr('x', function(d) {
                     return x(d.at);
                 });
-                svg.selectAll('circle.dot').attr('cx', function (d) {
+                svg.selectAll('circle.dot').attr('cx', function(d) {
                     return x(d.at);
                 });
-                svg.selectAll('rect.interval').attr('x', function (d) {
+                svg.selectAll('rect.interval').attr('x', function(d) {
                     return x(d.from);
-                }).attr('width', function (d) {
+                }).attr('width', function(d) {
                     return Math.max(options.intervalMinWidth, x(d.to) - x(d.from));
                 });
 
-                svg.selectAll('.interval-text').attr('x', function (d) {
+                svg.selectAll('.interval-text').attr('x', function(d) {
                     var positionData = getTextPositionData.call(this, d);
                     if (positionData.upToPosition - groupWidth - 10 < positionData.textWidth) {
                         return positionData.upToPosition;
@@ -264,19 +266,19 @@
                         return groupWidth;
                     }
                     return positionData.xPosition;
-                }).attr('text-anchor', function (d) {
+                }).attr('text-anchor', function(d) {
                     var positionData = getTextPositionData.call(this, d);
                     if (positionData.upToPosition - groupWidth - 10 < positionData.textWidth) {
                         return 'end';
                     }
                     return 'start';
-                }).attr('dx', function (d) {
+                }).attr('dx', function(d) {
                     var positionData = getTextPositionData.call(this, d);
                     if (positionData.upToPosition - groupWidth - 10 < positionData.textWidth) {
                         return '-0.5em';
                     }
                     return '0.5em';
-                }).text(function (d) {
+                }).text(function(d) {
                     var positionData = getTextPositionData.call(this, d);
                     var percent = (positionData.width - options.textTruncateThreshold) / positionData.textWidth;
                     if (percent < 1) {
@@ -317,7 +319,7 @@
                     timerTickInterval: 1000,
                     hideGroupLabels: false
                 };
-                Object.keys(ext).map(function (k) {
+                Object.keys(ext).map(function(k) {
                     return defaultOptions[k] = ext[k];
                 });
                 return defaultOptions;

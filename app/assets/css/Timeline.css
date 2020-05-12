@@ -3037,8 +3037,8 @@ label.error
 #timeline6 {
     float: left;
     width: 100%;
-    min-height:38vh;
-    max-height:42vh;
+    min-height:40vh;
+    max-height:45vh;
 }
 .chart-Timeline #timeline6 svg,.chart-Timeline #timeline7 svg,.chart-Timeline #timeline8 svg {
     margin: auto;
@@ -3079,8 +3079,26 @@ label.error
     fill:white !important;
 }
 .oddRow{
-    fill:darkgray !important;
+    fill:lightgray !important;
 }
 .evenRow{
-    fill:lightgraY !important;
+    fill:darkgray !important;
+}
+
+
+select option { 
+    line-height: 20px !important;
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 15px;
+}
+select {
+    text-indent: 15px;
+  }
+
+select option { 
+      padding:5px 0px;
 }
