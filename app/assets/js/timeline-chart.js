@@ -42,7 +42,8 @@
             _classCallCheck(this, TimelineChart);
 
             var self = this;
-            var rowGap = 10;
+            var rowGap = 8;
+            var firstColumnWidth = 150;
 
             element.classList.add('timeline-chart');
 
@@ -76,12 +77,11 @@
                 height = 40 * data.length;
             }
 
-            console.log('height', height);
             if (data.length > 0 && height > (40 * data.length)) {
                 height = 40 * data.length;
             }
 
-            var groupWidth = options.hideGroupLabels ? 0 : 200;
+            var groupWidth = options.hideGroupLabels ? 0 : firstColumnWidth;
 
             var x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width * 0.96]);
 
@@ -105,7 +105,7 @@
                 .attr('class', function(d, i) {
                     return i % 2 == 0 ? "evenRow" : "oddRow";
                 })
-                .attr('x', 200)
+                .attr('x', firstColumnWidth)
                 .attr('y', function(d, i) {
                     return groupHeight * i + rowGap;
                 }).attr('height', groupHeight - rowGap)
@@ -201,7 +201,7 @@
                 .attr("height", groupHeight / 1.2)
                 .attr("width", groupHeight / 1.5)
                 .attr("preserveAspectRatio", "xMinYMax")
-                .attr("dataVal", function(d) { return JSON.stringify(d) })
+                .attr("dataVal", function(d) { return d.data })
                 .attr("xlink:href", function(d) { return d.image });
 
             if (options.tip) {

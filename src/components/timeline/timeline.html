@@ -90,11 +90,8 @@
     #timeline6 {
         width: 100%;
         height: 150px;
-        /* background: rgb(218, 218, 218); */
         opacity: 0.9;
         margin-top: 15px;
-        /* border-radius: 5px; */
-        /* border: 1px solid #2b2b2b; */
     }
     
     .explore-sidenav {
@@ -147,24 +144,6 @@
         box-shadow: none !important;
         border: none !important;
     }
-    
-    .icon-box.active {
-        background: lightgray !important;
-    }
-    
-    #iconList {
-        position: fixed;
-        bottom: 15px;
-        right: 10px;
-    }
-    
-    #lblFilter {
-        position: absolute;
-    }
-    
-    .answer {
-        font-weight: normal !important;
-    }
 </style>
 
 <div class="container-fluid explor-container">
@@ -187,19 +166,18 @@
             </div>
         </div>
         <div class="col-lg-10  pl-0 pr-0 mt-5 responsive-section">
-            <label id="lblFilter"></label>
             <div class="row">
-                <div class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
-                    <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
-                        <div class="main-explore-section">
-                            <form>
-                                <div class="explorefilter-sec" id="divFilterBlock">
-                                    <label for="filterBlockContainer">Filter</label>
-                                    <div id="filterBlockContainer" class="bootstrap-tagsinput">
-                                    </div>
+                <div class="coman-drop-down coman-drop-explore d-flex col-xl-10 drop-down-dark  justify-content-center mt-1">
+                    <div class="col-xl-2 col-12 col-sm-6 col-md-4 col-lg-4 mr-auto p-0">
+                        <form>
+                            <div id="breakFilterBlock">
+                                <label for="filterBlockContainer">Filter</label>
+                                <div id="filterTMContainer">
+                                    <span id="lblFilter"></span>
+                                    <span class="removeIcon" onclick="removeTag(this)">x</span>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
 
 
@@ -303,7 +281,7 @@
                 <div class="filter-ownear-main">
                     <div class="filter-ownear-sec">
                         <div class="filter-title-sec">
-                            <h5>Icon :</h5>
+                            <h5>Owner :</h5>
                         </div>
                         <div class="filter-right-sec">
                             <div class="filter-pic-right">
@@ -316,6 +294,10 @@
                     </div>
 
                     <table>
+                        <tr>
+                            <th>Description </th>
+                            <td><span class="answer" id="descValue"></span></td>
+                        </tr>
                         <tr>
                             <th style="width:150px">Channel Name </th>
                             <td><span class="answer" id="channelName"></span></td>
@@ -330,32 +312,11 @@
                             <td><span class="answer" id="localCode"></span></td>
                         </tr>
                         <tr>
-                            <th>Type </th>
-                            <td><span class="answer" id="typeValue"></span></td>
+                            <th>Date </th>
+                            <td><span class="answer" id="createdDate"></span></td>
                         </tr>
+
                     </table>
-                    <!-- <div class="filter-discription-sec-main">
-                        <div class="filter-desc-section">
-                            <h5>Channel Name :
-                                <span class="answer" id="channelName"></span>
-                            </h5>
-                        </div>
-                        <div class="filter-desc-section">
-                            <h5>Team Name :
-                                <span class="answer" id="teamName"></span>
-                            </h5>
-                        </div>
-                        <div class="filter-desc-section">
-                            <h5>LocaleCode :
-                                <span class="answer" id="localCode"></span>
-                            </h5>
-                        </div>
-                        <div class="filter-desc-section">
-                            <h5>Type :
-                                <span class="answer" id="typeValue"></span>
-                            </h5>
-                        </div>
-                    </div> -->
                     <!-- <div class="filter-nav">
                         <ul>
                             <li><a style="color: blue;text-decoration: underline;cursor: pointer;" id="codelink">code link</a></li>

@@ -12,6 +12,7 @@ var dbDataObject = [];
 var timelineListObj = [];
 var teamListObject = [];
 var localCodeListObject = [];
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 $('#sidebarCollapse').on('click', function() {
     $('#sidebar').toggleClass('active');
@@ -118,7 +119,6 @@ function getTimelineDetails() {
         userId = SessionManager.UserId;
 
     getTimelineChartData(userId, from, to).then(data => {
-        console.log('data', data);
         timelineListObj = [];
         var dataObj = data[0];
         dbDataObject = dataObj;
@@ -214,12 +214,9 @@ function FormatTimeLineData(timelineList) {
         }
     }
 
-    console.log('data', data);
     data.sort(function(a, b) {
         return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
     })
-
-    console.log('f_data', data);
 
     return data;
 }
@@ -333,6 +330,7 @@ function FormatDataByBreakDown(isChangeHtml = true) {
         isImgClick = false;
         imgFilterId = '';
         $("#iconList").find(".active").removeClass("active");
+        $("#breakFilterBlock").css('display', 'none');
     }
 
     bindChartData(formattedData);
@@ -348,6 +346,7 @@ $('body').on('click', 'a.drop-box', function() {
         var formattedData = FormatDataByBreakDown(false);
         bindChartData(formattedData);
         $("#lblFilter").text("");
+        $("#breakFilterBlock").css('display', 'none');
     } else {
         isClearClick = true;
         filterId = $(this).attr("data-val");
@@ -357,6 +356,7 @@ $('body').on('click', 'a.drop-box', function() {
         formattedData = formattedData.filter(f => f.label === filterId);
         bindChartData(formattedData);
         $("#lblFilter").text(filterId);
+        $("#breakFilterBlock").css('display', 'block');
     }
     isImgClick = false;
     imgFilterId = '';
@@ -398,7 +398,18 @@ $('body').on('click', 'a.icon-box', function() {
     isClearClick = false;
     filterId = '';
     $("#divSearchPanel").find(".active").removeClass("active");
+    $("#breakFilterBlock").css('display', 'none');
 });
+
+function removeTag(ele) {
+    filterId = '';
+    isClearClick = false;
+    var formattedData = FormatDataByBreakDown(false);
+    bindChartData(formattedData);
+    $("#lblFilter").text("");
+    $("#breakFilterBlock").css('display', 'none');
+    $("#divSearchPanel").find(".active").removeClass("active");
+}
 
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
@@ -416,19 +427,18 @@ $('body').on('click', 'image.dot', function(e) {
     debugger
     var data = $(e.currentTarget).attr('dataVal');
     if (data) {
-        var data = JSON.parse(data);
-        var dataVal = data.data;
-        dataVal = JSON.parse(dataVal);
+        var dataVal = JSON.parse(data);
         console.log(dataVal);
-
         $('#timeLineModal').modal('show');
-
         if (data) {
-            $("#img-Icon").attr("src", data.image);
+            $("#descValue").text(dataVal.Description);
             $("#channelName").text(dataVal.ChannelName);
             $("#teamName").text(dataVal.TeamName);
             $("#localCode").text(dataVal.LocaleCode);
-            $("#typeValue").text(data.imageType);
+
+            var dt = new Date(dataVal.Date);
+            var formattedDate = dt.getDate() + " " + months[dt.getMonth()] + " " + dt.getFullYear();
+            $("#createdDate").text(formattedDate);
         }
 
     }
