@@ -562,15 +562,16 @@ function FilterGraphBySearchPanel(selId) {
         });
         filteredLinkColor = linkColor;
 
-        links = filteredLinks;
-        nodes = filteredLNode;
-        Bind2DForceGraph();
+        // links = filteredLinks;
+        // nodes = highlightNodes;
+        // console.log('filtered', nodes, links);
+        // Bind2DForceGraph();
 
-        // if (isNodeFilter) {
-        //     updateFilteredNode(linkColor);
-        // } else {
-        //     updateHighlight(linkColor);
-        // }
+        if (isNodeFilter) {
+            updateFilteredNode(linkColor);
+        } else {
+            updateHighlight(linkColor);
+        }
     }
 }
 
@@ -693,9 +694,10 @@ function NodeFilterGraphData(selId, searchText) {
 
 // breakdown filter nodes
 function BreakDownNodeFilter() {
-    debugger;
     var templinks = links;
     var tempnodes = nodes;
+    // Bind2DForceGraph();
+    // return;
     //    graphData.nodes = nodes;
     //    graphData.nodes = nodes;
 
