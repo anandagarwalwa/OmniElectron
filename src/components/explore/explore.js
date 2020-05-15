@@ -62,31 +62,33 @@ $(function() {
         if (isClearClick && filterId == $(this).attr("data-val")) {
             // Bind2DForceGraph();
             isClearClick = false;
-            debugger
 
-            links = allLinks.length > 0 ? allLinks : links;
-            nodes = allNodes.length > 0 ? allNodes : nodes;
-            Bind2DForceGraph();
+            if (isNodeFilter) {
+                links = allLinks.length > 0 ? allLinks : links;
+                nodes = allNodes.length > 0 ? allNodes : nodes;
+                Bind2DForceGraph();
+            }
+
+            var templinks = links;
+            var tempnodes = nodes;
+            Graph.nodeColor(d => {
+                    if (tempnodes.find(x => x.nodeId == d.nodeId)) {
+                        return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+                    }
+                })
+                .linkColor(link => {
+                    if (templinks.find(x => x.nodeId == link.nodeId)) {
+                        return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
+                    }
+                })
+            $("#divFilterBlock").hide();
             // For Deselecting Breakdown
             // Graph
             //     .nodeColor(node => {
             //         return hex2rgb(node.nodeColor, 1);
             //     })
             //     .linkColor(link => hex2rgb(link.linkColor, 1));
-            var templinks = links;
-            var tempnodes = nodes;
-            //    graphData.nodes = nodes;
-            //    graphData.nodes = nodes;
 
-
-            // .graphData(graphData)
-            // Graph.nodeColor(d => {
-            //         return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
-            //     })
-            //     .linkColor(link => {
-            //         return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
-            //     })
-            $("#divFilterBlock").hide();
         } else {
             if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
                 $("#filterBlockContainer span").remove();
@@ -128,7 +130,6 @@ $(function() {
 });
 
 function removeNodeFilterBreakdown() {
-    debugger;
     $("#divSearchPanel").find(".active").removeClass("active");
     // For Deselecting Breakdown
     // Graph
@@ -143,11 +144,8 @@ function removeNodeFilterBreakdown() {
     highlightLink = [];
     filteredLinkColor = '';
 
-    links = allLinks.length > 0 ? allLinks : links;
-    nodes = allNodes.length > 0 ? allNodes : nodes;
-    Bind2DForceGraph();
 
-    // Bind2DForceGraph();
+
     // For Deselecting Breakdown
     // Graph
     //     .nodeColor(node => {
@@ -156,17 +154,16 @@ function removeNodeFilterBreakdown() {
     //     .linkColor(link => hex2rgb(link.linkColor, 1));
     var templinks = links;
     var tempnodes = nodes;
-    //    graphData.nodes = nodes;
-    //    graphData.nodes = nodes;
 
-    // Graph
-    // // .graphData(graphData)
-    //     .nodeColor(d => {
-    //         return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
-    //     })
-    //     .linkColor(link => {
-    //         return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
-    //     })
+    Graph
+        .nodeColor(d => {
+            if (tempnodes.find(x => x.nodeId == d.nodeId)) {
+                return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+            }
+        })
+        .linkColor(link => {
+            return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
+        })
 }
 
 function getFilterTag(tagtext) {
@@ -175,7 +172,12 @@ function getFilterTag(tagtext) {
 
 function removeTag(obj) {
     obj.closest(".tag").remove();
-    removeNodeFilterBreakdown();
+    // removeNodeFilterBreakdown();
+    $("#divSearchPanel").find(".active").removeClass("active");
+    links = allLinks.length > 0 ? allLinks : links;
+    nodes = allNodes.length > 0 ? allNodes : nodes;
+    Bind2DForceGraph();
+
     $("#divFilterBlock").hide();
 }
 
@@ -262,7 +264,6 @@ function GetLinks(isFromBreakDown) {
         userId = SessionManager.UserId;
     // Get links option selected
     getLinksForExplor(userId).then(data => {
-        // debugger;
         if (data && data.length > 0) {
             var linkData = data[0];
             var linkColor = '';
@@ -330,7 +331,6 @@ function GetNodes(isFromBreakDown) {
         if (data && data.length > 0) {
             var objNode;
             for (var u = 0; u < data.length; u++) {
-                // debugger;
                 objNode = getNodeLinkObject(data[u].Id);
                 nodes.push({
                     "id": data[u].Description,
@@ -379,7 +379,7 @@ var Graph;
 
 function Bind2DForceGraph() {
     $("#graph").html('');
-    // Graph = null;
+    Graph = null;
     debugger
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
@@ -429,7 +429,7 @@ function Bind2DForceGraph() {
                 // }
                 // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
-            Graph.zoom(8, 2000);
+            Graph.zoom(2, 2000);
         });
 }
 
@@ -461,8 +461,7 @@ function updateHighlight(filterColor) {
                 //return highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor, 0.2) : filterColor;
             })
 
-        // .centerAt(node.x, node.y, 1000)
-        ;
+        //Graph.centerAt(node.x, node.y, 1000);
         Graph.zoom(2, 2000);
     }
 }
@@ -494,21 +493,20 @@ function updateFilteredNode(filterColor) {
                 }
                 //highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor, 0) : filterColor
             })
-            .nodeCanvasObjectMode(node => 'after')
-            .nodeCanvasObject((node, ctx, globalScale) => {
-                const label = '';
-                const fontSize = 12 / globalScale;
-                ctx.font = `${fontSize}px Arial`;
-                const textWidth = ctx.measureText(label).width;
-                const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = node.color;
-                ctx.fillStyle = '#54545f';
-                ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
-            })
-            // .centerAt(node.x, node.y, 1000)
-        ;
+            // .nodeCanvasObjectMode(node => 'after')
+            // .nodeCanvasObject((node, ctx, globalScale) => {
+            //     const label = '';
+            //     const fontSize = 12 / globalScale;
+            //     ctx.font = `${fontSize}px Arial`;
+            //     const textWidth = ctx.measureText(label).width;
+            //     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+            //     ctx.textAlign = 'center';
+            //     ctx.textBaseline = 'middle';
+            //     ctx.fillStyle = node.color;
+            //     ctx.fillStyle = '#54545f';
+            //     ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
+            // })
+            // Graph.centerAt(node.x, node.y, 1000);
         Graph.zoom(2, 2000);
     }
 }
@@ -542,8 +540,8 @@ function FilterGraphBySearchPanel(selId) {
     //         return sourceChannel[prop] === selId;
     //     else
     //         return v[prop] === selId;
-
     // });
+
     highlightNodes = [], highlightLink = [];
     if (filteredLinks) {
         var linkColor = '';
@@ -562,13 +560,17 @@ function FilterGraphBySearchPanel(selId) {
         });
         filteredLinkColor = linkColor;
 
-        // links = filteredLinks;
-        // nodes = highlightNodes;
-        // console.log('filtered', nodes, links);
-        // Bind2DForceGraph();
-
         if (isNodeFilter) {
-            updateFilteredNode(linkColor);
+            const uniq = new Set(highlightNodes.map(e => JSON.stringify(e)));
+            const res = Array.from(uniq).map(e => JSON.parse(e));
+
+            // updateFilteredNode(linkColor);
+            // filteredLinks = filteredLinks.filter(m => m.linksTo == filteredLNode[0].nodeId || m.linksFrom == filteredLNode[0].nodeId);
+            links = filteredLinks;
+            nodes = res;
+            console.log('filtered', nodes, links);
+            Bind2DForceGraph();
+            $("#divFilterBlock").show();
         } else {
             updateHighlight(linkColor);
         }
@@ -643,7 +645,7 @@ function NodeFilterGraphData(selId, searchText) {
     Graph = ForceGraph()
         (elem)
         .width($("#graph").width())
-        .height(window.innerHeight - 150)
+        .height(window.innerHeight - 0)
         // .backgroundColor("#000011")
         .graphData(graphData)
         .nodeLabel('id')
@@ -673,7 +675,6 @@ function NodeFilterGraphData(selId, searchText) {
         .onNodeClick(node => {
             if (isNodeFilter) {
                 $('#myModal').modal('show');
-                debugger;
                 getNodeFilterData(node.nodeId).then(data => {
                     var filterData = data[0];
                     $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
@@ -687,17 +688,19 @@ function NodeFilterGraphData(selId, searchText) {
                     alertNodeId = node.nodeId;
                 })
             }
-            Graph.centerAt(node.x, node.y, 1000);
-            Graph.zoom(8, 2000);
+            // // // Graph.centerAt(node.x, node.y, 1000);
+            Graph.zoom(2, 2000);
         });
 }
 
 // breakdown filter nodes
 function BreakDownNodeFilter() {
+    debugger
     var templinks = links;
     var tempnodes = nodes;
     // Bind2DForceGraph();
     // return;
+
     //    graphData.nodes = nodes;
     //    graphData.nodes = nodes;
 
@@ -710,6 +713,11 @@ function BreakDownNodeFilter() {
     //     return templinks.find(x => x.nodeId == link.nodeId).linkColor;
     // })
 
+    // if (isNodeFilter) {
+    //     links = allLinks.length > 0 ? allLinks : links;
+    //     nodes = allNodes.length > 0 ? allNodes : nodes;
+    //     Bind2DForceGraph();
+    // }
     Graph.nodeColor(d => {
             if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
                 if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
@@ -732,4 +740,5 @@ function BreakDownNodeFilter() {
                 return templinks.find(x => x.nodeId == link.nodeId).linkColor;
             }
         })
+
 }
