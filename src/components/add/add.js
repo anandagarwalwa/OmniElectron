@@ -13,7 +13,7 @@ document.getElementById("loader").style.display = "none";
 
 $('#modeAddDataPoint').modal('show');
 //Add Link form in Previous button click event 
-$("#btnPreviousDataLinkBlock").click(function () {
+$("#btnPreviousDataLinkBlock").click(function() {
 
     // $('#addDataPointdiv').removeClass('d-none');
     // $('#dataLinkBlock').addClass('d-none');
@@ -25,7 +25,7 @@ $("#btnPreviousDataLinkBlock").click(function () {
 });
 
 //Add Analysis form in Previous button click event 
-$("#btnPreviousAnalysisBlock").click(function () {
+$("#btnPreviousAnalysisBlock").click(function() {
 
     // $('#addDataPointdiv').removeClass('d-none');
     // $('#analysisBlock').addClass('d-none');
@@ -38,7 +38,7 @@ $("#btnPreviousAnalysisBlock").click(function () {
 
 
 //Add Test form in Previous button click event 
-$("#btnPreviousTestBlock").click(function () {
+$("#btnPreviousTestBlock").click(function() {
 
     // $('#addDataPointdiv').removeClass('d-none');
     // $('#testBlock').addClass('d-none');
@@ -50,19 +50,19 @@ $("#btnPreviousTestBlock").click(function () {
 
 
 /*close button event */
-$("#btnBackAddDataPoint").click(function () {
+$("#btnBackAddDataPoint").click(function() {
     $('#modeAddLink').modal('hide');
     $('#modeAddDataPoint').modal('show');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
     dataLikePageRefresh();
 });
-$("#btnBackAddLinkpage").click(function () {
+$("#btnBackAddLinkpage").click(function() {
     $('#modeAddAnalysis').modal('hide');
     $('#modeAddDataPoint').modal('show');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
     analysisPageRefresh();
 });
-$("#btnAddLinkpage").click(function () {
+$("#btnAddLinkpage").click(function() {
     $('#modeAddTest').modal('hide');
     $('#modeAddDataPoint').modal('show');
     $("#hdnNodeId").val(parseInt(localStorage.getItem("nodeId")));
@@ -88,6 +88,7 @@ function dataLikePageRefresh() {
     $("#datalinkCodeLike").val("");
     $("#datalinkReportLink").val("");
 }
+
 function analysisPageRefresh() {
     $("#analysisDescription").val("");
     $("#analysisUserSelect").val("0");
@@ -98,6 +99,7 @@ function analysisPageRefresh() {
     $('input[name="rBtnConfluence"]').prop('checked', false);
     $("#rBtnConfluenceNO").attr('checked', 'checked');
 }
+
 function testPageRefresh() {
     $("#testDescription").val("");
     $('input[name="didTestWin"]').prop('checked', false);
@@ -110,6 +112,7 @@ function testPageRefresh() {
     $('input[name="testConfluence"]').prop('checked', false);
     $("#testConfluenceNO").attr('checked', 'checked');
 }
+
 function allPageRefresh() {
     //add data point all value null
     $("#description").val("");
@@ -151,8 +154,7 @@ getUsers().then(data => {
             var Name = UserData.FirstName + " " + UserData.LastName;
             if (UserData.UserId == parseInt(localStorage.getItem("UserId"))) {
                 html += '<option value=' + UserData.UserId + ' selected>' + Name + '</option>';
-            }
-            else {
+            } else {
                 html += '<option value=' + UserData.UserId + '>' + Name + '</option>';
             }
             // if (html) {
@@ -272,6 +274,11 @@ function bindLinkFromandLinkToDropdown() {
             }
             $("#DataLinkToSelect").html(html);
             $("#DataLinkFromSelect").html(html);
+            $('.SlectBox').SumoSelect({
+                // triggerChangeCombined: true,
+                // okCancelInMulti: true,
+                placeholder: "Select here"
+            });
         }
     }).catch(err => {
         console.error(err);
@@ -328,7 +335,7 @@ getDatacategory().then(data => {
     console.error(err);
 });
 
-$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+$.validator.addMethod("valueNotEquals", function(value, element, arg) {
     return arg !== value;
 }, "Value must not equal arg.");
 
@@ -345,11 +352,10 @@ $("#addDataPoint").validate({
         listOwner: { valueNotEquals: "Please select an Owner!" },
         rBtndatacategory: 'This field is required'
     },
-    errorPlacement: function (error, element) {
+    errorPlacement: function(error, element) {
         if (element.attr("name") == "rBtndatacategory") {
             error.insertAfter(element.parent().parent().parent());
-        }
-        else
+        } else
             error.insertAfter(element);
 
     }
@@ -359,72 +365,67 @@ $("#addDataPoint").validate({
 
 //Add Point data form in publish button click event 
 
-$("#btnPublish").click(function () {
+$("#btnPublish").click(function() {
     var addDataPointdetails = $('form[id="addDataPoint"]').valid();
     if (addDataPointdetails == true) {
         if ($("#hdnNodeId").val() != 0 || $("#hdnNodeId").val() != "") {
             updateNodesbyid($("#hdnNodeId").val(), {
+                    Description: $("#description").val(),
+                    Owner: $("#selectOwner").val(),
+                    DataCategoryId: $("input[type='radio'].radioBtnClass:checked").val(),
+                    CreatedBy: parseInt(localStorage.getItem("UserId")),
+                    CreatedDate: new Date()
+                }).then(data => {
+                    // $.toast({
+                    //     text: "Data Point details updated Successfully.", // Text that is to be shown in the toast
+                    //     heading: 'Success Message', // Optional heading to be shown on the toast
+                    //     icon: 'success', // Type of toast icon
+                    //     showHideTransition: 'fade', // fade, slide or plain
+                    //     allowToastClose: true, // Boolean value true or false
+                    //     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                    //     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                    //     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                    //     textAlign: 'left',  // Text alignment i.e. left, right or center
+                    //     loader: false,  // Whether to show loader or not. True by default
+                    //     loaderBg: '#9EC600',  // Background color of the toast loader
+                    //     beforeShow: function () { }, // will be triggered before the toast is shown
+                    //     afterShown: function () { }, // will be triggered after the toat has been shown
+                    //     beforeHide: function () { }, // will be triggered before the toast gets hidden
+                    //     afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    // });
+                    bindLinkFromandLinkToDropdown();
+                    if ($("input[type='radio'].radioBtnClass").is(':checked')) {
+                        var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
+                        if (radioBtnClass_type == "1") {
+                            // $('#addDataPointdiv').addClass('d-none');
+                            // $('#dataLinkBlock').removeClass('d-none');
+                            $('#modeAddDataPoint').modal('hide');
+                            $('#modeAddLink').modal('show');
+                        } else if (radioBtnClass_type == "2") {
+                            // $('#addDataPointdiv').addClass('d-none');
+                            // $('#analysisBlock').removeClass('d-none');
+                            $('#modeAddDataPoint').modal('hide');
+                            $('#modeAddAnalysis').modal('show');
+                        } else {
+                            // $('#addDataPointdiv').addClass('d-none');
+                            // $('#testBlock').removeClass('d-none');
+                            $('#modeAddDataPoint').modal('hide');
+                            $('#modeAddTest').modal('show');
+
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        } else {
+            addNodes({
                 Description: $("#description").val(),
                 Owner: $("#selectOwner").val(),
                 DataCategoryId: $("input[type='radio'].radioBtnClass:checked").val(),
                 CreatedBy: parseInt(localStorage.getItem("UserId")),
                 CreatedDate: new Date()
             }).then(data => {
-                // $.toast({
-                //     text: "Data Point details updated Successfully.", // Text that is to be shown in the toast
-                //     heading: 'Success Message', // Optional heading to be shown on the toast
-                //     icon: 'success', // Type of toast icon
-                //     showHideTransition: 'fade', // fade, slide or plain
-                //     allowToastClose: true, // Boolean value true or false
-                //     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-                //     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-                //     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                //     textAlign: 'left',  // Text alignment i.e. left, right or center
-                //     loader: false,  // Whether to show loader or not. True by default
-                //     loaderBg: '#9EC600',  // Background color of the toast loader
-                //     beforeShow: function () { }, // will be triggered before the toast is shown
-                //     afterShown: function () { }, // will be triggered after the toat has been shown
-                //     beforeHide: function () { }, // will be triggered before the toast gets hidden
-                //     afterHidden: function () { }  // will be triggered after the toast has been hidden
-                // });
-                bindLinkFromandLinkToDropdown();
-                if ($("input[type='radio'].radioBtnClass").is(':checked')) {
-                    var radioBtnClass_type = $("input[type='radio'].radioBtnClass:checked").val();
-                    if (radioBtnClass_type == "1") {
-                        // $('#addDataPointdiv').addClass('d-none');
-                        // $('#dataLinkBlock').removeClass('d-none');
-                        $('#modeAddDataPoint').modal('hide');
-                        $('#modeAddLink').modal('show');
-                    }
-                    else if (radioBtnClass_type == "2") {
-                        // $('#addDataPointdiv').addClass('d-none');
-                        // $('#analysisBlock').removeClass('d-none');
-                        $('#modeAddDataPoint').modal('hide');
-                        $('#modeAddAnalysis').modal('show');
-                    }
-                    else {
-                        // $('#addDataPointdiv').addClass('d-none');
-                        // $('#testBlock').removeClass('d-none');
-                        $('#modeAddDataPoint').modal('hide');
-                        $('#modeAddTest').modal('show');
-
-                    }
-                }
-            })
-                .catch(err => {
-                    console.error(err);
-                });
-        }
-        else {
-            addNodes(
-                {
-                    Description: $("#description").val(),
-                    Owner: $("#selectOwner").val(),
-                    DataCategoryId: $("input[type='radio'].radioBtnClass:checked").val(),
-                    CreatedBy: parseInt(localStorage.getItem("UserId")),
-                    CreatedDate: new Date()
-                }
-            ).then(data => {
                 localStorage.setItem("nodeId", data[0]);
                 bindLinkFromandLinkToDropdown();
 
@@ -452,14 +453,12 @@ $("#btnPublish").click(function () {
                         // $('#dataLinkBlock').removeClass('d-none');
                         $('#modeAddDataPoint').modal('hide');
                         $('#modeAddLink').modal('show');
-                    }
-                    else if (radioBtnClass_type == "2") {
+                    } else if (radioBtnClass_type == "2") {
                         // $('#addDataPointdiv').addClass('d-none');
                         // $('#analysisBlock').removeClass('d-none');
                         $('#modeAddDataPoint').modal('hide');
                         $('#modeAddAnalysis').modal('show');
-                    }
-                    else {
+                    } else {
                         // $('#addDataPointdiv').addClass('d-none');
                         // $('#testBlock').removeClass('d-none');
                         $('#modeAddDataPoint').modal('hide');
@@ -517,7 +516,7 @@ $("#addDataLinkForm").validate({
     },
 });
 
-$("#btnDataLink").click(function () {
+$("#btnDataLink").click(function() {
     document.getElementById("loader").style.display = "block";
     var addDataLinkdetails = $('form[id="addDataLinkForm"]').valid();
     setTimeout(showPage, 500);
@@ -550,39 +549,36 @@ $("#btnDataLink").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
             }).catch(err => {
                 console.error(err);
             });
-        }
-        else {
-            addLinks(
-                {
-                    'Description': $("#linkdesc").val(),
-                    'Owner': parseInt($("#DataLinkUserSelect").val()),
-                    'TeamId': parseInt($("#DataLinkTeamSelect").val()),
-                    'DataSourceId': parseInt($("#DataLinkDatasourceSelect").val()),
-                    'Location': $("#datalinkLocation").val(),
-                    'ChannelId': parseInt($("#DataLinkChannelsSelect").val()),
-                    'LinksTo': parseInt($("#DataLinkToSelect").val()),
-                    'LinksFrom': parseInt($("#DataLinkFromSelect").val()),
-                    'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
-                    'NodeId': parseInt(localStorage.getItem("nodeId")),
-                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                    'CreatedDate': new Date(),
-                    'Tag': $("#datalinkTag").val(),
-                    'Codelink': $("#datalinkCode").val(),
-                    'ReportLink': $("#datalinkReport").val(),
-                    'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
-                }
-            ).then(data => {
+        } else {
+            addLinks({
+                'Description': $("#linkdesc").val(),
+                'Owner': parseInt($("#DataLinkUserSelect").val()),
+                'TeamId': parseInt($("#DataLinkTeamSelect").val()),
+                'DataSourceId': parseInt($("#DataLinkDatasourceSelect").val()),
+                'Location': $("#datalinkLocation").val(),
+                'ChannelId': parseInt($("#DataLinkChannelsSelect").val()),
+                'LinksTo': parseInt($("#DataLinkToSelect").val()),
+                'LinksFrom': parseInt($("#DataLinkFromSelect").val()),
+                'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
+                'NodeId': parseInt(localStorage.getItem("nodeId")),
+                'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                'CreatedDate': new Date(),
+                'Tag': $("#datalinkTag").val(),
+                'Codelink': $("#datalinkCode").val(),
+                'ReportLink': $("#datalinkReport").val(),
+                'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
+            }).then(data => {
                 $.toast({
                     text: "Data Link save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -592,13 +588,13 @@ $("#btnDataLink").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
                 allPageRefresh();
             }).catch(err => {
@@ -648,7 +644,7 @@ $("#addAnalysisForm").validate({
 });
 
 
-$("#btnAnalysis").click(function () {
+$("#btnAnalysis").click(function() {
     document.getElementById("loader").style.display = "block";
     var addAnalysisFormDetails = $('form[id="addAnalysisForm"]').valid();
     setTimeout(showPage, 500);
@@ -675,33 +671,30 @@ $("#btnAnalysis").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
             }).catch(err => {
                 console.error(err);
             });
-        }
-        else {
-            addAnalysis(
-                {
-                    'Owener': parseInt($("#analysisUserSelect").val()),
-                    'TeamId': parseInt($("#analysisTeamSelect").val()),
-                    'ChannelId': parseInt($("#analysisChannelsSelect").val()),
-                    'LocaleId': parseInt($("#analysisLocalesSelect").val()),
-                    'AnalysisDate': $("#analysisDate").val(),
-                    'IsConfluencePage': $("input[name='rBtnConfluence']:checked").val() == 1 ? true : false,
-                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                    'CreateDate': new Date(),
-                    'NodeId': parseInt(localStorage.getItem("nodeId")),
-                    'Description': $("#analysisDescription").val()
-                }
-            ).then(data => {
+        } else {
+            addAnalysis({
+                'Owener': parseInt($("#analysisUserSelect").val()),
+                'TeamId': parseInt($("#analysisTeamSelect").val()),
+                'ChannelId': parseInt($("#analysisChannelsSelect").val()),
+                'LocaleId': parseInt($("#analysisLocalesSelect").val()),
+                'AnalysisDate': $("#analysisDate").val(),
+                'IsConfluencePage': $("input[name='rBtnConfluence']:checked").val() == 1 ? true : false,
+                'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                'CreateDate': new Date(),
+                'NodeId': parseInt(localStorage.getItem("nodeId")),
+                'Description': $("#analysisDescription").val()
+            }).then(data => {
                 $.toast({
                     text: "Analysis save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -711,13 +704,13 @@ $("#btnAnalysis").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
                 allPageRefresh();
             }).catch(err => {
@@ -765,7 +758,7 @@ $("#addTestForm").validate({
 });
 
 
-$("#btnTest").click(function () {
+$("#btnTest").click(function() {
     document.getElementById("loader").style.display = "block";
     var addTestFormDetails = $('form[id="addTestForm"]').valid();
     setTimeout(showPage, 500);
@@ -794,35 +787,32 @@ $("#btnTest").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
             }).catch(err => {
                 console.error(err);
             });
-        }
-        else {
+        } else {
             debugger
-            addTests(
-                {
-                    'Description': $("#testDescription").val(),
-                    'IsDidTestWin': $("input[name='didTestWin']:checked").val() == 1 ? true : false,
-                    'Owner': parseInt($("#testUserSelect").val()),
-                    'TeamId': parseInt($("#testTeamSelect").val()),
-                    'ChannelId': parseInt($("#testChannelsSelect").val()),
-                    'LocaleId': parseInt($("#testLocalesSelect").val()),
-                    'TestsDate': $("#testDate").val(),
-                    'IsConfluencePage': $("input[name='testConfluence']:checked").val() == 1 ? true : false,
-                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                    'CreatedDate': new Date(),
-                    'NodeId': parseInt(localStorage.getItem("nodeId"))
-                }
-            ).then(data => {
+            addTests({
+                'Description': $("#testDescription").val(),
+                'IsDidTestWin': $("input[name='didTestWin']:checked").val() == 1 ? true : false,
+                'Owner': parseInt($("#testUserSelect").val()),
+                'TeamId': parseInt($("#testTeamSelect").val()),
+                'ChannelId': parseInt($("#testChannelsSelect").val()),
+                'LocaleId': parseInt($("#testLocalesSelect").val()),
+                'TestsDate': $("#testDate").val(),
+                'IsConfluencePage': $("input[name='testConfluence']:checked").val() == 1 ? true : false,
+                'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                'CreatedDate': new Date(),
+                'NodeId': parseInt(localStorage.getItem("nodeId"))
+            }).then(data => {
                 $.toast({
                     text: "Test save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -832,13 +822,13 @@ $("#btnTest").click(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
                 allPageRefresh();
             }).catch(err => {
@@ -850,7 +840,7 @@ $("#btnTest").click(function () {
 
 // get config data link
 $("#dataConfigId").hide();
-$("#DataLinkDatasourceSelect").change(function () {
+$("#DataLinkDatasourceSelect").change(function() {
     var getDataSourceConfigList = [];
     var html = '';
     getDataconfigLink($(this).children("option:selected").val()).then(data => {
