@@ -13,6 +13,7 @@ var timelineListObj = [];
 var teamListObject = [];
 var localCodeListObject = [];
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var filteredList = [];
 
 $('#sidebarCollapse').on('click', function() {
     $('#sidebar').toggleClass('active');
@@ -151,7 +152,8 @@ function getTimelineDetails() {
                     image: imgpath,
                     color: dataObj[i].Color,
                     imageType: imageType,
-                    data: JSON.stringify(dataObj[i])
+                    data: JSON.stringify(dataObj[i]),
+                    Id: dataObj[i].Id
                 }]
             })
 
@@ -163,7 +165,8 @@ function getTimelineDetails() {
                     image: imgpath,
                     color: dataObj[i].Color,
                     imageType: imageType,
-                    data: JSON.stringify(dataObj[i])
+                    data: JSON.stringify(dataObj[i]),
+                    Id: dataObj[i].Id
                 }]
             })
 
@@ -175,7 +178,8 @@ function getTimelineDetails() {
                     image: imgpath,
                     color: dataObj[i].Color,
                     imageType: imageType,
-                    data: JSON.stringify(dataObj[i])
+                    data: JSON.stringify(dataObj[i]),
+                    Id: dataObj[i].Id
                 }]
             })
         }
@@ -190,6 +194,7 @@ function getTimelineDetails() {
 
 function FormatTimeLineData(timelineList) {
     var data = [];
+
     if (timelineList.length > 0) {
         for (var i = 0; i < timelineList.length; i++) {
             var dataObj = {
@@ -198,7 +203,8 @@ function FormatTimeLineData(timelineList) {
                 image: timelineList[i].data[0].image,
                 color: timelineList[i].data[0].color,
                 imageType: timelineList[i].data[0].imageType,
-                data: timelineList[i].data[0].data
+                data: timelineList[i].data[0].data,
+                Id: timelineList[i].data[0].Id,
             }
             var selected = data.filter(m => m.label == timelineList[i].label);
             if (selected.length > 0) {
@@ -213,6 +219,7 @@ function FormatTimeLineData(timelineList) {
             }
         }
     }
+    debugger
 
     data.sort(function(a, b) {
         return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
@@ -290,6 +297,7 @@ function FormatDate(dt) {
 
 
 function FormatDataByBreakDown(isChangeHtml = true) {
+    debugger
     var formattedData;
     var html = '';
     var breakdownValue = $("#ddlBreakDown").val();
@@ -330,7 +338,14 @@ function FormatDataByBreakDown(isChangeHtml = true) {
         isImgClick = false;
         imgFilterId = '';
         $("#iconList").find(".active").removeClass("active");
-        $("#breakFilterBlock").css('display', 'none');
+
+        if (filteredList.length > 0 && formattedData.length > 0) {
+            for (var i = 0; i < formattedData.length; i++) {
+                var data = formattedData[i].data.filter(m => filteredList.includes(m.Id));
+                formattedData[i].data = data;
+            }
+        }
+        // $("#breakFilterBlock").css('display', 'none');
     }
 
     bindChartData(formattedData);
@@ -357,6 +372,13 @@ $('body').on('click', 'a.drop-box', function() {
         bindChartData(formattedData);
         $("#lblFilter").text(filterId);
         $("#breakFilterBlock").css('display', 'block');
+        if (formattedData.length > 0) {
+            filteredList = formattedData[0].data.map(function(val, index) {
+                return val.Id;
+            })
+        } else {
+            filteredList = [];
+        }
     }
     isImgClick = false;
     imgFilterId = '';
@@ -367,11 +389,13 @@ $('body').on('click', 'a.drop-box', function() {
 var isImgClick = false;
 var imgFilterId = '';
 $('body').on('click', 'a.icon-box', function() {
+
+    var filteredData = [];
+
     $("#iconList").find(".active").removeClass("active");
     if (isImgClick && imgFilterId == $(this).attr("data-val")) {
         isImgClick = false;
-        var formattedData = FormatDataByBreakDown(false);
-        bindChartData(formattedData);
+        filteredData = FormatDataByBreakDown(false);
     } else {
         isImgClick = true;
         imgFilterId = $(this).attr("data-val");
@@ -379,7 +403,7 @@ $('body').on('click', 'a.icon-box', function() {
 
         var formattedData = FormatDataByBreakDown(false);
         debugger
-        var filteredData = formattedData;
+        filteredData = formattedData;
         filteredData = JSON.stringify(filteredData);
         filteredData = JSON.parse(filteredData);
         for (var i = 0; i < formattedData.length; i++) {
@@ -390,20 +414,31 @@ $('body').on('click', 'a.icon-box', function() {
                     filteredData[i].data.push(dt);
                 }
             }
+
+            // if (filteredData[i].data.length == 0) {
+            //     filteredData.splice(i, 1);
+            // }
         }
-        // formattedData = formattedData.filter(f => f.label === imgFilterId);
-        bindChartData(filteredData);
     }
 
-    isClearClick = false;
-    filterId = '';
-    $("#divSearchPanel").find(".active").removeClass("active");
-    $("#breakFilterBlock").css('display', 'none');
+    if (filteredList.length > 0 && filteredData.length > 0) {
+        for (var i = 0; i < filteredData.length; i++) {
+            var data = filteredData[i].data.filter(m => filteredList.includes(m.Id));
+            filteredData[i].data = data;
+        }
+    }
+    bindChartData(filteredData);
+
+    // isClearClick = false;
+    // filterId = '';
+    // $("#divSearchPanel").find(".active").removeClass("active");
+    // $("#breakFilterBlock").css('display', 'none');
 });
 
 function removeTag(ele) {
     filterId = '';
     isClearClick = false;
+    filteredList = [];
     var formattedData = FormatDataByBreakDown(false);
     bindChartData(formattedData);
     $("#lblFilter").text("");
