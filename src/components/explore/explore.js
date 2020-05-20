@@ -763,27 +763,89 @@ const mailOptions = {
 };
 
 function runScheduler() {
-    getSchedulerList();
     schedule.scheduleJob('*/1 * * * *', function (fireDate) {
-        transporter.sendMail(mailOptions, function (err, info) {
-            if (err)
-                console.log(err)
-            else
-                console.log(info);
-        })
+        // getSchedulerList();
+        // transporter.sendMail(mailOptions, function (err, info) {
+        //     if (err)
+        //         console.log(err)
+        //     else
+        //         console.log(info);
+        // })
     });
 }
-
+getSchedulerList()
 function getSchedulerList() {
     var userId = undefined;
     if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get links option selected
     getAlerSchedulerList(userId).then(data => {
-        if (data && data.length > 0) {
-            console.log(data[0]);
+        if (data && data.length > 0 && data[0] && data[0].length > 0) {
+            var currentDate = new Date();
+            var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':' + ("0" + currentDate.getSeconds()).slice(-2);
+            data[0].forEach(element => {
+                debugger;
+                var selType = parseInt(element.ScheduleType);
+                switch (selType) {
+                    case ScheduleTypeEnum.Daily:
+                        if (element.AtTime == currTime) {
+                            if(element.IsIncludeData){
+                                //GetData to send with attachment
+                            }
+                            const mailOptions = {
+                                from: 'manojn.wa@gmail.com', // sender address
+                                to: element.Recipieants, // list of receivers
+                                subject: element.EmailTitle, // Subject line
+                                html: element.EmailBody// plain text body
+                            };
+                            SendMail(mailOptions);
+                        }
+                        break;
+                    case ScheduleTypeEnum.Weekly:
+                        if (element.StartingDate.getDay() == currentDate.getDay()) {
+                            if (currTime == "09:00:00") {
+                                if(element.IsIncludeData){
+                                    //GetData to send with attachment
+                                }
+                                const mailOptions = {
+                                    from: 'manojn.wa@gmail.com', // sender address
+                                    to: element.Recipieants, // list of receivers
+                                    subject: element.EmailTitle, // Subject line
+                                    html: element.EmailBody// plain text body
+                                };
+                                SendMail(mailOptions);
+                            }
+                        }
+                        break;
+                    case ScheduleTypeEnum.Monthly:
+                        var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
+                        var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
+                        if (crdatetime == checkDate && currTime == "09:00:00") {
+                            if(element.IsIncludeData){
+                                //GetData to send with attachment
+                            }
+                            const mailOptions = {
+                                from: 'manojn.wa@gmail.com', // sender address
+                                to: element.Recipieants, // list of receivers
+                                subject: element.EmailTitle, // Subject line
+                                html: element.EmailBody// plain text body
+                            };
+                            SendMail(mailOptions);
+                        }
+                        break;
+                }
+            });
         }
     }).catch(err => {
         console.error(err);
     });
+}
+
+function SendMail(mailOptions) {
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+            console.log(err)
+        else
+            console.log(info);
+    })
 }
