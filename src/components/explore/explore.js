@@ -6,6 +6,9 @@ var { getTeamsList } = require(__dirname + '\\server\\controllers\\teams_control
 var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_controller.js');
 var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
+var { getAlerSchedulerList } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
+var nodemailer = require('nodemailer');
+var schedule = require('node-schedule');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
 var codeLink = '';
@@ -18,7 +21,7 @@ var isNodeFilter = false;
 
 var allNodes = [];
 var allLinks = [];
-
+runScheduler();
 $("#divFilterBlock").hide();
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
@@ -31,15 +34,15 @@ getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
     console.error(err);
 });
 
-$(function() {
+$(function () {
     BindSearchPanel();
-    $("#ddlBreakDown").change(function() {
+    $("#ddlBreakDown").change(function () {
         allNodes = [];
         allLinks = [];
         BindSearchPanel(true);
         // breakDownNodeFilter();
     });
-    $('#txtSearch').keyup(function(e) {
+    $('#txtSearch').keyup(function (e) {
         if (e.keyCode != 13) {
             serchExplore();
         } else {
@@ -56,7 +59,7 @@ $(function() {
     });
     var isClearClick = false,
         filterId = '';
-    $('body').on('click', 'a.dynamic-box', function() {
+    $('body').on('click', 'a.dynamic-box', function () {
         debugger
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
@@ -72,10 +75,10 @@ $(function() {
             var templinks = links;
             var tempnodes = nodes;
             Graph.nodeColor(d => {
-                    if (tempnodes.find(x => x.nodeId == d.nodeId)) {
-                        return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
-                    }
-                })
+                if (tempnodes.find(x => x.nodeId == d.nodeId)) {
+                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+                }
+            })
                 .linkColor(link => {
                     if (templinks.find(x => x.nodeId == link.nodeId)) {
                         return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
@@ -111,7 +114,7 @@ $(function() {
             // }
         }
     });
-    $("#explorenode").click(function() {
+    $("#explorenode").click(function () {
         //Bind2DForceGraph();
         // removeNodeFilterBreakdown();
         $("#divSearchPanel").find(".active").removeClass("active");
@@ -119,7 +122,7 @@ $(function() {
         isNodeFilter = false;
         isClearClick = true;
     });
-    $("#fildernode").click(function() {
+    $("#fildernode").click(function () {
         isNodeFilter = true;
         //NodeFilterGraphData();
         removeNodeFilterBreakdown();
@@ -183,7 +186,7 @@ function removeTag(obj) {
 
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
-    $("#divSearchPanel .dynamic-box").filter(function() {
+    $("#divSearchPanel .dynamic-box").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 }
@@ -197,7 +200,7 @@ function BindSearchPanel(isFromBreakDown) {
             {
                 getChannels().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divSearchPanel').html(html);
@@ -209,7 +212,7 @@ function BindSearchPanel(isFromBreakDown) {
             {
                 getDomainList().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
                         });
                         $('#divSearchPanel').html(html);
@@ -221,7 +224,7 @@ function BindSearchPanel(isFromBreakDown) {
             {
                 getTeamsList().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                         });
                         $('#divSearchPanel').html(html);
@@ -233,7 +236,7 @@ function BindSearchPanel(isFromBreakDown) {
             {
                 getDatasource().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divSearchPanel').html(html);
@@ -355,13 +358,13 @@ function getNodeLinkObject(nodeId) {
     var colors = '#cccccc';
     var objNode = {};
     var len = 3;
-    var nodeObj = $.grep(links, function(v) {
+    var nodeObj = $.grep(links, function (v) {
         return v.nodeId == nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
         colors = nodeObj[0].linkColor;
     }
-    var nodeSizeObj = $.grep(links, function(v) {
+    var nodeSizeObj = $.grep(links, function (v) {
         return v.linksFrom == nodeId || v.linksTo == nodeId;
     });
     if (nodeSizeObj && nodeSizeObj.length > 0) {
@@ -415,19 +418,19 @@ function Bind2DForceGraph() {
             $('#myModal').modal('show');
             debugger;
             getNodeFilterData(node.nodeId).then(data => {
-                    var filterData = data[0];
-                    $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
-                    $("#nodeDescription").text(filterData[0].nDescription);
-                    $("#filterDescription").text(filterData[0].lLinkDescription);
-                    $("#filterTags").text(filterData[0].lTags);
-                    alertLocation = filterData[0].Location;
-                    dataConfigId = filterData[0].DataSourceConfig;
-                    codeLink = filterData[0].lCodeLink;
-                    reportLink = filterData[0].lReportLink;
-                    alertNodeId = node.nodeId;
-                })
-                // }
-                // Center/zoom on node
+                var filterData = data[0];
+                $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
+                $("#nodeDescription").text(filterData[0].nDescription);
+                $("#filterDescription").text(filterData[0].lLinkDescription);
+                $("#filterTags").text(filterData[0].lTags);
+                alertLocation = filterData[0].Location;
+                dataConfigId = filterData[0].DataSourceConfig;
+                codeLink = filterData[0].lCodeLink;
+                reportLink = filterData[0].lReportLink;
+                alertNodeId = node.nodeId;
+            })
+            // }
+            // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(2, 2000);
         });
@@ -439,7 +442,7 @@ function updateHighlight(filterColor) {
         // Center/zoom on node
         Graph
             .nodeColor(node => {
-                var resultNode = $.grep(highlightNodes, function(v) {
+                var resultNode = $.grep(highlightNodes, function (v) {
                     return v.nodeId === node.nodeId;
                 });
                 if (resultNode.length <= 0) {
@@ -450,7 +453,7 @@ function updateHighlight(filterColor) {
                 //return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0.2) : filterColor
             })
             .linkColor(link => {
-                var resultLink = $.grep(highlightLink, function(v) {
+                var resultLink = $.grep(highlightLink, function (v) {
                     return v.nodeId === link.nodeId;
                 });
                 if (resultLink.length <= 0) {
@@ -472,7 +475,7 @@ function updateFilteredNode(filterColor) {
         // Center/zoom on node
         Graph
             .nodeColor(node => {
-                var resultNode = $.grep(highlightNodes, function(v) {
+                var resultNode = $.grep(highlightNodes, function (v) {
                     return v.nodeId === node.nodeId;
                 });
                 if (resultNode.length <= 0) {
@@ -483,7 +486,7 @@ function updateFilteredNode(filterColor) {
                 // return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0) : filterColor
             })
             .linkColor(link => {
-                var resultLink = $.grep(highlightLink, function(v) {
+                var resultLink = $.grep(highlightLink, function (v) {
                     return v.nodeId === link.nodeId;
                 });
                 if (resultLink.length <= 0) {
@@ -493,20 +496,20 @@ function updateFilteredNode(filterColor) {
                 }
                 //highlightLink.indexOf(link) === -1 ? hex2rgb(link.linkColor, 0) : filterColor
             })
-            // .nodeCanvasObjectMode(node => 'after')
-            // .nodeCanvasObject((node, ctx, globalScale) => {
-            //     const label = '';
-            //     const fontSize = 12 / globalScale;
-            //     ctx.font = `${fontSize}px Arial`;
-            //     const textWidth = ctx.measureText(label).width;
-            //     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-            //     ctx.textAlign = 'center';
-            //     ctx.textBaseline = 'middle';
-            //     ctx.fillStyle = node.color;
-            //     ctx.fillStyle = '#54545f';
-            //     ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
-            // })
-            // Graph.centerAt(node.x, node.y, 1000);
+        // .nodeCanvasObjectMode(node => 'after')
+        // .nodeCanvasObject((node, ctx, globalScale) => {
+        //     const label = '';
+        //     const fontSize = 12 / globalScale;
+        //     ctx.font = `${fontSize}px Arial`;
+        //     const textWidth = ctx.measureText(label).width;
+        //     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+        //     ctx.textAlign = 'center';
+        //     ctx.textBaseline = 'middle';
+        //     ctx.fillStyle = node.color;
+        //     ctx.fillStyle = '#54545f';
+        //     ctx.fillText(label, node.x, node.y + bckgDimensions[1] + 1);
+        // })
+        // Graph.centerAt(node.x, node.y, 1000);
         Graph.zoom(2, 2000);
     }
 }
@@ -529,7 +532,7 @@ function FilterGraphBySearchPanel(selId) {
             prop = "dataToolId";
             break;
     }
-    var filteredLinks = $.grep(links, function(v) {
+    var filteredLinks = $.grep(links, function (v) {
         return v[prop] === selId;
     });
     // var tempLinks = Graph.graphData().links;
@@ -548,7 +551,7 @@ function FilterGraphBySearchPanel(selId) {
         var filteredLNode = [];
         var filteredLNodes = [];
         filteredLinks.forEach(element => {
-            filteredLNode = $.grep(nodes, function(v) {
+            filteredLNode = $.grep(nodes, function (v) {
                 return v.nodeId === element.nodeId;
             });
 
@@ -578,18 +581,18 @@ function FilterGraphBySearchPanel(selId) {
 }
 
 // Code link path
-$("#codelink").click(function() {
+$("#codelink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
     shell.showItemInFolder(codeLink)
 });
 
 // Report link path
-$("#reportlink").click(function() {
+$("#reportlink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
     shell.showItemInFolder(reportLink)
 });
 
-$("#addAlert").click(function() {
+$("#addAlert").click(function () {
     $('#myModal').modal('hide');
     $('#filterResult').load('../src/components/filter/filter-result.html');
     $('#filterScratch').load('../src/components/filter/filter-scratch.html');
@@ -598,10 +601,10 @@ $("#addAlert").click(function() {
 function NodeFilterGraphData(selId, searchText) {
     //var searchText = $('#txtSearch').val();   
     if (searchText) {
-        highlightNodes = $.grep(nodes, function(n, i) {
+        highlightNodes = $.grep(nodes, function (n, i) {
             return (n.id.indexOf(searchText) > -1);
         });
-        highlightLink = $.grep(links, function(n, i) {
+        highlightLink = $.grep(links, function (n, i) {
             return (n.value.indexOf(searchText) > -1);
         });
     } else if (selId) {
@@ -619,14 +622,14 @@ function NodeFilterGraphData(selId, searchText) {
                 prop = "dataToolId";
                 break;
         }
-        var filteredLinks = $.grep(links, function(v) {
+        var filteredLinks = $.grep(links, function (v) {
             return v[prop] === selId;
         });
         highlightNodes = [], highlightLink = [];
         if (filteredLinks) {
             var linkColor = '';
             filteredLinks.forEach(element => {
-                var filteredLNode = $.grep(nodes, function(v) {
+                var filteredLNode = $.grep(nodes, function (v) {
                     return v.nodeId === element.nodeId;
                 });
                 highlightNodes.push(filteredLNode[0]);
@@ -719,16 +722,16 @@ function BreakDownNodeFilter() {
     //     Bind2DForceGraph();
     // }
     Graph.nodeColor(d => {
-            if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
-                if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
-                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
-                } else {
-                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 0);
-                }
+        if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
+            if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
+                return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
             } else {
-                return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+                return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 0);
             }
-        })
+        } else {
+            return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+        }
+    })
         .linkColor(link => {
             if (highlightLink.length > 0 && highlightLink && isNodeFilter) {
                 if (highlightLink.find(x => x.nodeId == link.nodeId)) {
@@ -741,4 +744,46 @@ function BreakDownNodeFilter() {
             }
         })
 
+}
+
+// for sending email
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'manojn.wa@gmail.com',
+        pass: 'Manoj&webashlar'
+    }
+});
+
+const mailOptions = {
+    from: 'manojn.wa@gmail.com', // sender address
+    to: 'nipanemanoj342@gmail.com', // list of receivers
+    subject: 'test mail', // Subject line
+    html: '<h1>this is a test mail.</h1>'// plain text body
+};
+
+function runScheduler() {
+    getSchedulerList();
+    schedule.scheduleJob('*/1 * * * *', function (fireDate) {
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err)
+                console.log(err)
+            else
+                console.log(info);
+        })
+    });
+}
+
+function getSchedulerList() {
+    var userId = undefined;
+    if (!SessionManager.IsAdmin)
+        userId = SessionManager.UserId;
+    // Get links option selected
+    getAlerSchedulerList(userId).then(data => {
+        if (data && data.length > 0) {
+            console.log(data[0]);
+        }
+    }).catch(err => {
+        console.error(err);
+    });
 }
