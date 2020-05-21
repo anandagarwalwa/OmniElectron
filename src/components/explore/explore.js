@@ -781,6 +781,7 @@ function getSchedulerList() {
     // Get links option selected
     getAlerSchedulerList(userId).then(data => {
         if (data && data.length > 0 && data[0] && data[0].length > 0) {
+            debugger;
             var currentDate = new Date();
             var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':' + ("0" + currentDate.getSeconds()).slice(-2);
             data[0].forEach(element => {
@@ -802,7 +803,7 @@ function getSchedulerList() {
                         }
                         break;
                     case ScheduleTypeEnum.Weekly:
-                        if (element.StartingDate.getDay() == currentDate.getDay()) {
+                        if (element.StartingDate && element.StartingDate.getDay() == currentDate.getDay()) {
                             if (currTime == "09:00:00") {
                                 if(element.IsIncludeData){
                                     //GetData to send with attachment
@@ -818,20 +819,22 @@ function getSchedulerList() {
                         }
                         break;
                     case ScheduleTypeEnum.Monthly:
-                        var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
-                        var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
-                        if (crdatetime == checkDate && currTime == "09:00:00") {
-                            if(element.IsIncludeData){
-                                //GetData to send with attachment
+                        if(element.StartingDate){
+                            var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
+                            var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
+                            if (crdatetime == checkDate && currTime == "09:00:00") {
+                                if(element.IsIncludeData){
+                                    //GetData to send with attachment
+                                }
+                                const mailOptions = {
+                                    from: 'manojn.wa@gmail.com', // sender address
+                                    to: element.Recipieants, // list of receivers
+                                    subject: element.EmailTitle, // Subject line
+                                    html: element.EmailBody// plain text body
+                                };
+                                SendMail(mailOptions);
                             }
-                            const mailOptions = {
-                                from: 'manojn.wa@gmail.com', // sender address
-                                to: element.Recipieants, // list of receivers
-                                subject: element.EmailTitle, // Subject line
-                                html: element.EmailBody// plain text body
-                            };
-                            SendMail(mailOptions);
-                        }
+                        }                        
                         break;
                 }
             });
