@@ -18,7 +18,9 @@ const selectableProps = [
     'NotifyTimeFrameFrom',
     'NotifyTimeFrameTo',
     'CreatedBy',
-    'CreatedDate'
+    'CreatedDate',
+    'NextScheduleDate',
+    'EmailTitle'
 ]
 
 module.exports = knex => {

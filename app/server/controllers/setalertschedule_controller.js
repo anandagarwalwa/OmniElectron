@@ -44,7 +44,6 @@ const deleteAlertschedulebyID = (nodeId) => {
 }
 
 const getAlerSchedulerList = (userId) => {
-    debugger;
     let query = "SELECT * FROM alertschedule AS alert_sch " +
         "INNER JOIN alertmaster as alert_master ON alert_master.AlertId = alert_sch.Id";
     if (userId)

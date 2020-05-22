@@ -117,9 +117,17 @@ var BreakdownEnum = {
   Team: 3,
   DataTool: 4
 };
+
+
+var ScheduleTypeEnum = {
+  Daily: 1,
+  Weekly: 2,
+  Monthly: 3
+}
+
 // let hex2rgb = c => `rgb(${c.substr(1).match(/../g).map(x => +`0x${x}`)},0.2)`;
 // let rgb2hex = c => '#' + c.match(/\d+/g).map(x => (+x).toString(16).padStart(2, 0)).join``
 
-function hex2rgb(c,opacityVal){
+function hex2rgb(c, opacityVal) {
   return `rgb(${c.substr(1).match(/../g).map(x => +`0x${x}`)},${opacityVal})`;
 }
