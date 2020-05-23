@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="assets/css/all.css">
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="assets/css/jquery.datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -262,6 +263,8 @@
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap4.min.js"></script>
     <script src="assets/js/jquery.datetimepicker.full.min.js"></script>
     <script src="assets/js/all.js"></script>
     <script src="./main.js"></script>
@@ -321,6 +324,16 @@
 
         // User Logout
         $("#userlogout").click(function () {
+            var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+            addLogsDetails({
+                'LogsMessage': "User Logout into system",
+                'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                'CreatedDate': new Date()
+            }).then(data => {
+                //console.log(data);
+            }).catch(err => {
+                console.error(err);
+            });
             $("#sidebar").css("display", "none");
             $("#headerbar").css("display", "none");
             localStorage.clear();

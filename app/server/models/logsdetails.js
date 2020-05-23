@@ -2,25 +2,14 @@
 
 const createGuts = require('../helpers/model-guts')
 
-const name = 'AlertMaster'
-const tableName = 'alertmaster'
+const name = 'LogsDetails'
+const tableName = 'logsdetails'
 
 const selectableProps = [
     'Id',
-    'Description',
-    'NodeId',
-    'DataSourceId',
-    'SubDataSourceName',
-    'NotificationType',
-    'Recipieants',
-    'EmailBody',
-    'IsIncludeData',
-    'NotifyTimeFrameFrom',
-    'NotifyTimeFrameTo',
+    'LogsMessage',
     'CreatedBy',
     'CreatedDate',
-    'NextScheduleDate',
-    'EmailTitle'
 ]
 
 module.exports = knex => {

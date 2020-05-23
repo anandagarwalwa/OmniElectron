@@ -6,6 +6,7 @@ var { getTeamUserMappingByID, addBulkTeamUserMapping, deleteTeamsUserMapping } =
 var { addTeams, getTeamsList, getTeamsByID, updateTeamsById, deleteTeamsbyId } = require(__dirname + '\\server\\controllers\\teams_controller.js');
 var { getDatasource } = require(__dirname + '\\server\\controllers\\datasource_controller.js');
 var { addDatasourceDBConfig,updateDatasourceDBConfigUserById,getDatasourceDBConfig,getDatabaseDBConfigUsersById,deleteDatabaseDBConfigUser } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
+var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 var defaultImgUrl = "assets/images/40306.jpg";
 
 
@@ -139,7 +140,7 @@ jQuery.validator.addMethod("domainValidation", function (value, element) {
 //         }
 //     });
 
-//     debugger;
+//     
 //     // var res = getUsersByEmailId(value);
 //     // return res;
 // });
@@ -203,6 +204,15 @@ $("#btnAddMember").click(function () {
                 //     'UserId':data[0],
                 //     'CreatedBy': 1
                 // });
+                addLogsDetails({
+                    'LogsMessage': "Update Member details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
                 $("#userModal").modal('hide');
                 BindUser();
                 getUserDetails();
@@ -249,6 +259,15 @@ $("#btnAddMember").click(function () {
                 //     'UserId':data[0],
                 //     'CreatedBy': 1
                 // });
+                addLogsDetails({
+                    'LogsMessage': "Add Member details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
                 $("#userModal").modal('hide');
                 BindUser();
                 $.toast({
@@ -278,7 +297,7 @@ $("#btnAddMember").click(function () {
         //}
 
         //});
-        debugger;
+        
 
 
 
@@ -317,6 +336,15 @@ function deleteUserClick(obj) {
                 action: function () {
                     deleteUser(obj.getAttribute("category-id")).then(data => {
                         BindUser();
+                        addLogsDetails({
+                            'LogsMessage': "Member Deleted",
+                            'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                            'CreatedDate': new Date()
+                        }).then(data => {
+                            //console.log(data);
+                        }).catch(err => {
+                            console.error(err);
+                        });
                         $.toast({
                             text: "Member deleted Successfully.", // Text that is to be shown in the toast
                             heading: 'Success Message', // Optional heading to be shown on the toast
@@ -435,6 +463,15 @@ $("#updatebtn").click(function () {
             if (data == 1) {
                 BindUser();
                 getUserDetails();
+                addLogsDetails({
+                    'LogsMessage': "Update Member details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
                 $.toast({
                     text: "Member details update Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -524,7 +561,15 @@ $("#btnworkspace").click(function () {
                 }).then(data => {
                     setTimeout(showPage, 500);
                     document.getElementById("mainsettingpage").style.display = "block";
-
+                    addLogsDetails({
+                        'LogsMessage': "Update Workspace details",
+                        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate': new Date()
+                    }).then(data => {
+                        //console.log(data);
+                    }).catch(err => {
+                        console.error(err);
+                    });
                     if (data == 1) {
                         $.toast({
                             text: "Workspace update Successfully.", // Text that is to be shown in the toast
@@ -576,6 +621,15 @@ $("#btnworkspace").click(function () {
                 if (data[0]) {
                     $("#workspacename").val(workSpaceObj.Name);
                     $("#workspacedomain").val(workSpaceObj.Domain);
+                    addLogsDetails({
+                        'LogsMessage': "Add Workspace details",
+                        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate': new Date()
+                    }).then(data => {
+                        //console.log(data);
+                    }).catch(err => {
+                        console.error(err);
+                    });
                     $.toast({
                         text: "Workspace add Successfully.", // Text that is to be shown in the toast
                         heading: 'Success Message', // Optional heading to be shown on the toast
@@ -645,7 +699,7 @@ $("#addTeamsForm").validate({
 
 // Team Section
 $("#IdAddteams").click(function () {
-    debugger;
+    
     var addTeamsdetails = $('form[id="addTeamsForm"]').valid();
     if (addTeamsdetails == true) {
         // document.getElementById("mainsettingpage").style.display = "none";
@@ -697,6 +751,15 @@ $("#IdAddteams").click(function () {
                     }
                     RebindTeamList();
                 }
+                addLogsDetails({
+                    'LogsMessage': "Update Teams details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
             }).catch(err => {
                 console.error(err);
                 Showtoast_Message(false);
@@ -740,6 +803,15 @@ $("#IdAddteams").click(function () {
                     RebindTeamList();
                     $('#TeamsModals').modal('hide');
                 }
+                addLogsDetails({
+                    'LogsMessage': "Add Teams details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
             }).catch(err => {
                 console.error(err);
                 Showtoast_Message(false);
@@ -853,9 +925,11 @@ function deleteTeamsClick(obj) {
                             if (data && teamsResponse && data > 0 && teamsResponse > 0) {
                                 Showtoast_Message(true, "Member deleted Successfully.");
                                 RebindTeamList();
+                                deletedTeamslogs();
                             } else if (data && !teamsResponse && data > 0 && teamsResponse <= 0) {
                                 Showtoast_Message(true, "Member deleted Successfully.");
                                 RebindTeamList();
+                                deletedTeamslogs();
                             } else {
                                 Showtoast_Message(false, "Teams is not deleted please try again!");
                             }
@@ -873,6 +947,18 @@ function deleteTeamsClick(obj) {
 
             }
         }
+    });
+}
+
+function deletedTeamslogs() {
+    addLogsDetails({
+        'LogsMessage': "Teams Deleted",
+        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+        'CreatedDate': new Date()
+    }).then(data => {
+        //console.log(data);
+    }).catch(err => {
+        console.error(err);
     });
 }
 
@@ -949,7 +1035,7 @@ $("#searchDatabase").on("keyup", function () {
 //------- Database Block Start --------------
 RebindDatabaseList();
 function RebindDatabaseList() {
-    debugger;
+    
     getDatasourceDBConfig().then(ResponseDatabaseList => {
         var html = "";
         $("#databaseList").html("");
@@ -1004,6 +1090,15 @@ function deleteDatabadeClick(databaseobj)
                 action: function () {
                     deleteDatabaseDBConfigUser(id).then(data => {
                         RebindDatabaseList();
+                        addLogsDetails({
+                            'LogsMessage': "Database Deleted",
+                            'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                            'CreatedDate': new Date()
+                        }).then(data => {
+                            //console.log(data);
+                        }).catch(err => {
+                            console.error(err);
+                        });
                         $.toast({
                             text: "Database deleted Successfully.", // Text that is to be shown in the toast
                             heading: 'Success Message', // Optional heading to be shown on the toast
@@ -1037,38 +1132,65 @@ function deleteDatabadeClick(databaseobj)
 
 function EditDatebase(databaseobj)
 {
-    debugger
-     $('#DatabaseModals').modal('show');
-     var id = $(databaseobj).attr("data-databaseUserid");
+    validator.resetForm();
+    $('#DatabaseModals').modal('show');
+    var id = $(databaseobj).attr("data-databaseUserid");
     getDatabaseDBConfigUsersById(id).then(data => {
-        console.log(data);
-         $("#txtConfigName").val(data[0].ConfigName);
-         $("#DatabaseID").val(data[0].Id);
-    $("#ddlDatasourceType").val(data[0].DataSourceId);
-
-    if(data[0].DataSourceId == 4 || data[0].DataSourceId == 3)
-    {
-        $("#fileBlock").show();
-        $("#dbBlock").hide();  
-    }
-    else
-    {
-        $("#fileBlock").hide();
-        $("#dbBlock").show();   
-    }
-    $("#txtHost").val(data[0].Host);
-    $("#txtPort").val(data[0].Port);
-    $("#txtUser").val(data[0].UserName);
-    $("#txtPassword").val(data[0].Password);
-    $("#ddlDatabaseList").val(data[0].DatabaseName);
-    $("#txtLocation").val(data[0].Location);                  
-    if (data[0].IsActive.readUIntLE() == 1) {
-        isActive=data[0].IsActive.readUIntLE();
-        $('#DatabaseIsActive').prop('checked', true);
-    } else {
-        isActive=0;
-        $('#DatabaseIsActive').prop('checked', false);
-    }
+        //console.log(data);
+        $("#txtConfigName").val(data[0].ConfigName);
+        $("#DatabaseID").val(data[0].Id);
+        $("#ddlDatasourceType").val(data[0].DataSourceId);
+        $("#txtHost").val(data[0].Host);
+        $("#txtPort").val(data[0].Port);
+        $("#txtUser").val(data[0].UserName);
+        $("#txtPassword").val(data[0].Password);
+        //$("#ddlDatabaseList").val(data[0].DatabaseName);
+        $("#txtLocation").val(data[0].Location);
+        if (data[0].IsActive.readUIntLE() == 1) {
+            isActive = data[0].IsActive.readUIntLE();
+            $('#DatabaseIsActive').prop('checked', true);
+        } else {
+            isActive = 0;
+            $('#DatabaseIsActive').prop('checked', false);
+        }
+        if (data[0].DataSourceId == 4 || data[0].DataSourceId == 3) {
+            $('#txtHost').rules('add', {
+                required: false
+            });
+            $('#txtPort').rules('add', {
+                required: false
+            });
+            $('#txtUser').rules('add', {
+                required: false
+            });
+            $('#ddlDatabaseList').rules('add', {
+                required: false
+            });
+            $('#txtLocation').rules('add', {
+                required: true
+            });
+            $("#fileBlock").show();
+            $("#dbBlock").hide();
+        }
+        else {
+            $('#txtLocation').rules('add', {
+                required: false
+            });
+            $('#txtHost').rules('add', {
+                required: true
+            });
+            $('#txtPort').rules('add', {
+                required: true
+            });
+            $('#txtUser').rules('add', {
+                required: true
+            });
+            $('#ddlDatabaseList').rules('add', {
+                required: true
+            });
+            $("#fileBlock").hide();
+            $("#dbBlock").show();
+        }
     }).catch(error => {
         console.log(error);
     });
@@ -1088,26 +1210,58 @@ function BindDataSources(){
     });
 }
 $("#ddlDatasourceType").change(function () {
-     var selectedVal = $("#ddlDatasourceType option:selected").text();
-     if($("#ddlDatasourceType").val() == "0")
-     {
+    validator.resetForm();
+    var selectedVal = $("#ddlDatasourceType option:selected").text();
+    if ($("#ddlDatasourceType").val() == "0") {
         $("#dbBlock").hide();
         $("#fileBlock").hide();
-     }
-     else if(selectedVal.toLowerCase().indexOf("sql") != -1){
+    }
+    else if (selectedVal.toLowerCase().indexOf("sql") != -1) {
+        validator.resetForm();
         $("#fileBlock").hide();
-         $("#dbBlock").show();
-         $("#txtLocation").val("");
-     }
-     else{
+        $("#dbBlock").show();
+        $('#txtLocation').rules('add', {
+            required: false
+        });
+        $('#txtHost').rules('add', {
+            required: true
+        });
+        $('#txtPort').rules('add', {
+            required: true
+        });
+        $('#txtUser').rules('add', {
+            required: true
+        });
+        $('ddlDatabaseList').rules('add', {
+            required: true
+        });
+        //$("#txtLocation").val("");
+    }
+    else {
+        validator.resetForm();
         $("#dbBlock").hide();
         $("#fileBlock").show();
-        $("#txtHost").val("");
-        $("#txtPort").val("");
-        $("#txtUser").val("");
-        $("#txtPassword").val("");
-        $("#ddlDatabaseList").val(0);
-     }  
+        $('#txtHost').rules('add', {
+            required: false
+        });
+        $('#txtPort').rules('add', {
+            required: false
+        });
+        $('#txtUser').rules('add', {
+            required: false
+        });
+        $('#ddlDatabaseList').rules('add', {
+            required: false
+        });
+        $('#txtLocation').rules('add', {
+            required: true
+        });
+        // $("#txtHost").val("");
+        // $("#txtPort").val("");
+        // $("#txtUser").val("");
+        // $("#txtPassword").val("");
+        // $("#ddlDatabaseList").val(0);
+    }
 });
 $("#btnTestDBConnection").click(function () {
     //Check if Selected option is MySQL
@@ -1127,10 +1281,10 @@ $("#btnTestDBConnection").click(function () {
         }        
         const knex = require('knex')(options);
         knex.raw('SHOW DATABASES').then(data => {
-            debugger;
+            
             if(data && data.length > 0){
                 var dbData = data[0];
-                var html = '';
+                var html = '<option value="">select</option>';
                 for (var u = 0; u < dbData.length; u++) {
                     html += '<option value="' + dbData[u].Database + '">' + dbData[u].Database + '</option>'; 
                 }
@@ -1155,7 +1309,7 @@ $("#btnTestDBConnection").click(function () {
         const knex = require('knex')(options);
         knex.raw('SELECT name as [Database] FROM master.dbo.sysdatabases').then(data => {
             if(data && data.length > 0){
-                var html = '';
+                var html = '<option value="">select</option>';
                 for (var u = 0; u < data.length; u++) {
                     html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
                 }
@@ -1174,19 +1328,19 @@ $("#btnTestDBConnection").click(function () {
                 host: $("#txtHost").val()                             
             }
         }       
-        debugger;
+        
         const knex = require('knex')(options);
         knex.raw('SELECT datname FROM pg_database WHERE datistemplate = false').then(data => {
             if(data && data.length > 0){
-                debugger;
-                var html = '';
+                
+                var html = '<option value="">select</option>';
                 for (var u = 0; u < data.length; u++) {
                     html += '<option value="' + data[u].Database + '">' + data[u].Database + '</option>'; 
                 }
                 $("#ddlDatabaseList").html(html);
             }
         }).catch(err => {
-            debugger;
+            
             console.error(err);
         });
 
@@ -1200,74 +1354,96 @@ $('#DatabaseIsActive').on('change', function () {
 }).change();
 
 function resetDatabaseModel() {
-     $("#txtConfigName").val("");
+    $("#DatabaseID").val("");
+    $("#txtConfigName").val("");
     $("#ddlDatasourceType").val(0);
     $("#txtHost").val("");
     $("#txtPort").val("");
     $("#txtUser").val("");
     $("#txtPassword").val("");
-    $("#ddlDatabaseList").val(0);
-    $("#txtLocation").val("");                  
-    isActive="";
+    $("#ddlDatabaseList").val("");
+    $("#txtLocation").val("");
+    isActive = "";
 }
 
 $("#addDatabase").click(function () {
     $("#dbBlock").hide();
     $("#fileBlock").hide();
     resetDatabaseModel();
+    $("DatabaseID").val("");
+    validator.resetForm();
 });
-
-
-$("#btnSaveDBConfig").click(function () {
 
 $.validator.addMethod("valueNotEquals", function (value, element, arg) {
     return arg !== value;
 }, "Value must not equal arg.");
 
-
-    $("#addDatabaseForm").validate({
+var validator = $("#addDatabaseForm").validate({
     ignore: [],
     rules: {
-        ConfigName: { required: false },
-       ddlDatasourceType: {  valueNotEquals: "0" },
-        // Location: {  required: false },
-        txtHost: {  required: false },
-        txtPort: {  required: false },
-        txtUser:{required: false},
-        // txtPassword:{required: false},
-       // ddlDatabaseList:{ valueNotEquals: "0"}
+        ConfigName: { required: true },
+        ddlDatasourceType: { valueNotEquals: "0" },
+        Location: {
+            required: true
+        },
+        txtHost: {
+            required: true
+        },
+        txtPort: {
+            required: true
+        },
+        txtUser: {
+            required: true
+        },
+        // txtPassword: {
+        //     required:true
+        // },
+        ddlDatabaseList: {
+            required: true
+        },
+
     },
     messages: {
         ConfigName: {
             required: "This field is required"
         },
         ddlDatasourceType: {
-           valueNotEquals: "Please select a Datasource!"
+            valueNotEquals: "Please select a Datasource!"
         },
-        // Location: {
-        //     required: 'This field is required',
-        // },
-         txtHost: {
-            required: 'This field is required',
+        Location: {
+            required: "This field is required"
         },
-         txtPort: {
-            required: 'This field is required',
+        txtHost: {
+            required: "This field is required"
         },
-         txtUser: {
-            required: 'This field is required',
+        txtPort: {
+            required: "This field is required"
         },
-        //  txtPassword: {
-        //     required: 'This field is required',
-        // },
-        // ddlDatabaseList: {
-        //    valueNotEquals: "Please select a Database!"
-        // },
+        txtUser: {
+            required: "This field is required"
+        },
+        ddlDatabaseList: {
+            required: "please select a Database"
+        },
     },
-});   
- var addDatabasedetails = $('form[id="addDatabaseForm"]').valid();
- debugger;
+});
+
+$("#btnSaveDBConfig").click(function () {
+
+    var addDatabasedetails = $('form[id="addDatabaseForm"]').valid();
+    
     if (addDatabasedetails == true) {
          if ($("#DatabaseID").val() != 0 || $("#DatabaseID").val() != "") {
+            if ($("#ddlDatasourceType").val() == 4 || $("#ddlDatasourceType").val() == 3) {
+                $("#txtHost").val("");
+                $("#txtPort").val("");
+                $("#txtUser").val("");
+                $("#txtPassword").val("");
+                $("#ddlDatabaseList").val("");
+            }
+            else {
+                $("#txtLocation").val("");
+            }
             updateDatasourceDBConfigUserById($("#DatabaseID").val(), {
                 'ConfigName': $("#txtConfigName").val(),
                     'DatasourceId': $("#ddlDatasourceType").val(),
@@ -1283,6 +1459,15 @@ $.validator.addMethod("valueNotEquals", function (value, element, arg) {
             }).then(data => {
                 $("#DatabaseModals").modal('hide');
                 RebindDatabaseList();
+                addLogsDetails({
+                    'LogsMessage': "Update Database details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
+                }).then(data => {
+                    //console.log(data);
+                }).catch(err => {
+                    console.error(err);
+                });
                 $.toast({
                     text: "Database details updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -1307,6 +1492,16 @@ $.validator.addMethod("valueNotEquals", function (value, element, arg) {
                 });
         }
         else {
+            if ($("#ddlDatasourceType").val() == 4 || $("#ddlDatasourceType").val() == 3) {
+                $("#txtHost").val("");
+                $("#txtPort").val("");
+                $("#txtUser").val("");
+                $("#txtPassword").val("");
+                $("#ddlDatabaseList").val("");
+            }
+            else {
+                $("#txtLocation").val("");
+            }
             addDatasourceDBConfig(
                 {
                     'ConfigName': $("#txtConfigName").val(),
@@ -1324,6 +1519,15 @@ $.validator.addMethod("valueNotEquals", function (value, element, arg) {
             ).then(data => {
                 $("#DatabaseModals").modal('hide');
                RebindDatabaseList();
+               addLogsDetails({
+                'LogsMessage': "Add Database details",
+                'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                'CreatedDate': new Date()
+            }).then(data => {
+                //console.log(data);
+            }).catch(err => {
+                console.error(err);
+            });
                 $.toast({
                     text: "Database details save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -1351,7 +1555,7 @@ $.validator.addMethod("valueNotEquals", function (value, element, arg) {
     }
     else
     {
-        alert("not working");
+        console.log("not working");
     }
 });
 

@@ -1,5 +1,6 @@
 'use strict';
 var { addAlertMaster } = require(__dirname + '\\server\\controllers\\alertmaster_controller.js');
+var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 $(document).ready(function () {
     $('#modeFitlerScratch').modal('hide');
     $("#btnBackFilterResult").click(function () {
@@ -272,6 +273,15 @@ $(document).ready(function () {
                     CreatedDate: new Date()
                 }
             ).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Add AlertScratch details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                //console.log(data);
+                }).catch(err => {
+                console.error(err);
+                });
                 $.toast({
                     text: "AlertScratch save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
