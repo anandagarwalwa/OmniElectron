@@ -7,6 +7,7 @@ var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_co
 var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 var { getAlerSchedulerList } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
+var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
@@ -60,7 +61,7 @@ $(function () {
     var isClearClick = false,
         filterId = '';
     $('body').on('click', 'a.dynamic-box', function () {
-        debugger
+        
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
             // Bind2DForceGraph();
@@ -327,6 +328,7 @@ function GetLinks(isFromBreakDown) {
 }
 
 function GetNodes(isFromBreakDown) {
+    
     var userId = undefined;
     if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
@@ -383,7 +385,7 @@ var Graph;
 function Bind2DForceGraph() {
     $("#graph").html('');
     Graph = null;
-    debugger
+    
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -416,7 +418,7 @@ function Bind2DForceGraph() {
         .onNodeClick(node => {
             // if (isNodeFilter) {
             $('#myModal').modal('show');
-            debugger;
+            ;
             getNodeFilterData(node.nodeId).then(data => {
                 var filterData = data[0];
                 $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
@@ -517,7 +519,7 @@ function updateFilteredNode(filterColor) {
 var filteredLinkColor = '';
 
 function FilterGraphBySearchPanel(selId) {
-    debugger
+    
     var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     var prop = "";
     selId = parseInt(selId);
@@ -537,7 +539,7 @@ function FilterGraphBySearchPanel(selId) {
     });
     // var tempLinks = Graph.graphData().links;
     // var filteredLinks = $.grep(Graph.graphData().links, function (v) {
-    //     debugger;
+    //     ;
     //     var sourceChannel = tempLinks.find(x => x.nodeId == v.source.nodeId);
     //     if (sourceChannel)
     //         return sourceChannel[prop] === selId;
@@ -593,6 +595,15 @@ $("#reportlink").click(function () {
 });
 
 $("#addAlert").click(function () {
+    addLogsDetails({
+        'LogsMessage':"Add alert details",
+        'CreatedBy':parseInt(localStorage.getItem("UserId")),
+        'CreatedDate':new Date()
+    }).then(data => {
+    //console.log(data);
+    }).catch(err => {
+    console.error(err);
+    });	
     $('#myModal').modal('hide');
     $('#filterResult').load('../src/components/filter/filter-result.html');
     $('#filterScratch').load('../src/components/filter/filter-scratch.html');
@@ -698,7 +709,7 @@ function NodeFilterGraphData(selId, searchText) {
 
 // breakdown filter nodes
 function BreakDownNodeFilter() {
-    debugger
+    
     var templinks = links;
     var tempnodes = nodes;
     // Bind2DForceGraph();
@@ -755,9 +766,9 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-const mailOptions = {
+var mailOptions = {
     from: 'manojn.wa@gmail.com', // sender address
-    to: 'nipanemanoj342@gmail.com', // list of receivers
+    to: 'dipaksolanki1686@gmail.com', // list of receivers
     subject: 'test mail', // Subject line
     html: '<h1>this is a test mail.</h1>'// plain text body
 };
@@ -775,17 +786,17 @@ function runScheduler() {
 }
 getSchedulerList()
 function getSchedulerList() {
+    
     var userId = undefined;
-    if (!SessionManager.IsAdmin)
+   if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get links option selected
     getAlerSchedulerList(userId).then(data => {
-        if (data && data.length > 0 && data[0] && data[0].length > 0) {
-            debugger;
+         if (data && data.length > 0 && data[0] && data[0].length > 0) {
+            ;
             var currentDate = new Date();
-            var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':' + ("0" + currentDate.getSeconds()).slice(-2);
+            var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':00';//+ ("0" + currentDate.getSeconds()).slice(-2)
             data[0].forEach(element => {
-                debugger;
                 var selType = parseInt(element.ScheduleType);
                 switch (selType) {
                     case ScheduleTypeEnum.Daily:
@@ -804,6 +815,7 @@ function getSchedulerList() {
                         break;
                     case ScheduleTypeEnum.Weekly:
                         if (element.StartingDate && element.StartingDate.getDay() == currentDate.getDay()) {
+
                             if (currTime == "09:00:00") {
                                 if(element.IsIncludeData){
                                     //GetData to send with attachment
@@ -823,6 +835,7 @@ function getSchedulerList() {
                             var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
                             var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
                             if (crdatetime == checkDate && currTime == "09:00:00") {
+
                                 if(element.IsIncludeData){
                                     //GetData to send with attachment
                                 }

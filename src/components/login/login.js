@@ -1,6 +1,7 @@
 'use strict';
 // var { userLogin } = require(__dirname + '\\server\\controllers\\user_controller.js');
 var { userLogin } = require('../../../app/server/controllers//user_controller.js');
+var { addLogsDetails }=require('../../../app/server/controllers//logsdetails_controller.js');
 
 $("#sidebar").css("display", "none");
 $("#headerbar").css("display", "none");
@@ -20,6 +21,15 @@ $("#userlogin").click(function () {
             document.getElementById("loader").style.display = "none";
         }
         if (data) {
+            addLogsDetails({
+                'LogsMessage':"User Login into system",
+                'CreatedBy':data.UserId,
+                'CreatedDate':new Date()
+            }).then(data => {
+              //console.log(data);
+            }).catch(err => {
+              console.error(err);
+            });
             localStorage.setItem("UserId", data.UserId);
             $("#sidebar").css("display", "block");
             $("#headerbar").css("display", "flex");

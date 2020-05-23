@@ -16,7 +16,6 @@ const getAlertDetailByID = (id) => {
 
 
 const addAlertDetail = (data) => {
-    debugger;
     return AlertDetail.create(data)
     // .then(data => {
     //     console.log(data);

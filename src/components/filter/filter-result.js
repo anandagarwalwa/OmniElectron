@@ -4,6 +4,7 @@ var xlsxFile = require('read-excel-file/node');
 var gshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.js');
 var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
 var { addAlertschedule } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
+var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 // var csv = require('csvtojson');
 var csv = require('csv2json-convertor');
 // var nodemailer = require('nodemailer');
@@ -516,6 +517,15 @@ $(document).ready(function () {
                         AlertFailure: 0
                     }
                 ).then(data => {
+                    addLogsDetails({
+                        'LogsMessage':"Add filter weeklyReport details",
+                        'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate':new Date()
+                    }).then(data => {
+                    //console.log(data);
+                    }).catch(err => {
+                    console.error(err);
+                    });
                     localStorage.setItem("alertId", data[0]);
                     $.toast({
                         text: "Add filter weeklyRepoort save Successfully.", // Text that is to be shown in the toast

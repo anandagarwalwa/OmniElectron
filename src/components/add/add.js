@@ -9,6 +9,7 @@ var { addNodes, updateNodesbyid, getNodesByDataCategoryId } = require(__dirname 
 var { addAnalysis, updateAnalysisbyid } = require(__dirname + '\\server\\controllers\\analysis_controller.js');
 var { getLocales } = require(__dirname + '\\server\\controllers\\locales_controller.js');
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
+var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 document.getElementById("loader").style.display = "none";
 
 $('#modeAddDataPoint').modal('show');
@@ -255,7 +256,6 @@ function bindLinkFromandLinkToDropdown() {
     // Get Links To List 
     // 1 - For Data Link
     getNodesByDataCategoryId(1).then(data => {
-        debugger;
         var model = {
             items: data
         }
@@ -376,6 +376,15 @@ $("#btnPublish").click(function() {
                     CreatedBy: parseInt(localStorage.getItem("UserId")),
                     CreatedDate: new Date()
                 }).then(data => {
+                    addLogsDetails({
+                        'LogsMessage':"Update Data point",
+                        'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate':new Date()
+                    }).then(data => {
+                      //console.log(data);
+                    }).catch(err => {
+                      console.error(err);
+                    });
                     // $.toast({
                     //     text: "Data Point details updated Successfully.", // Text that is to be shown in the toast
                     //     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -428,7 +437,15 @@ $("#btnPublish").click(function() {
             }).then(data => {
                 localStorage.setItem("nodeId", data[0]);
                 bindLinkFromandLinkToDropdown();
-
+                addLogsDetails({
+                    'LogsMessage':"Add Data point",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 // $.toast({
                 //     text: "Data Point details save Successfully.", // Text that is to be shown in the toast
                 //     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -540,6 +557,15 @@ $("#btnDataLink").click(function() {
                 'ReportLink': $("#datalinkReport").val(),
                 'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Update Datalink Details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Data Link updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -579,6 +605,15 @@ $("#btnDataLink").click(function() {
                 'ReportLink': $("#datalinkReport").val(),
                 'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Add Datalink Details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Data Link save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -662,6 +697,15 @@ $("#btnAnalysis").click(function() {
                 'NodeId': parseInt(localStorage.getItem("nodeId")),
                 'Description': $("#analysisDescription").val()
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Update Analysis details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Analysis updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -695,6 +739,15 @@ $("#btnAnalysis").click(function() {
                 'NodeId': parseInt(localStorage.getItem("nodeId")),
                 'Description': $("#analysisDescription").val()
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Add Analysis details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Analysis save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -778,6 +831,15 @@ $("#btnTest").click(function() {
                 'NodeId': parseInt(localStorage.getItem("nodeId")),
 
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Update Test details",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Test updated Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast
@@ -799,7 +861,6 @@ $("#btnTest").click(function() {
                 console.error(err);
             });
         } else {
-            debugger
             addTests({
                 'Description': $("#testDescription").val(),
                 'IsDidTestWin': $("input[name='didTestWin']:checked").val() == 1 ? true : false,
@@ -813,6 +874,15 @@ $("#btnTest").click(function() {
                 'CreatedDate': new Date(),
                 'NodeId': parseInt(localStorage.getItem("nodeId"))
             }).then(data => {
+                addLogsDetails({
+                    'LogsMessage':"Add Test datails",
+                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate':new Date()
+                }).then(data => {
+                  //console.log(data);
+                }).catch(err => {
+                  console.error(err);
+                });
                 $.toast({
                     text: "Test save Successfully.", // Text that is to be shown in the toast
                     heading: 'Success Message', // Optional heading to be shown on the toast

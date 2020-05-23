@@ -4,12 +4,12 @@
         <div class="main-activity-section">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mx-auto">
                 <div class="activity-bottom-section h-100 justify-content-center">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="activity-top-section">
                             <div class="activity-left-section">
-                                <h5>All activity</h5>
-                            </div>
-                            <div class="activity-right-section">
+                            <h5>All activity</h5>
+                             </div>
+                             <div class="activity-right-section">
                                 <div class="activity-drop-down-one">
                                     <div class="dropdown">
                                         <button type="button" class="btn  dropdown-toggle" data-toggle="dropdown">
@@ -33,24 +33,27 @@
                                           <a class="dropdown-item" href="#">Link 3</a>
                                         </div>
                                       </div> 
-                                </div>
-                            </div>
+                                </div> 
+                            </div> 
                         </div>
-                    </div>
+                    </div>-->
                     <div class="row">
+                        <div class="activity-left-section">
+                            <h5>All activity</h5>
+                        </div>
                         <div class="table-responsive table-section-main">
-                            <table class="table">
+                            <table id="logstable" class="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">Activity details</th>
                                         <th scope="col" class="red">Owner</th>
                                         <th scope="col" class="red">Date</th>
-                                        <th scope="col">Tags</th>
-                                        
+                                        <!-- <th scope="col">Tags</th> -->
+
                                     </tr>
                                 </thead>
-                                <tbody class="my-tbl">
-                                    <tr>
+                                <tbody class="my-tbl" id="logsDetails">
+                                    <!-- <tr>
                                         <th class="red">
                                             <div class="table-pic-coman-section">
                                                 <div class="table-pic">
@@ -275,14 +278,16 @@
                                         </td>
                                     
                                     
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
 </div>
-
+<script src="../src/components/activity/activity.js"></script>
+<script src="assets/js/jquery-confirm.min.js"></script>
+<script src="../src/components/explore/explore.js"></script>

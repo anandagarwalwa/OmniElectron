@@ -219,7 +219,6 @@ function FormatTimeLineData(timelineList) {
             }
         }
     }
-    debugger
 
     data.sort(function(a, b) {
         return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
@@ -297,7 +296,6 @@ function FormatDate(dt) {
 
 
 function FormatDataByBreakDown(isChangeHtml = true) {
-    debugger
     var formattedData;
     var html = '';
     var breakdownValue = $("#ddlBreakDown").val();
@@ -402,7 +400,6 @@ $('body').on('click', 'a.icon-box', function() {
         $(this).addClass("active");
 
         var formattedData = FormatDataByBreakDown(false);
-        debugger
         filteredData = formattedData;
         filteredData = JSON.stringify(filteredData);
         filteredData = JSON.parse(filteredData);
@@ -459,7 +456,6 @@ $('#txtSearch').keyup(function(e) {
 });
 
 $('body').on('click', 'image.dot', function(e) {
-    debugger
     var data = $(e.currentTarget).attr('dataVal');
     if (data) {
         var dataVal = JSON.parse(data);

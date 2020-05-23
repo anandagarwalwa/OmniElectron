@@ -1640,6 +1640,7 @@ label.error {
     padding: 15px 15px 0 15px;
     box-shadow: 0 0 1px #000;
     border-radius: 10px;
+    margin-top: 50px;
 }
 
 .activity-top-section {
@@ -2626,4 +2627,16 @@ label.error {
 .slecmulti select.form-control[multiple],
 .slecmulti select.form-control[size] {
     height: 100% !important;
+}
+/* activity log table set filter and pagination with info*/
+.dataTables_filter {
+    margin-right: 15px;
+ }
+ 
+.dataTables_paginate
+{
+ margin-right: 15px !important;
+}
+.dataTables_info{
+    margin-left: 15px !important;
 }
