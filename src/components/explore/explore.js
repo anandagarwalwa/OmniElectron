@@ -797,7 +797,6 @@ function getSchedulerList() {
             var currentDate = new Date();
             var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':00';//+ ("0" + currentDate.getSeconds()).slice(-2)
             data[0].forEach(element => {
-                ;
                 var selType = parseInt(element.ScheduleType);
                 switch (selType) {
                     case ScheduleTypeEnum.Daily:
@@ -816,7 +815,8 @@ function getSchedulerList() {
                         break;
                     case ScheduleTypeEnum.Weekly:
                         if (element.StartingDate && element.StartingDate.getDay() == currentDate.getDay()) {
-                            if (currTime == "19:02:00") {
+
+                            if (currTime == "09:00:00") {
                                 if(element.IsIncludeData){
                                     //GetData to send with attachment
                                 }
@@ -834,7 +834,8 @@ function getSchedulerList() {
                         if(element.StartingDate){
                             var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
                             var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
-                            if (crdatetime == checkDate && currTime == "19:02:00") {
+                            if (crdatetime == checkDate && currTime == "09:00:00") {
+
                                 if(element.IsIncludeData){
                                     //GetData to send with attachment
                                 }
@@ -850,14 +851,13 @@ function getSchedulerList() {
                         break;
                 }
             });
-         }
+        }
     }).catch(err => {
         console.error(err);
     });
 }
 
 function SendMail(mailOptions) {
-    
     transporter.sendMail(mailOptions, function (err, info) {
         if (err)
             console.log(err)
