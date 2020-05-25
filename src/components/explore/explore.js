@@ -7,7 +7,7 @@ var { getDomainList } = require(__dirname + '\\server\\controllers\\workspace_co
 var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\server\\controllers\\nodes_controller.js');
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 var { getAlerSchedulerList } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
-var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
@@ -22,6 +22,7 @@ var isNodeFilter = false;
 
 var allNodes = [];
 var allLinks = [];
+var getAlertLocationFileData = [];
 runScheduler();
 $("#divFilterBlock").hide();
 // Get User Login Data
@@ -61,7 +62,7 @@ $(function () {
     var isClearClick = false,
         filterId = '';
     $('body').on('click', 'a.dynamic-box', function () {
-        
+
         $("#divSearchPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
             // Bind2DForceGraph();
@@ -328,7 +329,7 @@ function GetLinks(isFromBreakDown) {
 }
 
 function GetNodes(isFromBreakDown) {
-    
+
     var userId = undefined;
     if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
@@ -385,7 +386,7 @@ var Graph;
 function Bind2DForceGraph() {
     $("#graph").html('');
     Graph = null;
-    
+
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -519,7 +520,7 @@ function updateFilteredNode(filterColor) {
 var filteredLinkColor = '';
 
 function FilterGraphBySearchPanel(selId) {
-    
+
     var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     var prop = "";
     selId = parseInt(selId);
@@ -596,14 +597,14 @@ $("#reportlink").click(function () {
 
 $("#addAlert").click(function () {
     addLogsDetails({
-        'LogsMessage':"Add alert details",
-        'CreatedBy':parseInt(localStorage.getItem("UserId")),
-        'CreatedDate':new Date()
+        'LogsMessage': "Add alert details",
+        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+        'CreatedDate': new Date()
     }).then(data => {
-    //console.log(data);
+        //console.log(data);
     }).catch(err => {
-    console.error(err);
-    });	
+        console.error(err);
+    });
     $('#myModal').modal('hide');
     $('#filterResult').load('../src/components/filter/filter-result.html');
     $('#filterScratch').load('../src/components/filter/filter-scratch.html');
@@ -709,7 +710,7 @@ function NodeFilterGraphData(selId, searchText) {
 
 // breakdown filter nodes
 function BreakDownNodeFilter() {
-    
+
     var templinks = links;
     var tempnodes = nodes;
     // Bind2DForceGraph();
@@ -768,7 +769,7 @@ var transporter = nodemailer.createTransport({
 
 var mailOptions = {
     from: 'manojn.wa@gmail.com', // sender address
-    to: 'dipaksolanki1686@gmail.com', // list of receivers
+    to: 'nipanemanoj342@gmail.com', // list of receivers
     subject: 'test mail', // Subject line
     html: '<h1>this is a test mail.</h1>'// plain text body
 };
@@ -786,14 +787,13 @@ function runScheduler() {
 }
 getSchedulerList()
 function getSchedulerList() {
-    
+
     var userId = undefined;
-   if (!SessionManager.IsAdmin)
+    if (!SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get links option selected
     getAlerSchedulerList(userId).then(data => {
-         if (data && data.length > 0 && data[0] && data[0].length > 0) {
-            ;
+        if (data && data.length > 0 && data[0] && data[0].length > 0) {
             var currentDate = new Date();
             var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':00';//+ ("0" + currentDate.getSeconds()).slice(-2)
             data[0].forEach(element => {
@@ -801,7 +801,7 @@ function getSchedulerList() {
                 switch (selType) {
                     case ScheduleTypeEnum.Daily:
                         if (element.AtTime == currTime) {
-                            if(element.IsIncludeData){
+                            if (element.IsIncludeData) {
                                 //GetData to send with attachment
                             }
                             const mailOptions = {
@@ -811,13 +811,13 @@ function getSchedulerList() {
                                 html: element.EmailBody// plain text body
                             };
                             SendMail(mailOptions);
+                            getExcelFile(element.Location, element);
                         }
                         break;
                     case ScheduleTypeEnum.Weekly:
                         if (element.StartingDate && element.StartingDate.getDay() == currentDate.getDay()) {
-
-                            if (currTime == "09:00:00") {
-                                if(element.IsIncludeData){
+                            if (currTime == "19:02:00") {
+                                if (element.IsIncludeData) {
                                     //GetData to send with attachment
                                 }
                                 const mailOptions = {
@@ -831,12 +831,11 @@ function getSchedulerList() {
                         }
                         break;
                     case ScheduleTypeEnum.Monthly:
-                        if(element.StartingDate){
+                        if (element.StartingDate) {
                             var crdatetime = ("0" + currentDate.getMonth()).slice(-2) + '-' + ("0" + currentDate.getDate()).slice(-2) + '-' + currentDate.getFullYear();
                             var checkDate = ("0" + element.StartingDate.getMonth()).slice(-2) + '-' + ("0" + element.StartingDate.getDate()).slice(-2) + '-' + element.StartingDate.getFullYear();
-                            if (crdatetime == checkDate && currTime == "09:00:00") {
-
-                                if(element.IsIncludeData){
+                            if (crdatetime == checkDate && currTime == "19:02:00") {
+                                if (element.IsIncludeData) {
                                     //GetData to send with attachment
                                 }
                                 const mailOptions = {
@@ -847,7 +846,7 @@ function getSchedulerList() {
                                 };
                                 SendMail(mailOptions);
                             }
-                        }                        
+                        }
                         break;
                 }
             });
@@ -858,10 +857,123 @@ function getSchedulerList() {
 }
 
 function SendMail(mailOptions) {
+
     transporter.sendMail(mailOptions, function (err, info) {
         if (err)
             console.log(err)
         else
             console.log(info);
     })
+}
+
+// get Excel file
+function getExcelFile(alertLocation, element) {
+    var selectedSheetValue;
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile(alertLocation, { cellDates: true });
+    var sheet_name_list = [];
+    workbook.SheetNames.forEach(value => {
+        sheet_name_list.push({ 'Sheet': value });
+    })
+    for (var i = 0; i < sheet_name_list.length; i++) {
+        console.log(sheet_name_list[i].Sheet);
+    }
+    var excelData = [];
+    var worksheet = workbook.Sheets[sheet_name_list[0].Sheet];
+    var headers = {};
+    var data = [];
+    for (var z in worksheet) {
+        if (z[0] === '!') continue;
+        //parse out the column, row, and value
+        var tt = 0;
+        for (var i = 0; i < z.length; i++) {
+            if (!isNaN(z[i])) {
+                tt = i;
+                break;
+            }
+        };
+        var col = z.substring(0, tt);
+        var row = parseInt(z.substring(tt));
+        var value = worksheet[z].w;
+        //store header names
+        if (row == 1 && value) {
+            headers[col] = value;
+            continue;
+        }
+        if (!data[row]) data[row] = {};
+        data[row][headers[col]] = value;
+    }
+    //drop those first two rows which are empty
+    data.shift();
+    // data.shift();
+    excelData.push(data);
+    displaysheetdetails(data, element);
+    getAlertLocationFileData = data;
+}
+
+function displaysheetdetails(data, element) {
+    // EXTRACT VALUE FOR HTML HEADER. 
+    var col = [];
+    for (var i = 1; i < data.length; i++) {
+        for (var key in data[i]) {
+            if (col.indexOf(key) === -1) {
+                col.push(key);
+            }
+        }
+    }
+
+    // CREATE DYNAMIC TABLE.
+    var table = document.createElement("table");
+
+    // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+    var tr = table.insertRow(-1);                   // TABLE ROW.
+
+    for (var i = 0; i < col.length; i++) {
+        var th = document.createElement("th");      // TABLE HEADER.
+        th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
+    // ADD JSON DATA TO THE TABLE AS ROWS.
+    for (var i = 1; i < data.length; i++) {
+
+        tr = table.insertRow(-1);
+
+        for (var j = 0; j < col.length; j++) {
+            var tabCell = tr.insertCell(-1);
+            // tabCell.innerHTML = data[i][col[j]];
+            if (data[i - 1] && data[i - 1][col[j]]) {
+                tabCell.innerHTML = data[i - 1][col[j]];
+            }
+            else
+                tabCell.innerHTML = "";
+        }
+        if (i == 99) {
+            break;
+        }
+    }
+
+    // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+    var divContainer = document.getElementById("dtable");
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+    $(table).addClass('table table-striped');
+
+    debugger;
+    // Declare variables 
+    var table, tr, td, i;
+    table = document.getElementById("dtable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i];
+        if (td) {
+            if (td.innerHTML.indexOf(element.FilterValue) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }
