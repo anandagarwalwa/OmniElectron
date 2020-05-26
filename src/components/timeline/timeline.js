@@ -14,31 +14,21 @@ var teamListObject = [];
 var localCodeListObject = [];
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var filteredList = [];
-
-$('#sidebarCollapse').on('click', function() {
+var timeLineFilterCriteria = [];
+var isTimeLineFilterEnabled = true;
+$('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
 });
-$("#hide-home").click(function() {
+$("#hide-home").click(function () {
     $("#main-side").toggle(350);
 });
 
-$("#hide-filter").click(function() {
+$("#hide-filter").click(function () {
     $("#main-side").toggle(350);
 });
 
-$('#demo-one').on('click', function() {
-    //$(".main-sidebar").toggle();
-    //$(".main-sidebar").attr("style","display:block !important");
-    if ($(".main-sidebar").hasClass("displayBlock")) {
-        $(".main-sidebar").removeClass("displayBlock");
-        $(".main-sidebar").addClass("displayNone");
-    } else {
-        $(".main-sidebar").removeClass("displayNone");
-        $(".main-sidebar").addClass("displayBlock");
-    }
-});
 var selector = "#sidebar li";
-$(selector).on("click", function() {
+$(selector).on("click", function () {
     $(selector).removeClass("active");
     $(this).addClass("active");
 });
@@ -59,17 +49,6 @@ function tsToDate(ts) {
         day: 'numeric'
     });
 }
-
-// $("#demo_1").ionRangeSlider({
-//   skin: "flat",
-//   type: "double",
-//   grid: true,
-//   min: dateToTS(new Date(year, 10, 1)),
-//   max: dateToTS(new Date(year, 11, 1)),
-//   from: dateToTS(new Date(year, 10, 8)),
-//   to: dateToTS(new Date(year, 10, 23)),
-//   prettify: tsToDate
-// });
 
 function openSearch() {
     document.getElementById("myOverlay").style.display = "block";
@@ -102,7 +81,7 @@ var span = document.getElementsByClassName("close")[0];
 // }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -153,7 +132,10 @@ function getTimelineDetails() {
                     color: dataObj[i].Color,
                     imageType: imageType,
                     data: JSON.stringify(dataObj[i]),
-                    Id: dataObj[i].Id
+                    Id: dataObj[i].Id,
+                    TeamId: dataObj[i].TeamId,
+                    ChannelId: dataObj[i].ChannelId,
+                    LocaleId: dataObj[i].LocaleId
                 }]
             })
 
@@ -166,7 +148,10 @@ function getTimelineDetails() {
                     color: dataObj[i].Color,
                     imageType: imageType,
                     data: JSON.stringify(dataObj[i]),
-                    Id: dataObj[i].Id
+                    Id: dataObj[i].Id,
+                    TeamId: dataObj[i].TeamId,
+                    ChannelId: dataObj[i].ChannelId,
+                    LocaleId: dataObj[i].LocaleId
                 }]
             })
 
@@ -179,7 +164,10 @@ function getTimelineDetails() {
                     color: dataObj[i].Color,
                     imageType: imageType,
                     data: JSON.stringify(dataObj[i]),
-                    Id: dataObj[i].Id
+                    Id: dataObj[i].Id,
+                    TeamId: dataObj[i].TeamId,
+                    ChannelId: dataObj[i].ChannelId,
+                    LocaleId: dataObj[i].LocaleId
                 }]
             })
         }
@@ -194,7 +182,6 @@ function getTimelineDetails() {
 
 function FormatTimeLineData(timelineList) {
     var data = [];
-
     if (timelineList.length > 0) {
         for (var i = 0; i < timelineList.length; i++) {
             var dataObj = {
@@ -205,6 +192,9 @@ function FormatTimeLineData(timelineList) {
                 imageType: timelineList[i].data[0].imageType,
                 data: timelineList[i].data[0].data,
                 Id: timelineList[i].data[0].Id,
+                TeamId: timelineList[i].data[0].TeamId,
+                ChannelId: timelineList[i].data[0].ChannelId,
+                LocaleId: timelineList[i].data[0].LocaleId
             }
             var selected = data.filter(m => m.label == timelineList[i].label);
             if (selected.length > 0) {
@@ -220,7 +210,7 @@ function FormatTimeLineData(timelineList) {
         }
     }
 
-    data.sort(function(a, b) {
+    data.sort(function (a, b) {
         return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
     })
 
@@ -228,7 +218,7 @@ function FormatTimeLineData(timelineList) {
 }
 
 function SetSliderRange(timelineList) {
-    var dateList = timelineList.map(function(v, i) {
+    var dateList = timelineList.map(function (v, i) {
         return v.data[0].at;
     })
     var sortedDateList = dateList.sort((a, b) => a - b);
@@ -266,13 +256,13 @@ function bindChartData(data) {
     var element = document.getElementById('timeline6');
     var timeline = new TimelineChart(element, data, {
         enableLiveTimer: true
-            // tip: function (d) {
-            //   return d.at || `${d.from}<br>${d.to}`;
-            // }
+        // tip: function (d) {
+        //   return d.at || `${d.from}<br>${d.to}`;
+        // }
     }, range).onVizChange(e => console.log('e', e));
 }
 
-var changeResult = function(data) {
+var changeResult = function (data) {
     var fromDate = new Date(data.from);
     var toDate = new Date(data.to);
     from = FormatDate(fromDate);
@@ -302,35 +292,54 @@ function FormatDataByBreakDown(isChangeHtml = true) {
     if (breakdownValue == "1") {
         formattedData = FormatTimeLineData(timelineListObj);
         if (formattedData) {
-            $.each(formattedData, function(key, val) {
-                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+            $.each(formattedData, function (key, val) {
+                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
         }
     } else if (breakdownValue == "2") {
         formattedData = FormatTimeLineData(teamListObject);
         if (formattedData) {
-            $.each(formattedData, function(key, val) {
-                val.data[0].color = "#f88317";
-                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.label + '</a>';
+            $.each(formattedData, function (key, val) {
+                //val.data[0].color = "#f88317";
+                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].TeamId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
         }
     } else if (breakdownValue == "3") {
         formattedData = FormatTimeLineData(localCodeListObject);
         if (formattedData) {
-            $.each(formattedData, function(key, val) {
-                val.data[0].color = "#f88317";
-                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.label + '</a>';
+            $.each(formattedData, function (key, val) {
+                //val.data[0].color = "#f88317";
+                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].LocaleId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
         }
     } else {
         formattedData = FormatTimeLineData(timelineListObj);
         if (formattedData) {
-            $.each(formattedData, function(key, val) {
-                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '"> <i class="fas fa-circle" style="color:' + val.color + '"></i> ' + val.label + '</a>';
+            $.each(formattedData, function (key, val) {
+                html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.color + '"></i> ' + val.label + '</a>';
             });
         }
     }
-
+    var result = [];
+    if (isTimeLineFilterEnabled && timeLineFilterCriteria.length > 0) {
+        debugger;
+        for (var i = 0; i < timeLineFilterCriteria.length; i++) {
+            var element = timeLineFilterCriteria[i];
+            if (element.ChannelId) {
+                // formattedData = formattedData.filter(f => f.data[0].ChannelId == element.ChannelId);
+                formattedData = formattedData.filter(f => f.data.some(c=>c.ChannelId == element.ChannelId));
+            }
+            if (element.TeamId) {
+                // formattedData = formattedData.filter(f => f.data[0].TeamId == element.TeamId);                
+                formattedData = formattedData.filter(f => f.data.some(c=>c.TeamId == element.TeamId));
+            }
+            if (element.LocaleId) {
+                // formattedData = formattedData.filter(f => f.data[0].LocaleId == element.LocaleId);                
+                formattedData = formattedData.filter(f => f.data.some(c=>c.LocaleId == element.LocaleId));
+            }
+        }
+        //formattedData = result;
+    }
     if (isChangeHtml) {
         $('#divSearchPanel').html(html);
         isImgClick = false;
@@ -343,35 +352,58 @@ function FormatDataByBreakDown(isChangeHtml = true) {
                 formattedData[i].data = data;
             }
         }
-        // $("#breakFilterBlock").css('display', 'none');
+        bindChartData(formattedData);
     }
-
-    bindChartData(formattedData);
     return formattedData;
 }
 
 var isClearClick = false;
 var filterId = '';
-$('body').on('click', 'a.drop-box', function() {
+$('body').on('click', 'a.drop-box', function () {
     $("#divSearchPanel").find(".active").removeClass("active");
     if (isClearClick && filterId == $(this).attr("data-val")) {
         isClearClick = false;
         var formattedData = FormatDataByBreakDown(false);
         bindChartData(formattedData);
-        $("#lblFilter").text("");
-        $("#breakFilterBlock").css('display', 'none');
+        // $("#lblFilter").text("");
+        // $("#breakFilterBlock").css('display', 'none');
+        $("#filterTMContainer").html('');
     } else {
         isClearClick = true;
         filterId = $(this).attr("data-val");
+        var filterDataId = $(this).attr("data-id");
+        var breakdownKey ="";
         $(this).addClass("active");
-
+        if (isTimeLineFilterEnabled) {
+            var breakdownValue = $("#ddlBreakDown").val();
+            var exist = false;
+            if (breakdownValue == "1") {
+                breakdownKey = "ChannelId";
+                if (!jsonHasKeyVal(timeLineFilterCriteria, "ChannelId", filterDataId)) {
+                    timeLineFilterCriteria.push({ "ChannelId": filterDataId });
+                }
+            }
+            else if (breakdownValue == "2") {
+                breakdownKey = "TeamId";
+                if (!jsonHasKeyVal(timeLineFilterCriteria, "TeamId", filterDataId)) {
+                    timeLineFilterCriteria.push({ "TeamId": filterDataId });
+                }
+            }
+            else {
+                breakdownKey = "LocaleId";
+                if (!jsonHasKeyVal(timeLineFilterCriteria, "LocaleId", filterDataId)) {
+                    timeLineFilterCriteria.push({ "LocaleId": filterDataId });
+                }
+            }
+        }
         var formattedData = FormatDataByBreakDown(false);
-        formattedData = formattedData.filter(f => f.label === filterId);
         bindChartData(formattedData);
-        $("#lblFilter").text(filterId);
+        //$("#lblFilter").text(filterId);
+        //$("#filterTMContainer span").remove();
+        $("#filterTMContainer").append(getTimeLineFilterTag(filterId, filterDataId,breakdownKey));
         $("#breakFilterBlock").css('display', 'block');
         if (formattedData.length > 0) {
-            filteredList = formattedData[0].data.map(function(val, index) {
+            filteredList = formattedData[0].data.map(function (val, index) {
                 return val.Id;
             })
         } else {
@@ -383,10 +415,9 @@ $('body').on('click', 'a.drop-box', function() {
     $("#iconList").find(".active").removeClass("active");
 });
 
-
 var isImgClick = false;
 var imgFilterId = '';
-$('body').on('click', 'a.icon-box', function() {
+$('body').on('click', 'a.icon-box', function () {
 
     var filteredData = [];
 
@@ -418,12 +449,12 @@ $('body').on('click', 'a.icon-box', function() {
         }
     }
 
-    if (filteredList.length > 0 && filteredData.length > 0) {
-        for (var i = 0; i < filteredData.length; i++) {
-            var data = filteredData[i].data.filter(m => filteredList.includes(m.Id));
-            filteredData[i].data = data;
-        }
-    }
+    // if (filteredList.length > 0 && filteredData.length > 0) {
+    //     for (var i = 0; i < filteredData.length; i++) {
+    //         var data = filteredData[i].data.filter(m => filteredList.includes(m.Id));
+    //         filteredData[i].data = data;
+    //     }
+    // }
     bindChartData(filteredData);
 
     // isClearClick = false;
@@ -432,30 +463,53 @@ $('body').on('click', 'a.icon-box', function() {
     // $("#breakFilterBlock").css('display', 'none');
 });
 
-function removeTag(ele) {
+
+function getTimeLineFilterTag(tagtext, tagId,breakdown) {
+    return '<span class="tag label label-info">' + tagtext.trim() + '<span data-role="remove" data-val="' + breakdown + '" data-id="' + tagId + '" onclick="removeTimeLineTag(this)"></span></span>';
+}
+
+function removeTimeLineTag(obj) {
     filterId = '';
     isClearClick = false;
     filteredList = [];
+    var filterDataId = $(obj).attr("data-id");
+    var filterDataKey = $(obj).attr("data-val");
+    timeLineFilterCriteria.forEach(function(e, index){
+        if(filterDataKey == "ChannelId"){
+            if(filterDataId == e.ChannelId){
+                timeLineFilterCriteria.splice(index, 1);
+            }
+        }      
+        if(filterDataKey == "TeamId"){
+            if(filterDataId == e.TeamId){
+                timeLineFilterCriteria.splice(index, 1);
+            }
+        }  
+        if(filterDataKey == "LocaleId"){
+            if(filterDataId == e.LocaleId){
+                timeLineFilterCriteria.splice(index, 1);
+            }
+        }    
+      })
     var formattedData = FormatDataByBreakDown(false);
     bindChartData(formattedData);
-    $("#lblFilter").text("");
-    $("#breakFilterBlock").css('display', 'none');
     $("#divSearchPanel").find(".active").removeClass("active");
+    obj.closest(".tag").remove();
 }
 
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
-    $("#divSearchPanel .drop-box").filter(function() {
+    $("#divSearchPanel .drop-box").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 }
-$('#txtSearch').keyup(function(e) {
+$('#txtSearch').keyup(function (e) {
     if (e.keyCode != 13) {
         serchExplore();
     }
 });
 
-$('body').on('click', 'image.dot', function(e) {
+$('body').on('click', 'image.dot', function (e) {
     var data = $(e.currentTarget).attr('dataVal');
     if (data) {
         var dataVal = JSON.parse(data);
