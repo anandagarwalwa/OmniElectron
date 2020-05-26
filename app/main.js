@@ -131,3 +131,10 @@ var ScheduleTypeEnum = {
 function hex2rgb(c, opacityVal) {
   return `rgb(${c.substr(1).match(/../g).map(x => +`0x${x}`)},${opacityVal})`;
 }
+
+const jsonHasKeyVal = (json, keyname, value) =>
+    Object.keys(json).some(key =>
+        typeof json[key] === 'object' ?
+            jsonHasKeyVal(json[key], keyname, value) :
+            key === keyname && json[key] === value
+    );

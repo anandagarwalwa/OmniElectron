@@ -3191,11 +3191,16 @@ label.error {
 }
 
 #filterTMContainer {
-    padding: 2px 5px;
+    /* padding: 2px 5px;
     background: lightgray;
     border-radius: 3px;
     font-size: 0.8rem;
-    display: inline-block;
+    display: inline-block; */
+    background: transparent;
+    border: 0px;
+    box-shadow: none;
+    width: 100%;
+    float: left;
 }
 
 .icon-box.active {
