@@ -322,20 +322,31 @@ function FormatDataByBreakDown(isChangeHtml = true) {
     }
     var result = [];
     if (isTimeLineFilterEnabled && timeLineFilterCriteria.length > 0) {
-        debugger;
         for (var i = 0; i < timeLineFilterCriteria.length; i++) {
             var element = timeLineFilterCriteria[i];
             if (element.ChannelId) {
-                // formattedData = formattedData.filter(f => f.data[0].ChannelId == element.ChannelId);
-                formattedData = formattedData.filter(f => f.data.some(c=>c.ChannelId == element.ChannelId));
+                formattedData = formattedData.filter(f => f.data.some(c=>c.ChannelId == element.ChannelId));   
+                $.each(formattedData, function (val, key) {
+                    key.data = $.grep(key.data, function (c, index) {
+                        return c.ChannelId == element.ChannelId;
+                    });
+                });
             }
             if (element.TeamId) {
-                // formattedData = formattedData.filter(f => f.data[0].TeamId == element.TeamId);                
-                formattedData = formattedData.filter(f => f.data.some(c=>c.TeamId == element.TeamId));
+                formattedData = formattedData.filter(f => f.data.some(c => c.TeamId == element.TeamId));
+                $.each(formattedData, function (val, key) {
+                    key.data = $.grep(key.data, function (c, index) {
+                        return c.TeamId == element.TeamId;
+                    });
+                });
             }
             if (element.LocaleId) {
-                // formattedData = formattedData.filter(f => f.data[0].LocaleId == element.LocaleId);                
                 formattedData = formattedData.filter(f => f.data.some(c=>c.LocaleId == element.LocaleId));
+                $.each(formattedData, function (val, key) {
+                    key.data = $.grep(key.data, function (c, index) {
+                        return c.LocaleId == element.LocaleId;
+                    });
+                });
             }
         }
         //formattedData = result;
@@ -363,35 +374,39 @@ $('body').on('click', 'a.drop-box', function () {
     $("#divSearchPanel").find(".active").removeClass("active");
     if (isClearClick && filterId == $(this).attr("data-val")) {
         isClearClick = false;
-        var formattedData = FormatDataByBreakDown(false);
-        bindChartData(formattedData);
-        // $("#lblFilter").text("");
-        // $("#breakFilterBlock").css('display', 'none');
-        $("#filterTMContainer").html('');
+        // var formattedData = FormatDataByBreakDown(false);
+        // bindChartData(formattedData);
+        // // $("#lblFilter").text("");
+        // // $("#breakFilterBlock").css('display', 'none');
+        // $("#filterTMContainer").html('');
     } else {
         isClearClick = true;
         filterId = $(this).attr("data-val");
         var filterDataId = $(this).attr("data-id");
-        var breakdownKey ="";
+        var breakdownKey = "";
         $(this).addClass("active");
+        var isNewKey = false;
         if (isTimeLineFilterEnabled) {
             var breakdownValue = $("#ddlBreakDown").val();
-            var exist = false;
+            
             if (breakdownValue == "1") {
                 breakdownKey = "ChannelId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "ChannelId", filterDataId)) {
+                    isNewKey = true;
                     timeLineFilterCriteria.push({ "ChannelId": filterDataId });
                 }
             }
             else if (breakdownValue == "2") {
                 breakdownKey = "TeamId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "TeamId", filterDataId)) {
+                    isNewKey = true;
                     timeLineFilterCriteria.push({ "TeamId": filterDataId });
                 }
             }
             else {
                 breakdownKey = "LocaleId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "LocaleId", filterDataId)) {
+                    isNewKey = true;
                     timeLineFilterCriteria.push({ "LocaleId": filterDataId });
                 }
             }
@@ -400,14 +415,16 @@ $('body').on('click', 'a.drop-box', function () {
         bindChartData(formattedData);
         //$("#lblFilter").text(filterId);
         //$("#filterTMContainer span").remove();
-        $("#filterTMContainer").append(getTimeLineFilterTag(filterId, filterDataId,breakdownKey));
-        $("#breakFilterBlock").css('display', 'block');
-        if (formattedData.length > 0) {
-            filteredList = formattedData[0].data.map(function (val, index) {
-                return val.Id;
-            })
-        } else {
-            filteredList = [];
+        if(isNewKey){
+            $("#filterTMContainer").append(getTimeLineFilterTag(filterId, filterDataId, breakdownKey));
+            $("#breakFilterBlock").css('display', 'block');
+            if (formattedData.length > 0) {
+                filteredList = formattedData[0].data.map(function (val, index) {
+                    return val.Id;
+                })
+            } else {
+                filteredList = [];
+            }
         }
     }
     isImgClick = false;
@@ -464,7 +481,7 @@ $('body').on('click', 'a.icon-box', function () {
 });
 
 
-function getTimeLineFilterTag(tagtext, tagId,breakdown) {
+function getTimeLineFilterTag(tagtext, tagId, breakdown) {
     return '<span class="tag label label-info">' + tagtext.trim() + '<span data-role="remove" data-val="' + breakdown + '" data-id="' + tagId + '" onclick="removeTimeLineTag(this)"></span></span>';
 }
 
@@ -474,27 +491,30 @@ function removeTimeLineTag(obj) {
     filteredList = [];
     var filterDataId = $(obj).attr("data-id");
     var filterDataKey = $(obj).attr("data-val");
-    timeLineFilterCriteria.forEach(function(e, index){
-        if(filterDataKey == "ChannelId"){
-            if(filterDataId == e.ChannelId){
+    timeLineFilterCriteria.forEach(function (e, index) {
+        if (filterDataKey == "ChannelId") {
+            if (filterDataId == e.ChannelId) {
                 timeLineFilterCriteria.splice(index, 1);
             }
-        }      
-        if(filterDataKey == "TeamId"){
-            if(filterDataId == e.TeamId){
+        }
+        if (filterDataKey == "TeamId") {
+            if (filterDataId == e.TeamId) {
                 timeLineFilterCriteria.splice(index, 1);
             }
-        }  
-        if(filterDataKey == "LocaleId"){
-            if(filterDataId == e.LocaleId){
+        }
+        if (filterDataKey == "LocaleId") {
+            if (filterDataId == e.LocaleId) {
                 timeLineFilterCriteria.splice(index, 1);
             }
-        }    
-      })
+        }
+    })
     var formattedData = FormatDataByBreakDown(false);
     bindChartData(formattedData);
     $("#divSearchPanel").find(".active").removeClass("active");
     obj.closest(".tag").remove();
+    if(timeLineFilterCriteria.length <=0){
+        $("#breakFilterBlock").css('display', 'none');
+    }
 }
 
 function serchExplore() {
