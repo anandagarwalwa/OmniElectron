@@ -13,9 +13,12 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/jquery.toast.css">
     <link rel="stylesheet" href="assets/css/jquery-confirm.min.css">
-    <link rel="stylesheet" href="assets/css/sumoselect.css"></link>
-    <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css"></link>
-    <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css"></link>
+    <link rel="stylesheet" href="assets/css/sumoselect.css">
+    </link>
+    <link rel="stylesheet" href="assets/css/ion.rangeSlider.min.css">
+    </link>
+    <link rel="stylesheet" href="assets/css/bootstrap-tagsinput.css">
+    </link>
 
     <style>
         #main-side {
@@ -142,8 +145,14 @@
                             Timeline
                         </a>
                     </li>
+                    <!-- <li>
+                        <a id="filternode">
+                            <i class="fas fa-filter"></i>
+                            Filter
+                        </a>
+                    </li> -->
                     <li>
-                        <a route-link route-href="explore" id="fildernode">
+                        <a route-link route-href="explore" id="filternode">
                             <i class="fas fa-filter"></i>
                             Filter
                         </a>
@@ -256,10 +265,10 @@
         </div>
     </section>
 
-    
-    <script src="./assets/js/jquery-3.4.1.slim.min.js"></script>
-    <script src="./assets/js/jquery-3.4.1.min.js"></script>
-    <script src="./assets/js/jquery.validate.min.js"></script>
+
+    <script src="assets/js/jquery-3.4.1.slim.min.js"></script>
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/jquery.validate.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
     <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -322,6 +331,32 @@
 
         new Route(views);
 
+        //Filter Click
+       
+        // $("#filternode").click(function (event) {
+        //     isTimeLineFilterEnabled = false;
+        //     if (isClearFilterMenuActive) {
+        //         $("#filternode").parent().removeClass("active");                
+        //         isClearFilterMenuActive = false;
+        //         if ($("#content").attr("content").indexOf("timeline.html") > -1) {
+        //             $("#breakFilterBlock").css('display', 'none');
+        //         }
+        //         else if ($("#content").attr("content").indexOf("explore.html") > -1) {
+
+        //         }
+        //     }
+        //     else {
+        //         if ($("#content").attr("content").indexOf("timeline.html") > -1) {
+        //             isTimeLineFilterEnabled = true;
+        //             $("#breakFilterBlock").css('display', 'block');
+        //         }
+        //         else if ($("#content").attr("content").indexOf("explore.html") > -1) {
+
+        //         }
+        //         isClearFilterMenuActive = true;
+        //     }
+        // });
+
         // User Logout
         $("#userlogout").click(function () {
             var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
@@ -343,10 +378,6 @@
     <script type="text/javascript" src="assets/js/ion.rangeSlider.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap-tagsinput.js"></script>
     <script src="https://smtpjs.com/v3/smtp.js"></script>
-    <!-- <script type="text/javascript" src="later.min.js"></script>
-    <script type="text/javascript" src="schedule.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/later/1.2.0/later.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/schedulejs/0.6.3/schedule.min.js"></script> -->
     <script type="text/javascript">
     // schedule namespace is available
     </script>

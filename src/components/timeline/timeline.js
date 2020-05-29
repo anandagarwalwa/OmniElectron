@@ -15,7 +15,7 @@ var localCodeListObject = [];
 var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 var filteredList = [];
 var timeLineFilterCriteria = [];
-var isTimeLineFilterEnabled = true;
+//var isTimeLineFilterEnabled = true;
 $('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
 });
@@ -374,11 +374,14 @@ $('body').on('click', 'a.drop-box', function () {
     $("#divSearchPanel").find(".active").removeClass("active");
     if (isClearClick && filterId == $(this).attr("data-val")) {
         isClearClick = false;
-        // var formattedData = FormatDataByBreakDown(false);
-        // bindChartData(formattedData);
-        // // $("#lblFilter").text("");
-        // // $("#breakFilterBlock").css('display', 'none');
-        // $("#filterTMContainer").html('');
+        if(!isTimeLineFilterEnabled){
+            var formattedData = FormatDataByBreakDown(false);
+                    bindChartData(formattedData);
+                    // $("#lblFilter").text("");
+                    // $("#breakFilterBlock").css('display', 'none');
+                    $("#filterTMContainer").html('');
+        }
+        
     } else {
         isClearClick = true;
         filterId = $(this).attr("data-val");
@@ -411,6 +414,8 @@ $('body').on('click', 'a.drop-box', function () {
                 }
             }
         }
+        // else
+        // isNewKey=true;
         var formattedData = FormatDataByBreakDown(false);
         bindChartData(formattedData);
         //$("#lblFilter").text(filterId);
