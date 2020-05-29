@@ -3,7 +3,8 @@ var { getUsersById } = require(__dirname + '\\server\\controllers\\user_controll
 
 
 
-
+var isTimeLineFilterEnabled = true;
+var isClearFilterMenuActive = false;
 $(document).ready(function () {
   $('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active');
@@ -35,6 +36,12 @@ $(document).ready(function () {
   $(selector).on("click", function () {
     $(selector).removeClass("active");
     $(this).addClass("active");
+    // if ($(this).find("#filternode").length > 0 && !isClearFilterMenuActive)  {
+
+    // }
+    // else {
+    //   $(this).addClass("active");
+    // }
   });
 
 });
@@ -133,8 +140,8 @@ function hex2rgb(c, opacityVal) {
 }
 
 const jsonHasKeyVal = (json, keyname, value) =>
-    Object.keys(json).some(key =>
-        typeof json[key] === 'object' ?
-            jsonHasKeyVal(json[key], keyname, value) :
-            key === keyname && json[key] === value
-    );
+  Object.keys(json).some(key =>
+    typeof json[key] === 'object' ?
+      jsonHasKeyVal(json[key], keyname, value) :
+      key === keyname && json[key] === value
+  );
