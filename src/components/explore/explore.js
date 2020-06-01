@@ -8,6 +8,8 @@ var { getNodesByDataCategoryId, getNodeFilterData } = require(__dirname + '\\ser
 var { getLinksForExplor } = require(__dirname + '\\server\\controllers\\links_controller.js');
 var { getAlerSchedulerList } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
 var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+var config = require("../config.json");
+
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
@@ -244,7 +246,7 @@ function NodeFilterGraphData(selId, searchText) {
             elem.style.cursor = node ? 'pointer' : null
         })
         .onNodeClick(node => {
-           
+
             if (isNodeFilter) {
                 $('#myModal').modal('show');
                 getNodeFilterData(node.nodeId).then(data => {
@@ -427,7 +429,7 @@ function GetLinks(isFromBreakDown) {
         userId = SessionManager.UserId;
     // Get links option selected
     getLinksForExplor(userId).then(data => {
-       
+
         if (data && data.length > 0) {
             var linkData = data[0];
             var linkColor = '';
@@ -496,7 +498,7 @@ function GetNodes(isFromBreakDown) {
         if (data && data.length > 0) {
             var objNode;
             for (var u = 0; u < data.length; u++) {
-                
+
                 objNode = getNodeLinkObject(data[u].Id);
                 nodes.push({
                     "id": data[u].Description,
@@ -701,7 +703,7 @@ function FilterGraphBySearchPanel(selId) {
     // var filteredLinks = $.grep(links, function (v) {
     //     return v[prop] === selId;
     // });
-  
+
     var filteredLinks = links;
     if (isNodeFilter && exploreFilterCriteria.length > 0) {
         for (var i = 0; i < exploreFilterCriteria.length; i++) {
@@ -804,25 +806,7 @@ function BreakDownNodeFilter() {
     var templinks = links;
     var tempnodes = nodes;
 
-
-
-    //    graphData.nodes = nodes;
-    //    graphData.nodes = nodes;
-
     Graph
-        // .graphData(graphData)
-        // .nodeColor(d => {
-        //     return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
-        // })
-        // .linkColor(link => {
-        //     return templinks.find(x => x.nodeId == link.nodeId).linkColor;
-        // })
-
-
-
-
-
-
         .nodeColor(d => {
             if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
                 if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
@@ -850,34 +834,45 @@ function BreakDownNodeFilter() {
         })
 }
 
-// for sending email
+//for sending email
+// var transporter = nodemailer.createTransport({
+//     host: 'smtp.gmail.com',
+//     port: 587,
+//     secure: false,
+//     requireTLS: true,
+//     auth: {
+//         user: 'wa.electron.test@gmail.com',
+//         pass: 'webashlar@123'
+//     }
+// });
+//for sending email
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: config.EmailSettings.Host,
+    port: config.EmailSettings.Port,
+    secure: config.EmailSettings.Secure,
+    requireTLS: config.EmailSettings.RequireTLS,
     auth: {
-        user: 'manojn.wa@gmail.com',
-        pass: 'Manoj&webashlar'
+        user: config.EmailSettings.NotifyEmail.NotifyFromUserId,
+        pass: config.EmailSettings.NotifyEmail.NotifyFromPassword
     }
 });
 
-var mailOptions = {
-    from: 'manojn.wa@gmail.com', // sender address
-    to: 'nipanemanoj342@gmail.com', // list of receivers
-    subject: 'test mail', // Subject line
-    html: '<h1>this is a test mail.</h1>'// plain text body
-};
+
+// var mailOptions = {
+//     from: 'wa.electron.test@gmail.com', // sender address
+//     to: 'hetald.wa@gmail.com', // list of receivers
+//     subject: 'test mail123', // Subject line
+//     html: '<h1>this is a test mail.</h1>'// plain text body
+// };
+
+//SendMail(mailOptions);
 
 function runScheduler() {
     schedule.scheduleJob('*/1 * * * *', function (fireDate) {
-        // getSchedulerList();
-        // transporter.sendMail(mailOptions, function (err, info) {
-        //     if (err)
-        //         console.log(err)
-        //     else
-        //         console.log(info);
-        // })
+        getSchedulerList();
     });
 }
-getSchedulerList()
+// getSchedulerList()
 function getSchedulerList() {
 
     var userId = undefined;
@@ -889,21 +884,36 @@ function getSchedulerList() {
             var currentDate = new Date();
             var currTime = ("0" + currentDate.getHours()).slice(-2) + ':' + ("0" + currentDate.getMinutes()).slice(-2) + ':00';//+ ("0" + currentDate.getSeconds()).slice(-2)
             data[0].forEach(element => {
+                getAlertLocationFileData = [];
                 var selType = parseInt(element.ScheduleType);
                 switch (selType) {
                     case ScheduleTypeEnum.Daily:
                         if (element.AtTime == currTime) {
                             if (element.IsIncludeData) {
                                 //GetData to send with attachment
+                                getExcelFile(element.Location, element);
                             }
-                            const mailOptions = {
-                                from: 'manojn.wa@gmail.com', // sender address
-                                to: element.Recipieants, // list of receivers
-                                subject: element.EmailTitle, // Subject line
-                                html: element.EmailBody// plain text body
-                            };
-                            SendMail(mailOptions);
-                            getExcelFile(element.Location, element);
+                            if (element.NotificationType.toLowerCase() == "email") {
+                                const mailOptions = {
+                                    from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
+                                    to: element.Recipieants, // list of receivers
+                                    subject: element.EmailTitle, // Subject line
+                                    html: element.EmailBody// plain text body
+                                };
+                                if (element.IsIncludeData) {
+                                    mailOptions.attachments = [
+                                        {
+                                            filename: fileName,
+                                            content: getAlertLocationFileData                                            
+                                        }
+                                    ];
+                                }
+                                SendMail(mailOptions);
+                               
+                            }
+                            else if (element.NotificationType.toLowerCase() == "slack") {
+
+                            }
                         }
                         break;
                     case ScheduleTypeEnum.Weekly:
@@ -912,13 +922,18 @@ function getSchedulerList() {
                                 if (element.IsIncludeData) {
                                     //GetData to send with attachment
                                 }
-                                const mailOptions = {
-                                    from: 'manojn.wa@gmail.com', // sender address
-                                    to: element.Recipieants, // list of receivers
-                                    subject: element.EmailTitle, // Subject line
-                                    html: element.EmailBody// plain text body
-                                };
-                                SendMail(mailOptions);
+                                if (element.NotificationType.toLowerCase() == "email") {
+                                    const mailOptions = {
+                                        from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
+                                        to: element.Recipieants, // list of receivers
+                                        subject: element.EmailTitle, // Subject line
+                                        html: element.EmailBody// plain text body
+                                    };
+                                    SendMail(mailOptions);
+                                }
+                                else if (element.NotificationType.toLowerCase() == "slack") {
+
+                                }
                             }
                         }
                         break;
@@ -930,13 +945,18 @@ function getSchedulerList() {
                                 if (element.IsIncludeData) {
                                     //GetData to send with attachment
                                 }
-                                const mailOptions = {
-                                    from: 'manojn.wa@gmail.com', // sender address
-                                    to: element.Recipieants, // list of receivers
-                                    subject: element.EmailTitle, // Subject line
-                                    html: element.EmailBody// plain text body
-                                };
-                                SendMail(mailOptions);
+                                if (element.NotificationType.toLowerCase() == "email") {
+                                    const mailOptions = {
+                                        from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
+                                        to: element.Recipieants, // list of receivers
+                                        subject: element.EmailTitle, // Subject line
+                                        html: element.EmailBody// plain text body
+                                    };
+                                    SendMail(mailOptions);
+                                }
+                                else if (element.NotificationType.toLowerCase() == "slack") {
+
+                                }
                             }
                         }
                         break;
@@ -949,13 +969,13 @@ function getSchedulerList() {
 }
 
 function SendMail(mailOptions) {
-
     transporter.sendMail(mailOptions, function (err, info) {
         if (err)
             console.log(err)
         else
             console.log(info);
-    })
+    });
+
 }
 
 // get Excel file
@@ -1051,7 +1071,7 @@ function displaysheetdetails(data, element) {
     divContainer.appendChild(table);
     $(table).addClass('table table-striped');
 
-    
+
     // Declare variables 
     var table, tr, td, i;
     table = document.getElementById("dtable");
