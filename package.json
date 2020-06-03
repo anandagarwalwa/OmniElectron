@@ -61,6 +61,7 @@
         "nodemailer": "^6.4.6",
         "popper.js": "^1.14.3",
         "read-excel-file": "^4.0.6",
+        "slack-notify": "^0.1.7",
         "tinybind": "^1.0.0",
         "xlsx": "^0.15.6"
     },

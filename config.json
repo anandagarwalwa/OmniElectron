@@ -2,5 +2,16 @@
   "icon": "resources/Icon.ico",
   "tags": [
     "Utility"
-  ]
+  ],
+  "EmailSettings": {
+    "MailService": "gmail",
+    "Host":"smtp.gmail.com",
+    "Port":587,
+    "Secure":false,
+    "RequireTLS":true,
+    "NotifyEmail": {
+      "NotifyFromUserId": "wa.electron.test@gmail.com",
+      "NotifyFromPassword": "webashlar@123"      
+    }    
+  }
 }
