@@ -43,6 +43,8 @@
         "buildmac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=dist/"
     },
     "dependencies": {
+        "@slack/events-api": "^2.3.3",
+        "@slack/web-api": "^5.9.0",
         "babel-preset-es2015": "^6.24.1",
         "bootstrap": "^4.3.1",
         "csv2json-convertor": "^1.2.0",
@@ -63,6 +65,7 @@
         "read-excel-file": "^4.0.6",
         "slack-notify": "^0.1.7",
         "tinybind": "^1.0.0",
+        "u": "^0.1.0",
         "xlsx": "^0.15.6"
     },
     "devDependencies": {
