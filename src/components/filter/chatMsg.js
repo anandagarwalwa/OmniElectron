@@ -1,5 +1,5 @@
 const { WebClient } = require('@slack/web-api');
-const token = 'xoxb-358222557168-1162192725522-jOAnJBdZch2UYxjIlctaV0MZ';
+const token = 'xoxb-358222557168-1159582113046-1ErMZrn3ccZU9WmozIsRmefC';
 var userList = [];
 console.log("⚡️ Bolt app is running!");
 const web = new WebClient(token);
