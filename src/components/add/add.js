@@ -279,6 +279,8 @@ function bindLinkFromandLinkToDropdown() {
                 // okCancelInMulti: true,
                 placeholder: "Select here"
             });
+            $('.SlectBox')[0].sumo.reload();
+            $('.SlectBox')[1].sumo.reload();
         }
     }).catch(err => {
         console.error(err);
@@ -536,62 +538,145 @@ $("#addDataLinkForm").validate({
 $("#btnDataLink").click(function() {
     document.getElementById("loader").style.display = "block";
     var addDataLinkdetails = $('form[id="addDataLinkForm"]').valid();
-    setTimeout(showPage, 500);
+    setTimeout(showPage, 300);
     if (addDataLinkdetails == true) {
         if ($("#hdnDataLinkId").val() != 0 || $("#hdnDataLinkId").val() != "") {
-            debugger;
-            updateLinksbyid($("#hdnDataLinkId").val(), {
-                'Description': $("#linkdesc").val(),
-                'Owner': parseInt($("#DataLinkUserSelect").val()),
-                'TeamId': parseInt($("#DataLinkTeamSelect").val()),
-                'DataSourceId': parseInt($("#DataLinkDatasourceSelect").val()),
-                'Location': $("#datalinkLocation").val(),
-                'ChannelId': parseInt($("#DataLinkChannelsSelect").val()),
-                'LinksTo':  parseInt($("#DataLinkToSelect").val() == ""? 0 : $("#DataLinkToSelect").val()),
-                'LinksFrom': parseInt($("#DataLinkFromSelect").val()== ""? 0 :$("#DataLinkFromSelect").val()),
-                'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
-                'NodeId': parseInt(localStorage.getItem("nodeId")),
-                'CreatedBy': parseInt(localStorage.getItem("UserId")),
-                'CreatedDate': new Date(),
-                'Tag': $("#datalinkTag").val(),
-                'Codelink': $("#datalinkCode").val(),
-                'ReportLink': $("#datalinkReport").val(),
-                'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
-            }).then(data => {
-                addLogsDetails({
-                    'LogsMessage':"Update Datalink Details",
-                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
-                    'CreatedDate':new Date()
-                }).then(data => {
-                  //console.log(data);
+            deleteLinksbyNodeId(parseInt(localStorage.getItem("nodeId"))).then(data => {
+                var addLinksList = [];
+                var SelectedLinkToNodeList = $("#DataLinkToSelect").val();
+                var SelectedLinkFromNodeList = $("#DataLinkFromSelect").val();
+                    for (var to = 0; to < SelectedLinkToNodeList.length; to++) {
+                        addLinksList.push({
+                            Description: $("#linkdesc").val(),
+                            Owner: parseInt($("#DataLinkUserSelect").val()),
+                            TeamId: parseInt($("#DataLinkTeamSelect").val()),
+                            DataSourceId: parseInt($("#DataLinkDatasourceSelect").val()),
+                            Location: $("#datalinkLocation").val(),
+                            ChannelId: parseInt($("#DataLinkChannelsSelect").val()),
+                            LinksTo: SelectedLinkToNodeList[to],
+                            LinksFrom: parseInt(localStorage.getItem("nodeId")),
+                            IsConfluencePage: $("input[name='Confluence']:checked").val() == 1 ? true : false,
+                            NodeId: parseInt(localStorage.getItem("nodeId")),
+                            CreatedBy: parseInt(localStorage.getItem("UserId")),
+                            CreatedDate: new Date(),
+                            Tag: $("#datalinkTag").val(),
+                            Codelink: $("#datalinkCode").val(),
+                            ReportLink: $("#datalinkReport").val(),
+                            DataSourceConfigId: parseInt($("#DatasourceConfigSelect").val()),
+                        });
+                    }
+                    for (var from = 0; from < SelectedLinkFromNodeList.length; from++) {
+                        addLinksList.push({
+                            Description: $("#linkdesc").val(),
+                            Owner: parseInt($("#DataLinkUserSelect").val()),
+                            TeamId: parseInt($("#DataLinkTeamSelect").val()),
+                            DataSourceId: parseInt($("#DataLinkDatasourceSelect").val()),
+                            Location: $("#datalinkLocation").val(),
+                            ChannelId: parseInt($("#DataLinkChannelsSelect").val()),
+                            LinksTo: parseInt(localStorage.getItem("nodeId")),
+                            LinksFrom: SelectedLinkFromNodeList[from],
+                            IsConfluencePage: $("input[name='Confluence']:checked").val() == 1 ? true : false,
+                            NodeId: parseInt(localStorage.getItem("nodeId")),
+                            CreatedBy: parseInt(localStorage.getItem("UserId")),
+                            CreatedDate: new Date(),
+                            Tag: $("#datalinkTag").val(),
+                            Codelink: $("#datalinkCode").val(),
+                            ReportLink: $("#datalinkReport").val(),
+                            DataSourceConfigId: parseInt($("#DatasourceConfigSelect").val()),
+                        });
+                    }
+                addLinks(addLinksList).then(data => {
+                    addLogsDetails({
+                        'LogsMessage': "Add Datalink Details",
+                        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate': new Date()
+                    }).then(data => {
+                        //console.log(data);
+                    }).catch(err => {
+                        console.error(err);
+                    });
+                    $.toast({
+                        text: "Data Link Updated Successfully.", // Text that is to be shown in the toast
+                        heading: 'Success Message', // Optional heading to be shown on the toast
+                        icon: 'success', // Type of toast icon
+                        showHideTransition: 'fade', // fade, slide or plain
+                        allowToastClose: true, // Boolean value true or false
+                        hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                        stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                        position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+                        textAlign: 'left', // Text alignment i.e. left, right or center
+                        loader: false, // Whether to show loader or not. True by default
+                        loaderBg: '#9EC600', // Background color of the toast loader
+                        beforeShow: function () { }, // will be triggered before the toast is shown
+                        afterShown: function () { }, // will be triggered after the toat has been shown
+                        beforeHide: function () { }, // will be triggered before the toast gets hidden
+                        afterHidden: function () { } // will be triggered after the toast has been hidden
+                    });
+                    addLogsDetails({
+                        'LogsMessage':"Update Datalink Details",
+                        'CreatedBy':parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate':new Date()
+                    }).then(data => {
+                    //console.log(data);
+                    }).catch(err => {
+                    console.error(err);
+                    });
+                    allPageRefresh();
                 }).catch(err => {
-                  console.error(err);
+                    console.error(err);
                 });
-                $.toast({
-                    text: "Data Link updated Successfully.", // Text that is to be shown in the toast
-                    heading: 'Success Message', // Optional heading to be shown on the toast
-                    icon: 'success', // Type of toast icon
-                    showHideTransition: 'fade', // fade, slide or plain
-                    allowToastClose: true, // Boolean value true or false
-                    hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
-                    stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
-                    position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left', // Text alignment i.e. left, right or center
-                    loader: false, // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600', // Background color of the toast loader
-                    beforeShow: function() {}, // will be triggered before the toast is shown
-                    afterShown: function() {}, // will be triggered after the toat has been shown
-                    beforeHide: function() {}, // will be triggered before the toast gets hidden
-                    afterHidden: function() {} // will be triggered after the toast has been hidden
-                });
-            }).catch(err => {
-                console.error(err);
             });
+            // updateLinksbyid($("#hdnDataLinkId").val(), {
+            //     'Description': $("#linkdesc").val(),
+            //     'Owner': parseInt($("#DataLinkUserSelect").val()),
+            //     'TeamId': parseInt($("#DataLinkTeamSelect").val()),
+            //     'DataSourceId': parseInt($("#DataLinkDatasourceSelect").val()),
+            //     'Location': $("#datalinkLocation").val(),
+            //     'ChannelId': parseInt($("#DataLinkChannelsSelect").val()),
+            //     'LinksTo':  parseInt($("#DataLinkToSelect").val() == ""? 0 : $("#DataLinkToSelect").val()),
+            //     'LinksFrom': parseInt($("#DataLinkFromSelect").val()== ""? 0 :$("#DataLinkFromSelect").val()),
+            //     'IsConfluencePage': $("input[name='Confluence']:checked").val() == 1 ? true : false,
+            //     'NodeId': parseInt(localStorage.getItem("nodeId")),
+            //     'CreatedBy': parseInt(localStorage.getItem("UserId")),
+            //     'CreatedDate': new Date(),
+            //     'Tag': $("#datalinkTag").val(),
+            //     'Codelink': $("#datalinkCode").val(),
+            //     'ReportLink': $("#datalinkReport").val(),
+            //     'DataSourceConfigId': parseInt($("#DatasourceConfigSelect").val()),
+            // }).then(data => {
+            //     addLogsDetails({
+            //         'LogsMessage':"Update Datalink Details",
+            //         'CreatedBy':parseInt(localStorage.getItem("UserId")),
+            //         'CreatedDate':new Date()
+            //     }).then(data => {
+            //       //console.log(data);
+            //     }).catch(err => {
+            //       console.error(err);
+            //     });
+            //     $.toast({
+            //         text: "Data Link updated Successfully.", // Text that is to be shown in the toast
+            //         heading: 'Success Message', // Optional heading to be shown on the toast
+            //         icon: 'success', // Type of toast icon
+            //         showHideTransition: 'fade', // fade, slide or plain
+            //         allowToastClose: true, // Boolean value true or false
+            //         hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+            //         stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+            //         position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+            //         textAlign: 'left', // Text alignment i.e. left, right or center
+            //         loader: false, // Whether to show loader or not. True by default
+            //         loaderBg: '#9EC600', // Background color of the toast loader
+            //         beforeShow: function() {}, // will be triggered before the toast is shown
+            //         afterShown: function() {}, // will be triggered after the toat has been shown
+            //         beforeHide: function() {}, // will be triggered before the toast gets hidden
+            //         afterHidden: function() {} // will be triggered after the toast has been hidden
+            //     });
+            // }).catch(err => {
+            //     console.error(err);
+            // });
         } else {
             var addLinksList = [];
             var SelectedLinkToNodeList = $("#DataLinkToSelect").val();
             var SelectedLinkFromNodeList = $("#DataLinkFromSelect").val();
-                debugger
                 for (var to = 0; to < SelectedLinkToNodeList.length; to++) {
                     addLinksList.push({
                         Description: $("#linkdesc").val(),

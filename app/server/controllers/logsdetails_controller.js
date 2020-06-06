@@ -9,7 +9,6 @@ const {
 } = require('../helpers/error_helper')
 
 const addLogsDetails = (data) => {
-    debugger;
     return LogsDetails.create(data)
     // .then(data => {
     //     console.log(data);
