@@ -1,5 +1,6 @@
 const { WebClient } = require('@slack/web-api');
-const token = 'xoxb-358222557168-1159582113046-1ErMZrn3ccZU9WmozIsRmefC';
+const token = 'xoxb-358222557168-1159582113046-3OmNF2RA3Xy9KJZLHafq0YNp';
+
 var userList = [];
 console.log("⚡️ Bolt app is running!");
 const web = new WebClient(token);
@@ -97,7 +98,7 @@ $("#btnSlack").click(function() {
     }
 
     if (receipient) {
-        var user = userList.filter(m => m.name.toUpperCase() == receipient.toUpperCase());
+        var user = userList.filter(m => m.id == receipient);
         if (user.length > 0) {
             sendMessage(user[0].id, msg);
         } else {
