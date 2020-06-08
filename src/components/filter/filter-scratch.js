@@ -46,8 +46,6 @@ $(document).ready(function() {
         }
 
     });
-
-
     //End  
 
     //selected radio button view 
@@ -96,6 +94,7 @@ $(document).ready(function() {
                 '</div>');
 
             $("#btnSlack").show();
+            GetSlackAuthToken();
         }
     });
 

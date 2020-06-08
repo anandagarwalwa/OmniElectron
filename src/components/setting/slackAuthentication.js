@@ -3,6 +3,7 @@ const { createEventAdapter } = require('@slack/events-api');
 const { WebClient } = require('@slack/web-api');
 const express = require('express');
 const shell = require('electron').shell;
+const { getSlackByUserID, addSlackApp, updateSlackMasterbyID } = require(__dirname + '\\server\\controllers\\slack_controller.js');
 
 // Using Keyv as an interface to our database
 // see https://github.com/lukechilds/keyv for more info
@@ -25,6 +26,18 @@ app.use('/slack/events', slackEvents.requestListener());
 const keyv = new Keyv();
 keyv.on('error', err => console.log('Connection Error', err));
 
+var userId;
+var appData;
+
+if (!SessionManager.IsAdmin) {
+    $("#btnSlack").show();
+    userId = SessionManager.UserId;
+    console.log('userId', userId);
+    if (userId) {
+        SlackDataByUserID(userId);
+    }
+}
+
 const installer = new InstallProvider({
     clientId: SLACK_CLIENT_ID,
     clientSecret: SLACK_CLIENT_SECRET,
@@ -42,8 +55,12 @@ const installer = new InstallProvider({
 });
 
 $("#btnSlack").click(function() {
-    debugger
-    SlackAuth();
+    if (userId) {
+        SlackAuth();
+    } else {
+        alert("user Id not found");
+    }
+
 });
 
 async function SlackAuth() {
@@ -60,10 +77,10 @@ app.get('/slack/install', async(req, res, next) => {
         debugger
         // feel free to modify the scopes
         const url = await installer.generateInstallUrl({
-            scopes: ['admin', 'channels:read', 'groups:read', 'channels:manage', 'chat:write', 'incoming-webhook'],
-            metadata: '*',
-        })
-        res.send(`<a href=${url}><img alt=""Add to Slack"" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>`);
+                scopes: ['admin', 'channels:read', 'groups:read', 'channels:manage', 'chat:write', 'incoming-webhook'],
+                metadata: '*',
+            })
+            // res.send(`<a href=${url}><img alt=""Add to Slack"" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>`);
     } catch (error) {
         console.log(error)
     }
@@ -71,12 +88,10 @@ app.get('/slack/install', async(req, res, next) => {
 
 // use default success and failure handlers
 app.get('/slack/oauth_redirect', async(req, res) => {
-    debugger
     authCode = req.query.code
     if (authCode) {
         GetAuthToken();
     }
-    // await installer.handleCallback(req, res);
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}! Go to http://localhost:3000/slack/install to initiate oauth flow`))
@@ -94,96 +109,52 @@ async function GetAuthToken() {
     console.log('res', res);
     if (res) {
         token = res.access_token;
-        var appID = res.app_id
-        var appName = incoming_webhook.channel
-        var userID = authed_user.id
         console.log('res', res);
-        //GetData();
+        if (appData) {
+            UpdateSlackApp(res);
+        } else {
+            AddNewSlackApp(res);
+        }
     }
 }
 
-// function GetData() {
-//     console.log("⚡️ Bolt app is running!");
-//     const web = new WebClient(token);
-//     debugger
-//         (async() => {
-//             fetchUsers();
-//             fetchChannels();
-//         })();
+function SlackDataByUserID(userId) {
+    getSlackByUserID(userId).then(data => {
+        debugger
+        console.log('appData ', data);
+        if (data.length > 0) {
+            appData = data[0];
+        }
+    });
+}
 
-//     async function fetchUsers() {
-//         const res = await web.users.list({ token: token });
-//         // `res` contains information about the posted message
-//         console.log('Members: ', res);
-//         if (res && res.members.length > 0) {
-//             var users = res.members.filter(m => m.deleted == false);
-//             if (users.length > 0) {
-//                 $.each(users, function(i, user) {
-//                     users = users.sort(function(a, b) {
-//                         var textA = a.profile.real_name.toUpperCase();
-//                         var textB = b.profile.real_name.toUpperCase();
-//                         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-//                     });
-//                     $('#ListUser').append($('<option>', {
-//                         value: user.id,
-//                         text: user.profile.real_name
-//                     }));
-//                 });
-//             }
-//         }
-//     }
+function AddNewSlackApp(res) {
+    debugger
+    addSlackApp({
+        'AppID': res.app_id,
+        'AuthToken': res.access_token,
+        'AppName': res.incoming_webhook.channel.replace('@', ''),
+        'CreatedBy': userId,
+        'CreatedDate': new Date(),
+        'UpdatedDate': new Date(),
+    }).then(data => {
+        console.log(data);
+    }).catch(err => {
+        console.error(err);
+    });
+}
 
-//     async function fetchChannels() {
-//         const res = await web.conversations.list({ token: token });
-//         // `res` contains information about the posted message
-//         console.log('Members: ', res);
-//         if (res && res.channels.length > 0) {
-//             var channels = res.channels;
-//             if (channels.length > 0) {
-
-//                 channels = channels.sort(function(a, b) {
-//                     var textA = a.name.toUpperCase();
-//                     var textB = b.name.toUpperCase();
-//                     return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-//                 });
-
-//                 $.each(channels, function(i, channel) {
-//                     $('#ListChannel').append($('<option>', {
-//                         value: channel.id,
-//                         text: channel.name
-//                     }));
-//                 });
-//             }
-//         }
-//     }
-// };
-
-// function sendMessage() {
-//     const web = new WebClient(token);
-//     // This argument can be a channel ID, a DM ID, a MPDM ID, or a group ID
-//     var userID = $("#ListUser").val();
-//     var channelID = $("#ListChannel").val();
-//     if (!channelID) {
-//         channelID = userID;
-//     }
-//     console.log('channel', channelID);
-//     (async() => {
-//         // See: https://api.slack.com/methods/chat.postMessage
-//         const res = await web.chat.postMessage({
-//             channel: channelID,
-//             text: 'Slack testing',
-//             as_user: true,
-//             // attachments: [{ "pretext": "pre-hello", "text": "text-world" }],
-//             // blocks: [{ "type": "section", "text": { "type": "plain_text", "text": "Hello world" } }],
-//             // icon_emoji: ':chart_with_upwards_trend',
-//             // icon_url: 'http://lorempixel.com/48/48',
-//             // link_names: true
-//         });
-//         return res.ts;
-//         console.log('Message sent: ', res.ts);
-//     })();
-// }
-
-// $("#btnSlack").click(function() {
-//     sendMessage();
-// });
+function UpdateSlackApp(res) {
+    debugger
+    updateSlackMasterbyID(appData.Id, {
+        'AppID': res.app_id,
+        'AuthToken': res.access_token,
+        'AppName': res.incoming_webhook.channel.replace('@', ''),
+        'CreatedBy': 1,
+        'UpdatedDate': new Date(),
+    }).then(data => {
+        console.log(data);
+    }).catch(err => {
+        console.error(err);
+    });
+}
