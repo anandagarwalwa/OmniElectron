@@ -6,7 +6,9 @@ var request = require('request');
 var token = '';
 var userList = [];
 var web = new WebClient();
-//GetSlackAuthToken();
+
+GetSlackAuthToken();
+
 function GetSlackAuthToken() {
     debugger
     getAllSlackList().then(data => {

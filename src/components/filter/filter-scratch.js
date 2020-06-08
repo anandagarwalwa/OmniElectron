@@ -94,7 +94,6 @@ $(document).ready(function() {
                 '</div>');
 
             $("#btnSlack").show();
-            GetSlackAuthToken();
         }
     });
 
