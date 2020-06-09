@@ -1,9 +1,9 @@
 'use strict';
 var { addAlertMaster } = require(__dirname + '\\server\\controllers\\alertmaster_controller.js');
-var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
-$(document).ready(function () {
+var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+$(document).ready(function() {
     $('#modeFitlerScratch').modal('hide');
-    $("#btnBackFilterResult").click(function () {
+    $("#btnBackFilterResult").click(function() {
         $('#modeFitlerScratch').modal('hide');
         $('#modelFilterResult').modal('show');
     });
@@ -12,33 +12,32 @@ $(document).ready(function () {
     $("#startingList").removeAttr("style");
     $("#daliyList").css("width", "50%");
     $("#daliyList").html('at <input  type="text" id="timepicker" name="timepicker"  class="form-control" />');
-    $(function () {
+    $(function() {
         $('#timepicker').datetimepicker({
             format: 'H:i',
             datepicker: false
         });
     });
 
-    $('#everylist').change(function () {
+    $('#everylist').change(function() {
         var everylist = $("#everylist").val();
         if (everylist == 1) {
             $("#startingList").html("");
             $("#startingList").removeAttr("style");
             $("#daliyList").css("width", "50%");
             $("#daliyList").html('at <input  type="text" id="timepicker" name="timepicker"  class="form-control" />');
-            $(function () {
+            $(function() {
                 $('#timepicker').datetimepicker({
                     format: 'H:i',
                     datepicker: false
                 });
             });
-        }
-        else {
+        } else {
             $("#daliyList").html("");
             $("#daliyList").removeAttr("style");
             $("#startingList").css("width", "50%");
             $("#startingList").html('Starting  at <input  type="text" id="datepicker"  name="datepicker" class="form-control" />');
-            $(function () {
+            $(function() {
                 $('#datepicker').datetimepicker({
                     format: 'd-m-Y',
                     timepicker: false
@@ -47,8 +46,6 @@ $(document).ready(function () {
         }
 
     });
-
-
     //End  
 
     //selected radio button view 
@@ -64,7 +61,7 @@ $(document).ready(function () {
         '<label class="float-left" for="pwd">EmailBody</label>' +
         '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">' +
         '</div>');
-    $('input[type=radio]').on('change', function () {
+    $('input[type=radio]').on('change', function() {
         var radioBtnValue = $('input[name=notificationOptRadio]:checked').val();
         if (radioBtnValue == "Email") {
             $("#radioSelectedTxtView").html("");
@@ -80,8 +77,8 @@ $(document).ready(function () {
                 '<label class="float-left" for="pwd">EmailBody</label>' +
                 '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="emailBody" name="emailBody">' +
                 '</div>');
-        }
-        else {
+            $("#btnSlack").hide();
+        } else {
             $("#radioSelectedTxtView").html("");
             $("#radioSelectedTxtView").html('<div class="form-group">' +
                 '<label class="float-left" for="email">Recipients</label>' +
@@ -95,6 +92,8 @@ $(document).ready(function () {
                 '<label class="float-left" for="pwd">Message</label>' +
                 '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="message" name="message">' +
                 '</div>');
+
+            $("#btnSlack").show();
         }
     });
 
@@ -163,7 +162,7 @@ $(document).ready(function () {
 
 
     //validation 
-    $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+    $.validator.addMethod("valueNotEquals", function(value, element, arg) {
         return arg !== value;
     }, "Value must not equal arg.");
 
@@ -221,7 +220,7 @@ $(document).ready(function () {
         $("#startingList").removeAttr("style");
         $("#daliyList").css("width", "50%");
         $("#daliyList").html('at <input  type="text" id="timepicker"  class="form-control" />');
-        $(function () {
+        $(function() {
             $('#timepicker').datetimepicker({
                 format: 'H:i',
                 datepicker: false
@@ -243,44 +242,41 @@ $(document).ready(function () {
             '</div>');
     }
 
-    $("#btnFilterScratch").click(function () {
+    $("#btnFilterScratch").click(function() {
         var addFilterScratchDetails = $('form[id="addFilterScratchForm"]').valid();
         var startingDate = "";
         if ($("#datepicker").val() == undefined) {
             var startingDate = null;
-        }
-        else {
+        } else {
             startingDate = new Date($("#datepicker").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
         }
         if (addFilterScratchDetails == true) {
-            addAlertMaster(
-                {
-                    alertId: parseInt(localStorage.getItem("alertId")),
-                    ScheduleType: $("#everylist").val(),
-                    AtTime: $("#timepicker").val(),
-                    StartingDate: startingDate,//new Date($("#datepicker").val().replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
-                    NotificationType: $("input[name='notificationOptRadio']:checked").val(),
-                    Recipieants: $("#recipients").val(),
-                    EmailTitle: $("#emailTitle").val(),
-                    EmailBody: $("#emailBody").val(),
-                    SlackRecipieants: $("#slackRecipients").val(),
-                    Channels: $("#channels").val(),
-                    Message: $("#message").val(),
-                    IsIncludeData: $('#isIncludeData').is(":checked") == 1 ? true : false,
-                    // NotifyTimeFrameFrom: $("#tFrom").val(),
-                    // NotifyTimeFrameTo: $("#tTo").val(),
-                    CreatedBy: parseInt(localStorage.getItem("UserId")),
-                    CreatedDate: new Date()
-                }
-            ).then(data => {
+            addAlertMaster({
+                alertId: parseInt(localStorage.getItem("alertId")),
+                ScheduleType: $("#everylist").val(),
+                AtTime: $("#timepicker").val(),
+                StartingDate: startingDate, //new Date($("#datepicker").val().replace( /(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"))
+                NotificationType: $("input[name='notificationOptRadio']:checked").val(),
+                Recipieants: $("#recipients").val(),
+                EmailTitle: $("#emailTitle").val(),
+                EmailBody: $("#emailBody").val(),
+                SlackRecipieants: $("#slackRecipients").val(),
+                Channels: $("#channels").val(),
+                Message: $("#message").val(),
+                IsIncludeData: $('#isIncludeData').is(":checked") == 1 ? true : false,
+                // NotifyTimeFrameFrom: $("#tFrom").val(),
+                // NotifyTimeFrameTo: $("#tTo").val(),
+                CreatedBy: parseInt(localStorage.getItem("UserId")),
+                CreatedDate: new Date()
+            }).then(data => {
                 addLogsDetails({
-                    'LogsMessage':"Add AlertScratch details",
-                    'CreatedBy':parseInt(localStorage.getItem("UserId")),
-                    'CreatedDate':new Date()
+                    'LogsMessage': "Add AlertScratch details",
+                    'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                    'CreatedDate': new Date()
                 }).then(data => {
-                //console.log(data);
+                    //console.log(data);
                 }).catch(err => {
-                console.error(err);
+                    console.error(err);
                 });
                 $.toast({
                     text: "AlertScratch save Successfully.", // Text that is to be shown in the toast
@@ -291,13 +287,13 @@ $(document).ready(function () {
                     hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                     stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                     position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                    textAlign: 'left',  // Text alignment i.e. left, right or center
-                    loader: false,  // Whether to show loader or not. True by default
-                    loaderBg: '#9EC600',  // Background color of the toast loader
-                    beforeShow: function () { }, // will be triggered before the toast is shown
-                    afterShown: function () { }, // will be triggered after the toat has been shown
-                    beforeHide: function () { }, // will be triggered before the toast gets hidden
-                    afterHidden: function () { }  // will be triggered after the toast has been hidden
+                    textAlign: 'left', // Text alignment i.e. left, right or center
+                    loader: false, // Whether to show loader or not. True by default
+                    loaderBg: '#9EC600', // Background color of the toast loader
+                    beforeShow: function() {}, // will be triggered before the toast is shown
+                    afterShown: function() {}, // will be triggered after the toat has been shown
+                    beforeHide: function() {}, // will be triggered before the toast gets hidden
+                    afterHidden: function() {} // will be triggered after the toast has been hidden
                 });
                 $("#everylist").val("1");
                 resetScheduleAndNotification();
