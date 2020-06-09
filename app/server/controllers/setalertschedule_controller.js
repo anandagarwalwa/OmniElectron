@@ -44,7 +44,7 @@ const deleteAlertschedulebyID = (nodeId) => {
 }
 
 const getAlerSchedulerList = (userId) => {
-    let query = "SELECT alert_sch.*,alert_master.*,l.Location,d.Name as DataSouceName,l.DataSourceId FROM alertschedule AS alert_sch " +
+    let query = "SELECT alert_sch.*,alert_master.*,l.Location,d.Name as DataSouceName,l.DataSourceId,l.DataSourceConfigId FROM alertschedule AS alert_sch " +
         "INNER JOIN alertmaster as alert_master ON alert_master.AlertId = alert_sch.Id "+
         "INNER JOIN links as l ON l.NodeId = alert_sch.NodeId " + 
         "LEFT JOIN datasources d on d.Id=l.DataSourceId ";
