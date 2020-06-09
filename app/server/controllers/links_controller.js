@@ -47,6 +47,9 @@ const getDataconfigLink = (datasourceId) => {
     let query = "SELECT * FROM datasourcedbconfig WHERE DatasourceId =" + datasourceId;
     return Links.raw(query);
 }
+const deleteLinksbyNodeId = (nodeId) => {
+    return Links.destroy({ NodeId: nodeId })
+}
 
 module.exports = {
     getLinksByID,
@@ -55,5 +58,6 @@ module.exports = {
     deleteLinksbyid,
     getLinks,
     getLinksForExplor,
-    getDataconfigLink
+    getDataconfigLink,
+    deleteLinksbyNodeId
 }
