@@ -17,7 +17,8 @@ const selectableProps = [
     'UpdatedBy',
     'UpdatedDate',
     'IsActive',
-    'RoleId'
+    'RoleId',
+    'SlackId'
 ]
 
 module.exports = knex => {

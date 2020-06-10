@@ -26,10 +26,15 @@ const getAllSlackList = () => {
     return Slack.findAll();
 }
 
+const getUserBySlackId = (slackID) => {
+    return Slack.find({ SlackId: slackID });
+}
+
 module.exports = {
     getSlackByAppID,
     addSlackApp,
     updateSlackMasterbyID,
     getAllSlackList,
-    getSlackByUserID
+    getSlackByUserID,
+    getUserBySlackId
 }
