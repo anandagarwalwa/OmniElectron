@@ -34,14 +34,11 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-getSchedulerList();
-
 function runScheduler() {
     schedule.scheduleJob('*/1 * * * *', function(fireDate) {
-        //getSchedulerList();
+        getSchedulerList();
     });
 }
-getSchedulerList();
 
 function getSchedulerList() {
     debugger
@@ -60,7 +57,7 @@ function getSchedulerList() {
                 var selType = parseInt(element.ScheduleType);
                 switch (selType) {
                     case ScheduleTypeEnum.Daily:
-                        if (element.AtTime != currTime) {
+                        if (element.AtTime == currTime) {
                             checkFile(element);
                         }
                         break;
@@ -338,7 +335,7 @@ function JSONToCSVConvertor(JSONData, getdata) {
         debugger
         setTimeout(() => {
             if (slackUserList && slackUserList.length > 0) {
-                console.log('slackUserList', userList);
+                console.log('slackUserList', slackUserList);
                 var user = slackUserList.filter(u => u.name == getdata.SlackRecipieants);
                 if (user.length > 0) {
                     sendMessage(user[0].id, getdata.Message);
@@ -400,6 +397,7 @@ async function fetchUsers() {
     if (res && res.members.length > 0) {
         var users = res.members.filter(m => m.deleted == false);
         console.log("users ", users);
+        slackUserList = [];
         if (users.length > 0) {
             $.each(users, function(i, user) {
                 var user = {
@@ -408,8 +406,8 @@ async function fetchUsers() {
                 }
                 slackUserList.push(user);
             });
-            return slackUserList;
             console.log('userList', slackUserList);
+            return slackUserList;
         }
     }
 }

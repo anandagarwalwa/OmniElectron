@@ -20,9 +20,6 @@ var isNodeFilter = false;
 var exploreFilterCriteria = [];
 var token = 'xoxb-358222557168-1159582113046-xde0rM0NZSkOIqJ1K6LbDwpR';
 
-
-
-
 $("#divFilterBlock").hide();
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
@@ -36,8 +33,9 @@ getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
 });
 
 $(function() {
+    BindFilters();
     BindSearchPanel();
-    // BindFilters();
+
     $("#ddlBreakDown").change(function() {
         BindSearchPanel(true);
         // breakDownNodeFilter();
