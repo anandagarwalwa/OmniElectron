@@ -93,73 +93,8 @@ $(document).ready(function() {
                 '<input type="text" class="form-control form-ip-Two col-sm-6 col-md-7 col-lg-7 col-xl-7" id="message" name="message">' +
                 '</div>');
 
-            $("#btnSlack").show();
         }
     });
-
-
-    //End
-
-    // var $timeFrame = $(".js-range-slider");
-    // var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
-    //     instance,
-    //     min = 0,
-    //     max = 1000;
-
-    // $timeFrame.ionRangeSlider({
-    //     skin: "modern",
-    //     type: "double",
-    //     min: 0,
-    //     max: 1000,
-    //     from: 200,
-    //     to: 500,
-    //     grid: false,
-    //     onStart: function (data) {
-    //         $tFrom.prop("value", data.from);
-    //         $tTo.prop("value", data.to);
-    //     },
-    //     onChange: function (data) {
-    //         $tFrom.prop("value", data.from);
-    //         $tTo.prop("value", data.to);
-    //     }
-
-    // });
-    // instance = $timeFrame.data("ionRangeSlider");
-
-    // $tFrom.on("change keyup", function () {
-    //     var val = $(this).prop("value");
-
-    //     // validate
-    //     if (val < min) {
-    //         val = min;
-    //     } else if (val > max) {
-    //         val = max;
-    //     }
-
-    //     instance.update({
-    //         from: val
-    //     });
-    // });
-
-
-    // $tTo.on("change keyup", function () {
-    //     var val = $(this).prop("value");
-
-    //     // validate
-    //     if (val < min) {
-    //         val = min;
-    //     } else if (val > max) {
-    //         val = max;
-    //     }
-
-    //     instance.update({
-    //         to: val
-    //     });
-    // });
-
-    // var slider = $(".js-range-slider").data("ionRangeSlider");
-
-
 
     //validation 
     $.validator.addMethod("valueNotEquals", function(value, element, arg) {

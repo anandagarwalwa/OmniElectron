@@ -1,6 +1,6 @@
-const { WebClient } = require('@slack/web-api');
+// const { WebClient } = require('@slack/web-api');
 const { createReadStream } = require('fs');
-const { getAllSlackList } = require(__dirname + '\\server\\controllers\\slack_controller.js');
+// const { getAllSlackList } = require(__dirname + '\\server\\controllers\\slack_controller.js');
 var request = require('request');
 
 var token = '';
@@ -17,7 +17,7 @@ function GetSlackAuthToken() {
             token = data[0].AuthToken;
             web = new WebClient(token);
             if (token) {
-                // fetchUsers();
+                fetchUsers();
             }
         }
     });
