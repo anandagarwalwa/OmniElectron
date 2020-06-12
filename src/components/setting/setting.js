@@ -129,20 +129,21 @@ jQuery.validator.addMethod("emailValidation", function(value, element) {
 jQuery.validator.addMethod("domainValidation", function(value, element) {
     return this.optional(element) || /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/.test(value);
 });
-// jQuery.validator.addMethod("isEmailIdExist", function (value, element) {
-//    getUsersByEmailId(value).then(data => {
-//         if (data == undefined || data.length <= 0) {
-//             return false;
-//         }
-//         else {
-//             return true;
-//         }
-//     });
 
-//     
-//     // var res = getUsersByEmailId(value);
-//     // return res;
-// });
+jQuery.validator.addMethod("checkUserExist", function(value, element) {
+    debugger
+    var result = false
+    if (slackUserList && slackUserList.length > 0) {
+        var user = slackUserList.filter(s => s.name.toLowerCase() == value.toLowerCase());
+        if (user && user.length > 0) {
+            result = true;
+        }
+    } else {
+        initAuth();
+    }
+    return result;
+}, "Slack name not exist in workspace");
+
 
 $("#addMemberForm").validate({
     ignore: [],
@@ -154,7 +155,7 @@ $("#addMemberForm").validate({
         domain: { domainValidation: true, required: true },
         // ddlTeams: 'required',
         ddlRoles: 'required',
-        slackId: 'required'
+        slackId: { checkUserExist: true, required: true },
     },
     messages: {
         //uploadPhoto: 'this field is required',
@@ -174,7 +175,7 @@ $("#addMemberForm").validate({
         domain: { domainValidation: "Please enter a valid domain.", required: 'This field is required' },
         // ddlTeams: 'This field is required',
         ddlRoles: 'This field is required',
-        slackId: 'This field is required'
+        slackId: { checkUser: "Please enter a valid slack name.", required: 'This field is required' },
     },
 });
 

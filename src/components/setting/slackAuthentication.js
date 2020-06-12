@@ -1,21 +1,23 @@
-const { InstallProvider } = require('@slack/oauth');
+var { InstallProvider } = require('@slack/oauth');
 const { createEventAdapter } = require('@slack/events-api');
-const { WebClient } = require('@slack/web-api');
 const express = require('express');
 const shell = require('electron').shell;
 const { getSlackByUserID, addSlackApp, updateSlackMasterbyID } = require(__dirname + '\\server\\controllers\\slack_controller.js');
 
+var config = require("../config.json");
+var { WebClient } = require('@slack/web-api');
+
 // Using Keyv as an interface to our database
-// see https://github.com/lukechilds/keyv for more info
 const Keyv = require('keyv');
 const app = express();
 const port = 3000;
-const SLACK_SIGNING_SECRET = '3bc49f0a8a8f2ecd64406ea10ca22f92';
-const SLACK_CLIENT_ID = '358222557168.1176390384369';
-const SLACK_CLIENT_SECRET = '4b2b773ea9843c2e74b5de01c4e3b9c4';
+const SLACK_SIGNING_SECRET = config.SlackSetting.SLACK_SIGNING_SECRET;
+const SLACK_CLIENT_ID = config.SlackSetting.SLACK_CLIENT_ID;
+const SLACK_CLIENT_SECRET = config.SlackSetting.SLACK_CLIENT_SECRET;
 
 var token = '';
 var authCode = '';
+var slackUserList = [];
 
 // Initialize slack events adapter
 const slackEvents = createEventAdapter(SLACK_SIGNING_SECRET, {
@@ -29,14 +31,20 @@ keyv.on('error', err => console.log('Connection Error', err));
 var userId;
 var appData;
 
-if (!SessionManager.IsAdmin) {
-    $("#btnSlack").show();
-    userId = SessionManager.UserId;
-    console.log('userId', userId);
-    if (userId) {
-        SlackDataByUserID(userId);
+initAuth();
+
+function initAuth() {
+    if (SessionManager.IsAdmin) {
+        debugger
+        $("#btnSlack").show();
+        userId = SessionManager.UserId;
+        console.log('userId', userId);
+        if (userId) {
+            SlackDataByUserID(userId);
+        }
     }
 }
+
 
 const installer = new InstallProvider({
     clientId: SLACK_CLIENT_ID,
@@ -58,7 +66,7 @@ $("#btnSlack").click(function() {
     if (userId) {
         SlackAuth();
     } else {
-        alert("user Id not found");
+        initAuth();
     }
 
 });
@@ -97,13 +105,14 @@ app.get('/slack/oauth_redirect', async(req, res) => {
 app.listen(port, () => console.log(`Example app listening on port ${port}! Go to http://localhost:3000/slack/install to initiate oauth flow`))
 
 async function GetAuthToken() {
+    debugger
     const web = new WebClient();
     const res = await web.oauth.v2.access({
         code: authCode,
         client_id: SLACK_CLIENT_ID,
         client_secret: SLACK_CLIENT_SECRET,
         redirect_uri: 'http://localhost:3000/slack/oauth_redirect',
-        grant_type: "authorization_code"
+        // grant_type: "authorization_code"
     });
     debugger
     console.log('res', res);
@@ -124,6 +133,8 @@ function SlackDataByUserID(userId) {
         console.log('appData ', data);
         if (data.length > 0) {
             appData = data[0];
+            token = appData.AuthToken;
+            fetchUsers();
         }
     });
 }
@@ -157,4 +168,29 @@ function UpdateSlackApp(res) {
     }).catch(err => {
         console.error(err);
     });
+}
+
+async function fetchUsers() {
+    var web = new WebClient(token);
+    const res = await web.users.list({ token: token });
+    if (slackUserList.length > 0) {
+        return;
+    }
+    console.log('Members: ', res);
+    if (res && res.members.length > 0) {
+        var users = res.members.filter(m => m.deleted == false);
+        console.log("users ", users);
+        slackUserList = [];
+        if (users.length > 0) {
+            $.each(users, function(i, user) {
+                var user = {
+                    id: user.id,
+                    name: user.name
+                }
+                slackUserList.push(user);
+            });
+            console.log('userList', slackUserList);
+            return slackUserList;
+        }
+    }
 }
