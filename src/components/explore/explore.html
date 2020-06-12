@@ -67,6 +67,10 @@
         float: left;
     } */
     
+    .arrow {
+        vertical-align: middle;
+    }
+
     a .arrow {
         display: inline-block;
         font-size: 2em !important;
@@ -84,6 +88,16 @@
         padding-left: 30px !important;
         background: #354552;
     }
+    #divFilterPanel
+    {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+    .dynamic-box.active{
+        background: #365166 !important;
+    }
+
 </style>
 <!---Explore--New--Design-->
 <div class="container-fluid explor-container">
@@ -103,28 +117,24 @@
                     </div>
 
                     <div id="divFilterPanel">
-                        <div class="panel">
-                            <a href="#demo1" class="" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Channel</a>
-                            <div id="demo1" class="collapse">
+                        <div id="channelBox" class="panel">
+                            <a href="#channelList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Channel</a>
+                            <div id="channelList" class="collapse">
                                 <div id="divSearchPanel">
 
                                 </div>
                             </div>
                         </div>
-                        <div class="panel">
-                            <a href="#demo2" class="" data-toggle="collapse">
-                                <span class="arrow fa fa-caret-down"></span>Team
-                            </a>
-                            <div id="demo2" class="collapse">
+                        <div id="teamBox" class="panel">
+                            <a href="#teamList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Team</a>
+                            <div id="teamList" class="collapse">
                                 <div id="divTeamPanel">
                                 </div>
                             </div>
                         </div>
-                        <div class="panel">
-                            <a href="#demo3" class="" data-toggle="collapse">
-                                <span class="arrow fa fa-caret-down"></span>Data
-                            </a>
-                            <div id="demo3" class="collapse">
+                        <div id="dataToolBox" class="panel">
+                            <a href="#dataList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Data Tool</a>
+                            <div id="dataList" class="collapse">
                                 <div id="divDataPanel">
                                 </div>
                             </div>

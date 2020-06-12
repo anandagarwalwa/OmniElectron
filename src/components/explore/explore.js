@@ -64,6 +64,8 @@ $(function() {
         links = allLinks.length > 0 ? allLinks : links;
 
         $("#divSearchPanel").find(".active").removeClass("active");
+        $("#divTeamPanel").find(".active").removeClass("active");
+        $("#divDataPanel").find(".active").removeClass("active");
         if (isClearClick && filterId == $(this).attr("data-val")) {
 
             if (!isNodeFilter) {
@@ -274,6 +276,8 @@ function NodeFilterGraphData(selId, searchText) {
 function removeNodeFilterBreakdown() {
 
     $("#divSearchPanel").find(".active").removeClass("active");
+    $("#divTeamPanel").find(".active").removeClass("active");
+    $("#divDataPanel").find(".active").removeClass("active");
     // For Deselecting Breakdown
     // Graph
     //     .nodeColor(node => {
@@ -299,6 +303,9 @@ function removeNodeFilterBreakdown() {
     var tempnodes = allNodes;
     //    graphData.nodes = nodes;
     //    graphData.nodes = nodes;
+    links = allLinks;
+    nodes = allNodes;
+    Bind2DForceGraph();
 
     Graph
     // .graphData(graphData)
@@ -357,6 +364,7 @@ function serchExplore() {
 }
 
 function BindSearchPanel(isFromBreakDown) {
+    debugger
     $('#txtSearch').val('');
     var selectedVal = parseInt($('#ddlBreakDown').val());
     var html = '';
@@ -369,6 +377,12 @@ function BindSearchPanel(isFromBreakDown) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divSearchPanel').html(html);
+                        $("#channelBox").css("order", "1");
+                        $("#teamBox").css("order", "2");
+                        $("#dataToolBox").css("order", "3");
+                        $("#channelList").collapse("show");
+                        $("#teamList").collapse("hide");
+                        $("#dataList").collapse("hide");
                     }
                 });
                 break;
@@ -393,6 +407,12 @@ function BindSearchPanel(isFromBreakDown) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                         });
                         $('#divTeamPanel').html(html);
+                        $("#teamBox").css("order", "1");
+                        $("#dataToolBox").css("order", "2");
+                        $("#channelBox").css("order", "3");
+                        $("#teamList").collapse("show");
+                        $("#channelList").collapse("hide");
+                        $("#dataList").collapse("hide");
                     }
                 });
                 break;
@@ -406,6 +426,12 @@ function BindSearchPanel(isFromBreakDown) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divDataPanel').html(html);
+                        $("#dataToolBox").css("order", "1");
+                        $("#channelBox").css("order", "2");
+                        $("#teamBox").css("order", "3");
+                        $("#dataList").collapse("show");
+                        $("#channelList").collapse("hide");
+                        $("#teamList").collapse("hide");
                     }
                 });
                 break;
@@ -476,11 +502,11 @@ function InitGraphData(isFromBreakDown) {
 
 function GetLinks(isFromBreakDown) {
     var userId = undefined;
-    if (!SessionManager.IsAdmin)
+    if (SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     // Get links option selected
     getLinksForExplor(userId).then(data => {
-
+        debugger
         if (data && data.length > 0) {
             var linkData = data[0];
             var linkColor = '';
@@ -543,7 +569,7 @@ function GetLinks(isFromBreakDown) {
 function GetNodes(isFromBreakDown) {
 
     var userId = undefined;
-    if (!SessionManager.IsAdmin)
+    if (SessionManager.IsAdmin)
         userId = SessionManager.UserId;
     getNodesByDataCategoryId(1, userId).then(data => {
         if (data && data.length > 0) {
@@ -872,9 +898,6 @@ function BreakDownNodeFilter() {
             } else {
                 return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
             }
-
-
-
         })
         .linkColor(link => {
             if (highlightLink.length > 0 && highlightLink && isNodeFilter) {
@@ -888,3 +911,90 @@ function BreakDownNodeFilter() {
             }
         })
 }
+
+$('.a-elem').click(function() {
+    var html = '';
+    // $("#channelBox").css("order", "1");
+    // $("#teamBox").css("order", "2");
+    // $("#dataToolBox").css("order", "3");
+    if ($(this).text() == "Channel") {
+        if ($('#ddlBreakDown').val() == 1) {
+            getChannels().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            // $("#channelList").collapse("show");
+            // $("#teamList").collapse("hide");   
+            // $("#dataList").collapse("hide");
+        } else {
+            getChannels().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '">  ' + val.Name + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+        }
+    }
+    if ($(this).text() == "Team") {
+        var html = '';
+        // $("#teamBox").css("order", "1");
+        // $("#dataToolBox").css("order", "2");
+        // $("#channelBox").css("order", "3");
+        if ($('#ddlBreakDown').val() == 3) {
+            getTeamsList().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
+                    });
+                    $('#divTeamPanel').html(html);
+                }
+            });
+        } else {
+            getTeamsList().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> ' + val.TeamName + '</a>';
+                    });
+                    $('#divTeamPanel').html(html);
+                }
+            });
+        }
+        // $("#teamList").collapse("show");
+        // $("#channelList").collapse("hide");
+        // $("#dataList").collapse("hide");
+    }
+    if ($(this).text() == "Data Tool") {
+        var html = '';
+        // $("#dataToolBox").css("order", "1");
+        // $("#channelBox").css("order", "2");
+        // $("#teamBox").css("order", "3");
+        if ($('#ddlBreakDown').val() == 4) {
+            getDatasource().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divDataPanel').html(html);
+                }
+            });
+        } else {
+            getDatasource().then(data => {
+                if (data) {
+                    $.each(data, function(key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '">' + val.Name + '</a>';
+                    });
+                    $('#divDataPanel').html(html);
+                }
+            });
+        }
+        // $("#dataList").collapse("show");
+        // $("#channelList").collapse("hide");
+        // $("#teamList").collapse("hide")
+    }
+});
