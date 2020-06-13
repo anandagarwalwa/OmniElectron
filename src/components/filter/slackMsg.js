@@ -1,6 +1,6 @@
-const { WebClient } = require('@slack/web-api');
+// const { WebClient } = require('@slack/web-api');
 const { createReadStream } = require('fs');
-const { getAllSlackList } = require(__dirname + '\\server\\controllers\\slack_controller.js');
+// const { getAllSlackList } = require(__dirname + '\\server\\controllers\\slack_controller.js');
 var request = require('request');
 
 var token = '';
@@ -62,7 +62,6 @@ function sendMessage(userID, msg) {
 }
 
 function sendFile(userID, fileName) {
-    const web = new WebClient(token);
     request.post({
         url: 'https://slack.com/api/files.upload',
         formData: {
@@ -80,10 +79,6 @@ function sendFile(userID, fileName) {
 
 $("#btnSlack").click(function() {
     debugger
-    if (userList.length == 0) {
-        alert("no member exist in slack workspace");
-        return
-    }
     var receipient = $("#slackRecipients").val();
     var msg = $("#message").val();
     if (!receipient) {
@@ -95,18 +90,18 @@ $("#btnSlack").click(function() {
         return;
     }
 
-    if (receipient) {
-        var user = userList.filter(m => m.id == receipient);
-        if (user.length > 0) {
-            sendMessage(user[0].id, msg);
+    getUserBySlackId(receipient).then(data => {
+        console.log('data', data);
+        if (data && data.length > 0) {
+            sendMessage(receipient, msg);
 
             if ($('#isIncludeData').prop('checked')) {
-                sendFile(user[0].id, 'E:\Geo.json');
+                sendFile(receipient, 'E:\Geo.json');
+            } else {
+                alert("'" + receipient + "'" + " not registered in your workspace , please try another one");
             }
-        } else {
-            alert("'" + receipient + "'" + " not registered in your workspace , please try another one");
         }
-    }
+    });
 });
 
 // async function fetchChannels() {

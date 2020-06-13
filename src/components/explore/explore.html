@@ -2,54 +2,102 @@
     .explore-sidenav {
         background: rgba(84, 84, 95, 0.8) !important;
     }
-
+    
     .container-content {
         max-width: 1200px !important;
         padding-left: 220px;
     }
-
-
+    
     .box-content-pic img {
         height: 490px !important;
         width: 100%;
     }
-
+    
     .box-content-pic {
         float: left;
         width: 100%;
     }
-
+    
     .explor-container {
         padding-top: 20px;
     }
-
+    
     a .active {
         background-color: #656565;
     }
-
-    #divSearchPanel {
+    /* #divSearchPanel {
         margin-top: 70px;
-    }
-
+    } */
+    
     .position-explore {
         position: relative;
     }
-
+    
     .box-content-pic {
         position: absolute;
         top: 0;
         left: 0;
     }
-
+    
     .coman-drop-explore {
         z-index: 1;
         background: transparent !important;
     }
-
+    
     .explore-content {
         box-shadow: none !important;
         border: none !important;
     }
+    
+    #divFilterPanel {
+        margin-top: 70px;
+        background: transparent;
+    }
+    
+    .main-sidebar .sidenav a {
+        padding: 8px;
+    }
+    /* .panel a :not(collapsed) .arrow:before {
+        font-family: FontAwesome;
+        content: "\f078";
+        display: inline-block;
+        padding-left: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+        float: left;
+    } */
+    
+    .arrow {
+        vertical-align: middle;
+    }
+
+    a .arrow {
+        display: inline-block;
+        font-size: 2em !important;
+        margin-right: 5px;
+    }
+    
+    a.collapsed .arrow {
+        display: inline-block;
+        font-size: 2em !important;
+        margin-right: 5px;
+        transform: rotate(-90deg) !important;
+    }
+    
+    .dynamic-box {
+        padding-left: 30px !important;
+        background: #354552;
+    }
+    #divFilterPanel
+    {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+    .dynamic-box.active{
+        background: #365166 !important;
+    }
+
 </style>
 <!---Explore--New--Design-->
 <div class="container-fluid explor-container">
@@ -67,13 +115,33 @@
                         <input type="text" name="search" id="txtSearch" placeholder="Search..">
                         <i class="fas fa-search"></i>
                     </div>
-                    <div id="divSearchPanel">
-                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-org"></i> Search</a>
-                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-pink"></i> Email</a>
-                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-blue"></i> Display</a>
-                        <a href="#" class="dynamic-box"> <i class="fas fa-circle co-green"></i> Tv</a>
-                        <a href="#" class="dynamic-box"> <i class="fas fa-circle col-yellow"></i> Other office</a>
+
+                    <div id="divFilterPanel">
+                        <div id="channelBox" class="panel">
+                            <a href="#channelList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Channel</a>
+                            <div id="channelList" class="collapse">
+                                <div id="divSearchPanel">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="teamBox" class="panel">
+                            <a href="#teamList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Team</a>
+                            <div id="teamList" class="collapse">
+                                <div id="divTeamPanel">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dataToolBox" class="panel">
+                            <a href="#dataList"  class="a-elem" data-toggle="collapse"><span class="arrow fa fa-caret-down"></span>Data Tool</a>
+                            <div id="dataList" class="collapse">
+                                <div id="divDataPanel">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -82,28 +150,18 @@
             <div class="col-xl-12 col-lg-12 col-12 col-md-12  pl-0 pr-0 mt-1 responsive-section position-explore">
                 <div class="container">
                     <div class="row">
-                        <div
-                            class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
+                        <div class="coman-drop-down coman-drop-explore d-flex col-xl-10 offset-md-2 drop-down-dark  justify-content-center mt-1">
                             <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 mr-auto p-0">
                                 <div class="main-explore-section">
                                     <form>
                                         <div class="explorefilter-sec" id="divFilterBlock">
                                             <label for="filterBlockContainer">Filter</label>
                                             <div id="filterBlockContainer" class="bootstrap-tagsinput">
-
                                             </div>
-                                            <!-- <select class="form-control" id="exampleFormControlSelect1">
-                                                <option>Display</option>
-                                                <option>Display</option>
-                                                <option>Display</option>
-                                                <option>Display</option>
-                                                <option>Display</option>
-                                            </select> -->
                                         </div>
                                     </form>
                                 </div>
                             </div>
-
 
                             <!---DropDown-Two-->
                             <div class="col-xl-2 col-12 col-sm-6 col-md-3 col-lg-3 ml-auto p-0">
@@ -173,8 +231,7 @@
                         <ul>
                             <li><a style="color: blue;text-decoration: underline;cursor: pointer;" id="codelink">code
                                     link</a></li>
-                            <li><a style="color: blue;text-decoration: underline;cursor: pointer;"
-                                    id="reportlink">report link</a></li>
+                            <li><a style="color: blue;text-decoration: underline;cursor: pointer;" id="reportlink">report link</a></li>
                         </ul>
                     </div>
                 </div>
@@ -190,8 +247,8 @@
 </div>
 <div id="filterScratch">
 </div>
-<div class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl"
-    id="dtable" style="display: none;">
+<div class="table-responsive table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl" id="dtable" style="display: none;">
 </div>
 <!---Explore--End--Design-->
 <script src="../src/components/explore/explore.js"></script>
+<script src="../src/components/explore/alert.js"></script>
