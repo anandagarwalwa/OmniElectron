@@ -9,11 +9,14 @@ var { WebClient } = require('@slack/web-api');
 
 // Using Keyv as an interface to our database
 const Keyv = require('keyv');
+const { Debugger } = require('electron');
 const app = express();
-const port = 3000;
+// const port = 3000;
+const port = config.SlackSetting.PORT;
 const SLACK_SIGNING_SECRET = config.SlackSetting.SLACK_SIGNING_SECRET;
 const SLACK_CLIENT_ID = config.SlackSetting.SLACK_CLIENT_ID;
 const SLACK_CLIENT_SECRET = config.SlackSetting.SLACK_CLIENT_SECRET;
+const Redirect_URL = config.SlackSetting.REDIRECT_URL;
 
 var token = '';
 var authCode = '';
@@ -96,6 +99,7 @@ app.get('/slack/install', async(req, res, next) => {
 
 // use default success and failure handlers
 app.get('/slack/oauth_redirect', async(req, res) => {
+    debugger
     authCode = req.query.code
     if (authCode) {
         GetAuthToken();
@@ -111,7 +115,7 @@ async function GetAuthToken() {
         code: authCode,
         client_id: SLACK_CLIENT_ID,
         client_secret: SLACK_CLIENT_SECRET,
-        redirect_uri: 'http://localhost:3000/slack/oauth_redirect',
+        redirect_uri: Redirect_URL,
         // grant_type: "authorization_code"
     });
     debugger

@@ -16,19 +16,19 @@ var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "
 var filteredList = [];
 var timeLineFilterCriteria = [];
 //var isTimeLineFilterEnabled = true;
-$('#sidebarCollapse').on('click', function () {
+$('#sidebarCollapse').on('click', function() {
     $('#sidebar').toggleClass('active');
 });
-$("#hide-home").click(function () {
+$("#hide-home").click(function() {
     $("#main-side").toggle(350);
 });
 
-$("#hide-filter").click(function () {
+$("#hide-filter").click(function() {
     $("#main-side").toggle(350);
 });
 
 var selector = "#sidebar li";
-$(selector).on("click", function () {
+$(selector).on("click", function() {
     $(selector).removeClass("active");
     $(this).addClass("active");
 });
@@ -81,7 +81,7 @@ var span = document.getElementsByClassName("close")[0];
 // }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
+window.onclick = function(event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -171,8 +171,8 @@ function getTimelineDetails() {
                 }]
             })
         }
-
-        var formattedData = FormatDataByBreakDown();
+        bindtimelinepanel();
+        FormatDataByBreakDown();
         SetSliderRange(timelineListObj);
 
     }).catch(err => {
@@ -210,7 +210,7 @@ function FormatTimeLineData(timelineList) {
         }
     }
 
-    data.sort(function (a, b) {
+    data.sort(function(a, b) {
         return a.label.toUpperCase().localeCompare(b.label.toUpperCase());
     })
 
@@ -218,7 +218,7 @@ function FormatTimeLineData(timelineList) {
 }
 
 function SetSliderRange(timelineList) {
-    var dateList = timelineList.map(function (v, i) {
+    var dateList = timelineList.map(function(v, i) {
         return v.data[0].at;
     })
     var sortedDateList = dateList.sort((a, b) => a - b);
@@ -256,13 +256,13 @@ function bindChartData(data) {
     var element = document.getElementById('timeline6');
     var timeline = new TimelineChart(element, data, {
         enableLiveTimer: true
-        // tip: function (d) {
-        //   return d.at || `${d.from}<br>${d.to}`;
-        // }
+            // tip: function (d) {
+            //   return d.at || `${d.from}<br>${d.to}`;
+            // }
     }, range).onVizChange(e => console.log('e', e));
 }
 
-var changeResult = function (data) {
+var changeResult = function(data) {
     var fromDate = new Date(data.from);
     var toDate = new Date(data.to);
     from = FormatDate(fromDate);
@@ -285,6 +285,36 @@ function FormatDate(dt) {
 }
 
 
+function bindtimelinepanel() {
+    var formattedData;
+    formattedData = FormatTimeLineData(timelineListObj);
+    if (formattedData) {
+        var html = '';
+        $.each(formattedData, function(key, val) {
+            html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+        });
+        $('#divSearchPanel').html(html);
+    }
+    formattedData = FormatTimeLineData(teamListObject);
+    if (formattedData) {
+        var html = '';
+        $.each(formattedData, function(key, val) {
+            //val.data[0].color = "#f88317";
+            html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].TeamId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+        });
+        $('#divTeamPanel').html(html);
+    }
+    formattedData = FormatTimeLineData(localCodeListObject);
+    if (formattedData) {
+        var html = '';
+        $.each(formattedData, function(key, val) {
+            //val.data[0].color = "#f88317";
+            html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].LocaleId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+        });
+        $('#divLocalCodePanel').html(html);
+    }
+}
+
 function FormatDataByBreakDown(isChangeHtml = true) {
     var formattedData;
     var html = '';
@@ -292,32 +322,56 @@ function FormatDataByBreakDown(isChangeHtml = true) {
     if (breakdownValue == "1") {
         formattedData = FormatTimeLineData(timelineListObj);
         if (formattedData) {
-            $.each(formattedData, function (key, val) {
+            $.each(formattedData, function(key, val) {
                 html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
+            $("#channelList").collapse("show");
+            $("#teamList").collapse("hide");
+            $("#localCodeList").collapse("hide");
+            $("#channelBox").css("order", "1");
+            $("#teamBox").css("order", "2");
+            $("#localCodeBox").css("order", "3");
         }
     } else if (breakdownValue == "2") {
         formattedData = FormatTimeLineData(teamListObject);
         if (formattedData) {
-            $.each(formattedData, function (key, val) {
+            $.each(formattedData, function(key, val) {
                 //val.data[0].color = "#f88317";
                 html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].TeamId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
+            $("#teamList").collapse("show");
+            $("#channelList").collapse("hide");
+            $("#localCodeList").collapse("hide");
+            $("#teamBox").css("order", "1");
+            $("#localCodeBox").css("order", "2");
+            $("#channelBox").css("order", "3");
         }
     } else if (breakdownValue == "3") {
         formattedData = FormatTimeLineData(localCodeListObject);
         if (formattedData) {
-            $.each(formattedData, function (key, val) {
+            $.each(formattedData, function(key, val) {
                 //val.data[0].color = "#f88317";
                 html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].LocaleId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
             });
+            $("#localCodeList").collapse("show");
+            $("#channelList").collapse("hide");
+            $("#teamList").collapse("hide");
+            $("#localCodeBox").css("order", "1");
+            $("#channelBox").css("order", "2");
+            $("#teamBox").css("order", "3");
         }
     } else {
         formattedData = FormatTimeLineData(timelineListObj);
         if (formattedData) {
-            $.each(formattedData, function (key, val) {
+            $.each(formattedData, function(key, val) {
                 html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.color + '"></i> ' + val.label + '</a>';
             });
+            $("#channelList").collapse("show");
+            $("#teamList").collapse("hide");
+            $("#localCodeList").collapse("hide");
+            $("#channelBox").css("order", "1");
+            $("#teamBox").css("order", "2");
+            $("#localCodeBox").css("order", "3");
         }
     }
     var result = [];
@@ -325,25 +379,25 @@ function FormatDataByBreakDown(isChangeHtml = true) {
         for (var i = 0; i < timeLineFilterCriteria.length; i++) {
             var element = timeLineFilterCriteria[i];
             if (element.ChannelId) {
-                formattedData = formattedData.filter(f => f.data.some(c=>c.ChannelId == element.ChannelId));   
-                $.each(formattedData, function (val, key) {
-                    key.data = $.grep(key.data, function (c, index) {
+                formattedData = formattedData.filter(f => f.data.some(c => c.ChannelId == element.ChannelId));
+                $.each(formattedData, function(val, key) {
+                    key.data = $.grep(key.data, function(c, index) {
                         return c.ChannelId == element.ChannelId;
                     });
                 });
             }
             if (element.TeamId) {
                 formattedData = formattedData.filter(f => f.data.some(c => c.TeamId == element.TeamId));
-                $.each(formattedData, function (val, key) {
-                    key.data = $.grep(key.data, function (c, index) {
+                $.each(formattedData, function(val, key) {
+                    key.data = $.grep(key.data, function(c, index) {
                         return c.TeamId == element.TeamId;
                     });
                 });
             }
             if (element.LocaleId) {
-                formattedData = formattedData.filter(f => f.data.some(c=>c.LocaleId == element.LocaleId));
-                $.each(formattedData, function (val, key) {
-                    key.data = $.grep(key.data, function (c, index) {
+                formattedData = formattedData.filter(f => f.data.some(c => c.LocaleId == element.LocaleId));
+                $.each(formattedData, function(val, key) {
+                    key.data = $.grep(key.data, function(c, index) {
                         return c.LocaleId == element.LocaleId;
                     });
                 });
@@ -352,7 +406,9 @@ function FormatDataByBreakDown(isChangeHtml = true) {
         //formattedData = result;
     }
     if (isChangeHtml) {
-        $('#divSearchPanel').html(html);
+        //$('#divSearchPanel').html(html);
+        //  $('#divTeamPanel').html(html);
+        // $('#divLocalCodePanel').html(html);
         isImgClick = false;
         imgFilterId = '';
         $("#iconList").find(".active").removeClass("active");
@@ -370,18 +426,21 @@ function FormatDataByBreakDown(isChangeHtml = true) {
 
 var isClearClick = false;
 var filterId = '';
-$('body').on('click', 'a.drop-box', function () {
+$('body').on('click', 'a.drop-box', function() {
     $("#divSearchPanel").find(".active").removeClass("active");
+    $("#divTeamPanel").find(".active").removeClass("active");
+    $("#localCodeList").find(".active").removeClass("active");
+
     if (isClearClick && filterId == $(this).attr("data-val")) {
         isClearClick = false;
-        if(!isTimeLineFilterEnabled){
+        if (!isTimeLineFilterEnabled) {
             var formattedData = FormatDataByBreakDown(false);
-                    bindChartData(formattedData);
-                    // $("#lblFilter").text("");
-                    // $("#breakFilterBlock").css('display', 'none');
-                    $("#filterTMContainer").html('');
+            bindChartData(formattedData);
+            // $("#lblFilter").text("");
+            // $("#breakFilterBlock").css('display', 'none');
+            $("#filterTMContainer").html('');
         }
-        
+
     } else {
         isClearClick = true;
         filterId = $(this).attr("data-val");
@@ -391,22 +450,20 @@ $('body').on('click', 'a.drop-box', function () {
         var isNewKey = false;
         if (isTimeLineFilterEnabled) {
             var breakdownValue = $("#ddlBreakDown").val();
-            
+
             if (breakdownValue == "1") {
                 breakdownKey = "ChannelId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "ChannelId", filterDataId)) {
                     isNewKey = true;
                     timeLineFilterCriteria.push({ "ChannelId": filterDataId });
                 }
-            }
-            else if (breakdownValue == "2") {
+            } else if (breakdownValue == "2") {
                 breakdownKey = "TeamId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "TeamId", filterDataId)) {
                     isNewKey = true;
                     timeLineFilterCriteria.push({ "TeamId": filterDataId });
                 }
-            }
-            else {
+            } else {
                 breakdownKey = "LocaleId";
                 if (!jsonHasKeyVal(timeLineFilterCriteria, "LocaleId", filterDataId)) {
                     isNewKey = true;
@@ -420,11 +477,11 @@ $('body').on('click', 'a.drop-box', function () {
         bindChartData(formattedData);
         //$("#lblFilter").text(filterId);
         //$("#filterTMContainer span").remove();
-        if(isNewKey){
+        if (isNewKey) {
             $("#filterTMContainer").append(getTimeLineFilterTag(filterId, filterDataId, breakdownKey));
             $("#breakFilterBlock").css('display', 'block');
             if (formattedData.length > 0) {
-                filteredList = formattedData[0].data.map(function (val, index) {
+                filteredList = formattedData[0].data.map(function(val, index) {
                     return val.Id;
                 })
             } else {
@@ -439,7 +496,7 @@ $('body').on('click', 'a.drop-box', function () {
 
 var isImgClick = false;
 var imgFilterId = '';
-$('body').on('click', 'a.icon-box', function () {
+$('body').on('click', 'a.icon-box', function() {
 
     var filteredData = [];
 
@@ -496,7 +553,7 @@ function removeTimeLineTag(obj) {
     filteredList = [];
     var filterDataId = $(obj).attr("data-id");
     var filterDataKey = $(obj).attr("data-val");
-    timeLineFilterCriteria.forEach(function (e, index) {
+    timeLineFilterCriteria.forEach(function(e, index) {
         if (filterDataKey == "ChannelId") {
             if (filterDataId == e.ChannelId) {
                 timeLineFilterCriteria.splice(index, 1);
@@ -517,24 +574,24 @@ function removeTimeLineTag(obj) {
     bindChartData(formattedData);
     $("#divSearchPanel").find(".active").removeClass("active");
     obj.closest(".tag").remove();
-    if(timeLineFilterCriteria.length <=0){
+    if (timeLineFilterCriteria.length <= 0) {
         $("#breakFilterBlock").css('display', 'none');
     }
 }
 
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
-    $("#divSearchPanel .drop-box").filter(function () {
+    $("#divSearchPanel .drop-box").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 }
-$('#txtSearch').keyup(function (e) {
+$('#txtSearch').keyup(function(e) {
     if (e.keyCode != 13) {
         serchExplore();
     }
 });
 
-$('body').on('click', 'image.dot', function (e) {
+$('body').on('click', 'image.dot', function(e) {
     var data = $(e.currentTarget).attr('dataVal');
     if (data) {
         var dataVal = JSON.parse(data);
@@ -551,5 +608,97 @@ $('body').on('click', 'image.dot', function (e) {
             $("#createdDate").text(formattedDate);
         }
 
+    }
+});
+
+
+$('.a-elem').click(function() {
+    var html = '';
+    // $("#channelBox").css("order", "1");
+    // $("#teamBox").css("order", "2");
+    // $("#dataToolBox").css("order", "3");
+    if ($(this).text() == "Channel") {
+        if ($('#ddlBreakDown').val() == 1) {
+            formattedData = FormatTimeLineData(timelineListObj);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+                });
+                $('#divSearchPanel').html(html);
+            }
+            // $("#channelList").collapse("show");
+            // $("#teamList").collapse("hide");   
+            // $("#dataList").collapse("hide");
+        } else {
+            formattedData = FormatTimeLineData(timelineListObj);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].ChannelId + '">' + val.label + '</a>';
+                });
+                $('#divSearchPanel').html(html);
+            }
+        }
+    }
+    if ($(this).text() == "Team") {
+        var html = '';
+        // $("#teamBox").css("order", "1");
+        // $("#dataToolBox").css("order", "2");
+        // $("#channelBox").css("order", "3");
+        if ($('#ddlBreakDown').val() == 2) {
+            formattedData = FormatTimeLineData(teamListObject);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    //val.data[0].color = "#f88317";
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].TeamId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+                });
+                $('#divTeamPanel').html(html);
+            }
+        } else {
+            formattedData = FormatTimeLineData(teamListObject);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    //val.data[0].color = "#f88317";
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].TeamId + '">' + val.label + '</a>';
+                });
+                $('#divTeamPanel').html(html);
+            }
+        }
+        // $("#teamList").collapse("show");
+        // $("#channelList").collapse("hide");
+        // $("#dataList").collapse("hide");
+    }
+    if ($(this).text() == "LocalCode") {
+        var html = '';
+        // $("#dataToolBox").css("order", "1");
+        // $("#channelBox").css("order", "2");
+        // $("#teamBox").css("order", "3");
+        if ($('#ddlBreakDown').val() == 3) {
+            formattedData = FormatTimeLineData(localCodeListObject);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    //val.data[0].color = "#f88317";
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].LocaleId + '"> <i class="fas fa-circle" style="color:' + val.data[0].color + '"></i> ' + val.label + '</a>';
+                });
+                $('#divLocalCodePanel').html(html);
+            }
+        } else {
+            formattedData = FormatTimeLineData(localCodeListObject);
+            if (formattedData) {
+                var html = '';
+                $.each(formattedData, function(key, val) {
+                    //val.data[0].color = "#f88317";
+                    html += '<a href="javascript:void" class="drop-box" data-val="' + val.label + '" data-id="' + val.data[0].LocaleId + '">' + val.label + '</a>';
+                });
+                $('#divLocalCodePanel').html(html);
+            }
+        }
+        // $("#dataList").collapse("show");
+        // $("#channelList").collapse("hide");
+        // $("#teamList").collapse("hide")
     }
 });

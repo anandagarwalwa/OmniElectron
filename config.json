@@ -17,6 +17,8 @@
     "SlackSetting": {
         "SLACK_SIGNING_SECRET": "3bc49f0a8a8f2ecd64406ea10ca22f92",
         "SLACK_CLIENT_ID": "358222557168.1176390384369",
-        "SLACK_CLIENT_SECRET": "4b2b773ea9843c2e74b5de01c4e3b9c4"
+        "SLACK_CLIENT_SECRET": "4b2b773ea9843c2e74b5de01c4e3b9c4",
+        "REDIRECT_URL": "http://localhost:3000/slack/oauth_redirect",
+        "PORT": "3000"
     }
 }
