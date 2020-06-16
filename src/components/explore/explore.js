@@ -60,15 +60,14 @@ $(function() {
 
     $('body').on('click', 'a.dynamic-box', function() {
         debugger
-        nodes = allNodes.length > 0 ? allNodes : nodes;
-        links = allLinks.length > 0 ? allLinks : links;
-
         $("#divSearchPanel").find(".active").removeClass("active");
         $("#divTeamPanel").find(".active").removeClass("active");
         $("#divDataPanel").find(".active").removeClass("active");
+
         if (isClearClick && filterId == $(this).attr("data-val")) {
 
             if (!isNodeFilter) {
+
                 // Bind2DForceGraph();
                 isClearClick = false;
 
@@ -92,10 +91,13 @@ $(function() {
                         return hex2rgb(templinks.find(x => x.nodeId == link.nodeId).linkColor, 1);
                     })
                 $("#divFilterBlock").hide();
-
+                Bind2DForceGraph();
             }
         } else {
             debugger
+            nodes = allNodes.length > 0 ? allNodes : nodes;
+            links = allLinks.length > 0 ? allLinks : links;
+
             filterId = $(this).attr("data-val");
             if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
                 //$("#filterBlockContainer span").remove();                
@@ -104,6 +106,7 @@ $(function() {
                 var selectedVal = parseInt($('#ddlBreakDown').val());
                 var breakdownKey = "";
                 filterId = parseInt(filterId);
+                console.log('filterId ', filterId)
                 switch (selectedVal) {
                     case BreakdownEnum.Channel:
                         {
@@ -626,7 +629,6 @@ var allNodes = [];
 var allLinks = [];
 
 function Bind2DForceGraph() {
-    debugger
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -713,7 +715,7 @@ function updateHighlight(filterColor) {
 }
 
 function updateFilteredNode(filterColor) {
-    debugger
+
     if ((highlightNodes && highlightNodes.length > 0) || isNodeFilter) {
         // var node = highlightNodes[0];
         // Center/zoom on node
@@ -760,7 +762,6 @@ function updateFilteredNode(filterColor) {
 var filteredLinkColor = '';
 
 function FilterGraphBySearchPanel(selId) {
-    debugger
     // var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     // var prop = "";
     // selId = parseInt(selId);
@@ -845,6 +846,31 @@ function FilterGraphBySearchPanel(selId) {
             });
             // nodes = highlightNodes;
             links = highlightLink;
+            console.log('Prelinks', highlightLink, nodes);
+
+            links = highlightLink.filter((val, index) => {
+                debugger
+                if (val) {
+                    if (typeof(val.source) == "string") {
+                        var nodeSource = nodes.filter(n => n.id == val.source);
+                        var nodeTarget = nodes.filter(n => n.id == val.target);
+                        if (nodeSource.length > 0 && nodeTarget.length > 0) {
+                            return val;
+                        }
+                    } else {
+                        return val;
+                    }
+                }
+                // var nodeFrom = nodes.filter(n => n.nodeId == val.linksFrom);
+                // var nodeTo = nodes.filter(n => n.nodeId == val.linksTo);
+                // if (nodeTo.length > 0 || nodeFrom.length > 0) {
+                //     val.linksFrom = nodeFrom.length == 0 ? nodes[0] : val.linksFrom;
+                //     val.linksTo = nodeTo.length == 0 ? nodes[0] : val.linksTo;
+                //     return val;
+                // }
+            });
+
+            console.log('links', links);
             Bind2DForceGraph();
             //updateFilteredNode(linkColor);
         } else {
@@ -882,21 +908,27 @@ $("#addAlert").click(function() {
 
 // breakdown filter nodes
 function BreakDownNodeFilter() {
-    debugger
     var templinks = allLinks;
     var tempnodes = allNodes;
-    console.log('temp', templinks, tempnodes);
+    //console.log('temp', templinks, tempnodes);
 
     Graph
         .nodeColor(d => {
             if (highlightNodes.length > 0 && highlightNodes && isNodeFilter) {
                 if (highlightNodes.find(x => x.nodeId == d.nodeId)) {
-                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
+                    var tempNode = tempnodes.find(x => x.nodeId == d.nodeId);
+                    if (tempNode) {
+                        return hex2rgb(tempNode.nodeColor, 1);
+                    }
                 } else {
-                    return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 0);
+                    var tempNode = tempnodes.find(x => x.nodeId == d.nodeId);
+                    return hex2rgb(tempNode.nodeColor, 0);
                 }
             } else {
-                return tempnodes.find(x => x.nodeId == d.nodeId).nodeColor;
+                var temp = tempnodes.find(x => x.nodeId == d.nodeId);
+                if (temp) {
+                    return temp.nodeColor;
+                }
             }
         })
         .linkColor(link => {
