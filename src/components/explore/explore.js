@@ -629,7 +629,6 @@ var allNodes = [];
 var allLinks = [];
 
 function Bind2DForceGraph() {
-    debugger
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -847,18 +846,30 @@ function FilterGraphBySearchPanel(selId) {
             });
             // nodes = highlightNodes;
             links = highlightLink;
+            console.log('Prelinks', highlightLink, nodes);
 
-            console.log('Prelinks', links, nodes);
-            // links = highlightLink.filter((val, index) => {
-            //     debugger
-            //     var nodeFrom = nodes.filter(n => n.nodeId == val.linksFrom);
-            //     var nodeTo = nodes.filter(n => n.nodeId == val.linksTo);
-            //     if (nodeTo.length > 0 || nodeFrom.length > 0) {
-            //         val.linksFrom = nodeFrom.length == 0 ? nodes[0] : val.linksFrom;
-            //         val.linksTo = nodeTo.length == 0 ? nodes[0] : val.linksTo;
-            //         return val;
-            //     }
-            // });
+            links = highlightLink.filter((val, index) => {
+                debugger
+                if (val) {
+                    if (typeof(val.source) == "string") {
+                        var nodeSource = nodes.filter(n => n.id == val.source);
+                        var nodeTarget = nodes.filter(n => n.id == val.target);
+                        if (nodeSource.length > 0 && nodeTarget.length > 0) {
+                            return val;
+                        }
+                    } else {
+                        return val;
+                    }
+                }
+                // var nodeFrom = nodes.filter(n => n.nodeId == val.linksFrom);
+                // var nodeTo = nodes.filter(n => n.nodeId == val.linksTo);
+                // if (nodeTo.length > 0 || nodeFrom.length > 0) {
+                //     val.linksFrom = nodeFrom.length == 0 ? nodes[0] : val.linksFrom;
+                //     val.linksTo = nodeTo.length == 0 ? nodes[0] : val.linksTo;
+                //     return val;
+                // }
+            });
+
             console.log('links', links);
             Bind2DForceGraph();
             //updateFilteredNode(linkColor);

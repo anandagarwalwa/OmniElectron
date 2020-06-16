@@ -386,6 +386,7 @@ function editUser(obj) {
         $("#domain").val(data[0].Domain);
         $("#ddlRoles").val(data[0].RoleId);
         $("#hdnUserId").val(data[0].UserId);
+        $("#slackId").val(data[0].SlackId);
         imagebase64 = data[0].Photo.toString();
         if (data[0].IsActive.readUIntLE() == 1)
             $('#isActive').prop('checked', true);
