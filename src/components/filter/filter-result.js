@@ -4,20 +4,20 @@ var xlsxFile = require('read-excel-file/node');
 var gshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.js');
 var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
 var { addAlertschedule } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
-var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 // var csv = require('csvtojson');
 var csv = require('csv2json-convertor');
 // var nodemailer = require('nodemailer');
 // var schedule = require('node-schedule');
 var getAlertLocationFileData = [];
 var columnList = [];
-$(document).ready(function () {
+$(document).ready(function() {
     $('#modelFilterResult').modal('show');
-    $("#btnFilterWeeklyReport").click(function () {
+    $("#btnFilterWeeklyReport").click(function() {
         $('#modelFilterResult').modal('hide');
         $('#modeFitlerScratch').modal('show');
     });
-    $("#btnBackFilterHome").click(function () {
+    $("#btnBackFilterHome").click(function() {
         $('#modelFilterResult').modal('hide');
         $('#myModal').modal('show');
 
@@ -28,27 +28,29 @@ $(document).ready(function () {
 
     // Timeframe slider
     var $timeFrame = $(".js-range");
-    var $tFrom = $(".js-input-from"), $tTo = $(".js-input-to"),
-        instance,
-        min = 0,
-        max = 100;
+    var $tFrom = $(".js-input-from"),
+        $tTo = $(".js-input-to"),
+        instance;
+
     $timeFrame.ionRangeSlider({
         skin: "modern",
         type: "double",
-        from: 10,
-        to: 100,
+        min: -10,
+        max: -2,
+        from: -10,
+        to: -2,
         grid: false,
-        onStart: function (data) {
+        onStart: function(data) {
             $tFrom.prop("value", data.from);
             $tTo.prop("value", data.to);
         },
-        onChange: function (data) {
+        onChange: function(data) {
             $tFrom.prop("value", data.from);
             $tTo.prop("value", data.to);
         }
     });
     instance = $timeFrame.data("ionRangeSlider");
-    $tFrom.on("change keyup", function () {
+    $tFrom.on("change keyup", function() {
         var val = $(this).prop("value");
 
         // validate
@@ -62,7 +64,7 @@ $(document).ready(function () {
             from: val
         });
     });
-    $tTo.on("change keyup", function () {
+    $tTo.on("change keyup", function() {
         var val = $(this).prop("value");
 
         // validate
@@ -85,17 +87,14 @@ $(document).ready(function () {
     var googleSpreadsheetId = alertLocation.substring(39, 83);
     if (fileExtention == "csv") {
         getCSVFile();
-    }
-    else if (fileExtention == "xlsx") {
+    } else if (fileExtention == "xlsx") {
         getExcelFile();
-    }
-    else if (dataConfigId > 0 && dataConfigId) {
+    } else if (dataConfigId > 0 && dataConfigId) {
         getConfigDataSourceDB(dataConfigId).then(data => {
             var configData = data[0];
             dataSourceConfigData(configData[0]);
         });
-    }
-    else {
+    } else {
         getGoogleSheet();
     }
     // get Excel file
@@ -145,9 +144,9 @@ $(document).ready(function () {
         displaysheetdetails(data);
         getAlertLocationFileData = data;
         selectedHeaderValueDisplay();
-        $('#tablist').on('change', function (e) {
+        $('#tablist').on('change', function(e) {
             $("#tablist").val()
-            //selectedSheetValue=$(this).text();
+                //selectedSheetValue=$(this).text();
             var excelData = [];
             var worksheet = workbook.Sheets[$("#tablist").val()];
             var headers = {};
@@ -199,9 +198,9 @@ $(document).ready(function () {
     // get Googlesheet
     function getGoogleSheet() {
         gshelper.getWorksheets({
-            spreadsheetId: googleSpreadsheetId,
-        })
-            .then(function (res) {
+                spreadsheetId: googleSpreadsheetId,
+            })
+            .then(function(res) {
                 res.forEach(value => {
                     listOfgoogleSheet.push(value.title);
                 });
@@ -212,25 +211,25 @@ $(document).ready(function () {
                 }
                 $("#tablist").html(html);
             })
-            .catch(function (err) {
+            .catch(function(err) {
                 console.log(err.stack)
             });
 
         gshelper.spreadsheetToJson({
             spreadsheetId: googleSpreadsheetId,
             allWorksheets: true
-        }).then(function (googleSheetObj) {
+        }).then(function(googleSheetObj) {
             googleSheetObj = googleSheetObj[0];
             displaysheetdetails(googleSheetObj);
             getAlertLocationFileData = googleSheetObj;
         });
         selectedHeaderValueDisplay();
-        $('#tablist').on('change', function (e) {
+        $('#tablist').on('change', function(e) {
             $("#tablist").val()
             gshelper.spreadsheetToJson({
                 spreadsheetId: googleSpreadsheetId,
                 allWorksheets: true
-            }).then(function (googleSheetObj) {
+            }).then(function(googleSheetObj) {
                 googleSheetObj = googleSheetObj[parseInt($("#tablist").val())];
                 displaysheetdetails(googleSheetObj);
                 getAlertLocationFileData = googleSheetObj;
@@ -256,10 +255,10 @@ $(document).ready(function () {
 
         // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
-        var tr = table.insertRow(-1);                   // TABLE ROW.
+        var tr = table.insertRow(-1); // TABLE ROW.
 
         for (var i = 0; i < col.length; i++) {
-            var th = document.createElement("th");      // TABLE HEADER.
+            var th = document.createElement("th"); // TABLE HEADER.
             th.innerHTML = col[i];
             tr.appendChild(th);
         }
@@ -273,8 +272,7 @@ $(document).ready(function () {
                 // tabCell.innerHTML = data[i][col[j]];
                 if (data[i - 1] && data[i - 1][col[j]]) {
                     tabCell.innerHTML = data[i - 1][col[j]];
-                }
-                else
+                } else
                     tabCell.innerHTML = "";
             }
             if (i == 99) {
@@ -312,20 +310,20 @@ $(document).ready(function () {
 
     // set dropdown value for excel/csv & google sheet
     function selectedHeaderValueDisplay() {
-        $(document).on('click', 'a.dropdown-item.bookingsList', function () {
+        $(document).on('click', 'a.dropdown-item.bookingsList', function() {
             $('#bookingsChangeName').html($(this).text());
             $("#setmetricid").show();
             $("#errorbookings").html("");
         });
 
-        $(document).on('click', 'a.dropdown-item.orderDataList', function () {
+        $(document).on('click', 'a.dropdown-item.orderDataList', function() {
             $('#orderDateChangeName').html($(this).text());
             $("#setalertid").show();
             $("#errororderDate").html("");
 
         });
 
-        $(document).on('click', 'a.dropdown-item.addAlertList', function () {
+        $(document).on('click', 'a.dropdown-item.addAlertList', function() {
             $('#addAlertName').html($(this).text());
             $("#addAlerticid").show();
             var html = '<option value="0">select</option>';
@@ -377,7 +375,7 @@ $(document).ready(function () {
     }
 
     // Set Alert schedular
-    $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+    $.validator.addMethod("valueNotEquals", function(value, element, arg) {
         return arg !== value;
     }, "Value must not equal arg.");
 
@@ -395,12 +393,10 @@ $(document).ready(function () {
             matricValue: {
                 required: true
             },
-            filterConditionList:
-            {
+            filterConditionList: {
                 valueNotEquals: "0"
             },
-            selectcoloumnId:
-            {
+            selectcoloumnId: {
                 valueNotEquals: "0"
             }
         },
@@ -418,12 +414,10 @@ $(document).ready(function () {
             matricValue: {
                 required: "This field is required"
             },
-            filterConditionList:
-            {
+            filterConditionList: {
                 valueNotEquals: "Please select"
             },
-            selectcoloumnId:
-            {
+            selectcoloumnId: {
                 valueNotEquals: "Please select"
             }
         }
@@ -481,50 +475,45 @@ $(document).ready(function () {
     // });
 
 
-    $("#btnFilterResultReport").click(function () {
+    $("#btnFilterResultReport").click(function() {
 
         if ($("#orderDateChangeName").text() == "Click here to add") {
             $("#errororderDate").removeAttr("style");
             $("#errororderDate").html("Please click here to add");
-        }
-        else if ($("#bookingsChangeName").text() == "Click here to add") {
+        } else if ($("#bookingsChangeName").text() == "Click here to add") {
             $("#errorbookings").removeAttr("style");
             $("#errorbookings").html("Please click here to add");
-        }
-        else if ($("#addAlertName").text() == "Click here to add") {
+        } else if ($("#addAlertName").text() == "Click here to add") {
             $("#erroraddAlertName").removeAttr("style");
             $("#erroraddAlertName").html("Please click here to add");
-        }
-        else {
+        } else {
             var addFilterResultDetails = $('form[id="addFilterResultForm"]').valid();
             if (addFilterResultDetails == true) {
-                addAlertschedule(
-                    {
-                        UserId: parseInt(localStorage.getItem("UserId")),
-                        NodeId: alertNodeId,
-                        SetAlertTo: $("#orderDateChangeName").text(),
-                        Granularity: $("#granularity").val(),
-                        TimeframeFrom: parseInt($("#tFrom").val()),
-                        TimeframeTo: parseInt($("#tTo").val()),
-                        AlertToMetric: $("#bookingsChangeName").text(),
-                        MetricCriteria: $("#matricConditionList").val(),
-                        MetricValue: parseInt($("#matricValue").val()),
-                        AlertFilter: $("#addAlertName").text(),
-                        FilterCriteria: $("#filterConditionList").val(),
-                        FilterValue: $("#selectcoloumnId").val(),
-                        CreatedDate: new Date(),
-                        DateRun: new Date(),
-                        AlertFailure: 0
-                    }
-                ).then(data => {
+                addAlertschedule({
+                    UserId: parseInt(localStorage.getItem("UserId")),
+                    NodeId: alertNodeId,
+                    SetAlertTo: $("#orderDateChangeName").text(),
+                    Granularity: $("#granularity").val(),
+                    TimeframeFrom: parseInt($("#tFrom").val()),
+                    TimeframeTo: parseInt($("#tTo").val()),
+                    AlertToMetric: $("#bookingsChangeName").text(),
+                    MetricCriteria: $("#matricConditionList").val(),
+                    MetricValue: parseInt($("#matricValue").val()),
+                    AlertFilter: $("#addAlertName").text(),
+                    FilterCriteria: $("#filterConditionList").val(),
+                    FilterValue: $("#selectcoloumnId").val(),
+                    CreatedDate: new Date(),
+                    DateRun: new Date(),
+                    AlertFailure: 0
+                }).then(data => {
                     addLogsDetails({
-                        'LogsMessage':"Add filter weeklyReport details",
-                        'CreatedBy':parseInt(localStorage.getItem("UserId")),
-                        'CreatedDate':new Date()
+                        'LogsMessage': "Add filter weeklyReport details",
+                        'CreatedBy': parseInt(localStorage.getItem("UserId")),
+                        'CreatedDate': new Date()
                     }).then(data => {
-                    //console.log(data);
+                        //console.log(data);
                     }).catch(err => {
-                    console.error(err);
+                        console.error(err);
                     });
                     localStorage.setItem("alertId", data[0]);
                     $.toast({
@@ -536,13 +525,13 @@ $(document).ready(function () {
                         hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
                         stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
                         position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
-                        textAlign: 'left',  // Text alignment i.e. left, right or center
-                        loader: false,  // Whether to show loader or not. True by default
-                        loaderBg: '#9EC600',  // Background color of the toast loader
-                        beforeShow: function () { }, // will be triggered before the toast is shown
-                        afterShown: function () { }, // will be triggered after the toat has been shown
-                        beforeHide: function () { }, // will be triggered before the toast gets hidden
-                        afterHidden: function () { }  // will be triggered after the toast has been hidden
+                        textAlign: 'left', // Text alignment i.e. left, right or center
+                        loader: false, // Whether to show loader or not. True by default
+                        loaderBg: '#9EC600', // Background color of the toast loader
+                        beforeShow: function() {}, // will be triggered before the toast is shown
+                        afterShown: function() {}, // will be triggered after the toat has been shown
+                        beforeHide: function() {}, // will be triggered before the toast gets hidden
+                        afterHidden: function() {} // will be triggered after the toast has been hidden
                     });
                     $("#orderDate").val("0");
                     $("#granularity").val("0");

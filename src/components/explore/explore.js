@@ -643,6 +643,7 @@ function Bind2DForceGraph() {
         .nodeVal(d => d.nodeSize)
         .linkColor(link => link.linkColor)
         .nodeCanvasObjectMode(node => 'after')
+        .nodeRelSize([3])
         .nodeCanvasObject((node, ctx, globalScale) => {
             const label = node.id;
             const fontSize = 12 / globalScale;

@@ -1,6 +1,6 @@
 var { getAlerSchedulerList } = require(__dirname + '\\server\\controllers\\setalertschedule_controller.js');
 var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
-
+var { getConfigDataSourceDB } = require(__dirname + '\\server\\controllers\\datasourcedbconfig_controller.js');
 //slack require
 var { WebClient } = require('@slack/web-api');
 var { getAllSlackList } = require(__dirname + '\\server\\controllers\\slack_controller.js');
@@ -11,6 +11,7 @@ var googleshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.j
 
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
+const { columns } = require('mssql');
 
 var slackUserList = [];
 
@@ -161,27 +162,17 @@ function checkFile(element) {
         // data.shift();
         excelData.push(data);
         JSONToCSVConvertor(data, element);
-    } else {
+    }
+    // else if (element.DataSourceConfigId > 0 && element.DataSourceConfigId) {
+    //     getConfigDataSourceDB(element.DataSourceConfigId).then(data => {
+    //         console.log(data);
+    //         var configData = data[0];
+    //         dataSourceConfigData(configData[0]);
+    //     });
+    // } 
+    else {
         // var listOfgoogleSheet = [];
         var googleSpreadsheetId = element.Location.substring(39, 83);
-        // googleshelper.getWorksheets({
-        //         spreadsheetId: googleSpreadsheetId,
-        //     })
-        //     .then(function(res) {
-        //         res.forEach(value => {
-        //             listOfgoogleSheet.push(value.title);
-        //         });
-        //         $("#tablist").html("");
-        //         var html = '';
-        //         for (var i = 0; i < listOfgoogleSheet.length; i++) {
-        //             html += '<option value="' + i + '">' + listOfgoogleSheet[i] + '</option>';
-        //         }
-        //         $("#tablist").html(html);
-        //     })
-        //     .catch(function(err) {
-        //         console.log(err.stack)
-        //     });
-
         googleshelper.spreadsheetToJson({
             spreadsheetId: googleSpreadsheetId,
             allWorksheets: true
@@ -194,7 +185,7 @@ function checkFile(element) {
 
 function JSONToCSVConvertor(JSONData, getdata) {
     debugger
-    var setLessOrGreater, equalCondition = false;
+    var setLessOrGreater, equalCondition, timeFrameCondition = false;
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
     var CSV = '';
@@ -208,8 +199,90 @@ function JSONToCSVConvertor(JSONData, getdata) {
         CSV += row + '\r\n';
         for (var i = 0; i < arrData.length; i++) {
             var row = "";
+            timeFrameCondition = false;
             equalCondition = false;
             setLessOrGreater = false;
+            for (var key in arrData[0]) {
+                if (getdata.SetAlertTo == key) {
+                    {
+                        if (getdata.Granularity == "day") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setDate(new Date().getDate() + getdata.TimeframeFrom);
+                            tfto = new Date().setDate(new Date().getDate() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            var fileRecords = new Date(arrData[i][key]);
+                            tffrom.setHours(0, 0, 0, 0);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                                console.log('timeFrameCondition:', timeFrameCondition);
+                            }
+                        } else if (getdata.Granularity == "week") {
+                            debugger
+                            var today = new Date();
+                            var dayOfWeek = today.getDay();
+                            var weekend = new Date().setDate(new Date().getDate() + (7 - dayOfWeek))
+                            tffrom = weekend;
+                            tfto = weekend;
+                            weekend = new Date(weekend);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom = tffrom.setDate(weekend.getDate() + (getdata.TimeframeFrom * 7));
+                            tfto = tfto.setDate(weekend.getDate() + (getdata.TimeframeTo * 7));
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                                console.log('timeFrameCondition:', timeFrameCondition);
+                            }
+                        } else if (getdata.Granularity == "month") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setMonth(new Date().getMonth() + getdata.TimeframeFrom);
+                            tfto = new Date().setMonth(new Date().getMonth() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        } else if (getdata.Granularity == "quarter") {
+                            var tffrom, tfto = '';
+                            var today = new Date();
+                            var currentQuarterDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                            tffrom = currentQuarterDate.getTime();
+                            tfto = currentQuarterDate.getTime();
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom = tffrom.setMonth(tffrom.getMonth() + (getdata.TimeframeFrom * 3));
+                            tfto = tfto.setMonth(tfto.getMonth() + (getdata.TimeframeTo * 3));
+                            console.log(new Date(tffrom));
+                            console.log(new Date(tfto));
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        } else if (getdata.Granularity == "year") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setFullYear(new Date().getFullYear() + getdata.TimeframeFrom);
+                            tfto = new Date().setFullYear(new Date().getFullYear() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!timeFrameCondition) {
+                continue;
+            }
             for (var key in arrData[0]) {
                 if (getdata.AlertFilter == key) {
                     if (getdata.FilterCriteria == "equals") {
@@ -236,11 +309,9 @@ function JSONToCSVConvertor(JSONData, getdata) {
                 }
             }
 
-            if (equalCondition && setLessOrGreater) {
-                console.log('arrData[i]', arrData[i]);
+            if (timeFrameCondition && equalCondition && setLessOrGreater) {
                 for (var index in arrData[i]) {
                     row += '"' + arrData[i][index] + '",';
-                    console.log('Row Data', row);
                 }
                 row.slice(0, row.length - 1);
                 CSV += row + '\r\n';
@@ -248,7 +319,20 @@ function JSONToCSVConvertor(JSONData, getdata) {
             // if (i == 99) {
             //     break;
             // }
-            console.log('CSV Data', CSV);
+        }
+
+        debugger
+        var CSVsecond = '';
+        var rowsecond = "";
+        for (var index in arrData[0]) {
+            rowsecond += index + ',';
+        }
+
+        rowsecond = rowsecond.slice(0, -1);
+        CSVsecond += rowsecond + '\r\n';
+        if (CSV == CSVsecond) {
+            row = "";
+            CSV = "";
         }
 
     } else {
@@ -260,8 +344,90 @@ function JSONToCSVConvertor(JSONData, getdata) {
         CSV += row + '\r\n';
         for (var i = 1; i < arrData.length; i++) {
             var row = "";
+            timeFrameCondition = false;
             equalCondition = false;
             setLessOrGreater = false;
+            for (var key in arrData[1]) {
+                if (getdata.SetAlertTo == key) {
+                    {
+                        if (getdata.Granularity == "day") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setDate(new Date().getDate() + getdata.TimeframeFrom);
+                            tfto = new Date().setDate(new Date().getDate() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            var fileRecords = new Date(arrData[i][key]);
+                            tffrom.setHours(0, 0, 0, 0);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                                console.log('timeFrameCondition:', timeFrameCondition);
+                            }
+                        } else if (getdata.Granularity == "week") {
+                            debugger
+                            var today = new Date();
+                            var dayOfWeek = today.getDay();
+                            var weekend = new Date().setDate(new Date().getDate() + (7 - dayOfWeek))
+                            tffrom = weekend;
+                            tfto = weekend;
+                            weekend = new Date(weekend);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom = tffrom.setDate(weekend.getDate() + (getdata.TimeframeFrom * 7));
+                            tfto = tfto.setDate(weekend.getDate() + (getdata.TimeframeTo * 7));
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                                console.log('timeFrameCondition:', timeFrameCondition);
+                            }
+                        } else if (getdata.Granularity == "month") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setMonth(new Date().getMonth() + getdata.TimeframeFrom);
+                            tfto = new Date().setMonth(new Date().getMonth() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        } else if (getdata.Granularity == "quarter") {
+                            var tffrom, tfto = '';
+                            var today = new Date();
+                            var currentQuarterDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+                            tffrom = currentQuarterDate.getTime();
+                            tfto = currentQuarterDate.getTime();
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom = tffrom.setMonth(tffrom.getMonth() + (getdata.TimeframeFrom * 3));
+                            tfto = tfto.setMonth(tfto.getMonth() + (getdata.TimeframeTo * 3));
+                            console.log(new Date(tffrom));
+                            console.log(new Date(tfto));
+                            tffrom.setHours(0, 0, 0, 0);
+                            var fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        } else if (getdata.Granularity == "year") {
+                            var tffrom, tfto = '';
+                            tffrom = new Date().setFullYear(new Date().getFullYear() + getdata.TimeframeFrom);
+                            tfto = new Date().setFullYear(new Date().getFullYear() + getdata.TimeframeTo);
+                            tffrom = new Date(tffrom);
+                            tfto = new Date(tfto);
+                            tffrom.setHours(0, 0, 0, 0);
+                            fileRecords = new Date(arrData[i][key]);
+                            if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
+                                timeFrameCondition = true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!timeFrameCondition) {
+                continue;
+            }
             for (var key in arrData[1]) {
                 if (getdata.AlertFilter == key) {
                     if (getdata.FilterCriteria == "equals") {
@@ -289,10 +455,8 @@ function JSONToCSVConvertor(JSONData, getdata) {
             }
 
             if (equalCondition && setLessOrGreater) {
-                console.log('arrData[i]', arrData[i]);
                 for (var index in arrData[i]) {
                     row += '"' + arrData[i][index] + '",';
-                    console.log('Row Data', row);
                 }
                 row.slice(0, row.length - 1);
                 CSV += row + '\r\n';
@@ -300,28 +464,49 @@ function JSONToCSVConvertor(JSONData, getdata) {
             // if (i == 99) {
             //     break;
             // }
-            console.log('CSV Data', CSV);
+        }
+        debugger
+        var CSVsecond = '';
+        var rowsecond = "";
+        for (var index in arrData[0]) {
+            rowsecond += index + ',';
+        }
+
+        rowsecond = rowsecond.slice(0, -1);
+        CSVsecond += rowsecond + '\r\n';
+        if (CSV == CSVsecond) {
+            row = "";
+            CSV = "";
         }
     }
-
-    debugger
     if (getdata.NotificationType.toLowerCase() == "email") {
         if (getdata.IsIncludeData.readUIntLE() == 1) {
             //GetData to send with attachment
             //Generate a file name
             var fileName = "Filter-Report.csv";
-            const mailOptions = {
-                from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
-                to: getdata.Recipieants, // list of receivers
-                subject: getdata.EmailTitle, // Subject line
-                html: getdata.EmailBody, // plain text body
-                attachments: [{
-                        filename: fileName,
-                        content: CSV
-                            //path: link.download
-                    }] // file attachment
-            };
-            SendMail(mailOptions);
+            if (CSV.length == 0) {
+                const mailOptions = {
+                    from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
+                    to: getdata.Recipieants, // list of receivers
+                    subject: getdata.EmailTitle, // Subject line
+                    html: getdata.EmailBody // plain text body
+                };
+                SendMail(mailOptions);
+            } else {
+                const mailOptions = {
+                    from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
+                    to: getdata.Recipieants, // list of receivers
+                    subject: getdata.EmailTitle, // Subject line
+                    html: getdata.EmailBody, // plain text body
+                    attachments: [{
+                            filename: fileName,
+                            content: CSV
+                                //path: link.download
+                        }] // file attachment
+                };
+                SendMail(mailOptions);
+            }
+
         } else {
             const mailOptions = {
                 from: config.EmailSettings.NotifyEmail.NotifyFromUserId, // sender address
@@ -339,7 +524,7 @@ function JSONToCSVConvertor(JSONData, getdata) {
                 var user = slackUserList.filter(u => u.name == getdata.SlackRecipieants);
                 if (user.length > 0) {
                     sendMessage(user[0].id, getdata.Message);
-                    if (getdata.IsIncludeData.readUIntLE() == 1) {
+                    if (getdata.IsIncludeData.readUIntLE() == 1 && CSV.length != 0) {
                         sendFile(user[0].id, CSV);
                     }
                 } else {
