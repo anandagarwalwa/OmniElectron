@@ -162,15 +162,15 @@ function checkFile(element) {
         // data.shift();
         excelData.push(data);
         JSONToCSVConvertor(data, element);
-    }
-    // else if (element.DataSourceConfigId > 0 && element.DataSourceConfigId) {
-    //     getConfigDataSourceDB(element.DataSourceConfigId).then(data => {
-    //         console.log(data);
-    //         var configData = data[0];
-    //         dataSourceConfigData(configData[0]);
-    //     });
-    // } 
-    else {
+    } else if (element.DataSourceConfigId > 0 && element.DataSourceConfigId) {
+        debugger
+        getConfigDataSourceDB(element.DataSourceConfigId).then(data => {
+            console.log("dataSourceConfigData:", data);
+            var configData = data[0];
+            debugger
+            dataSourceConfigData(configData[0], element);
+        });
+    } else {
         // var listOfgoogleSheet = [];
         var googleSpreadsheetId = element.Location.substring(39, 83);
         googleshelper.spreadsheetToJson({
@@ -597,6 +597,32 @@ async function fetchUsers() {
     }
 }
 
+function dataSourceConfigData(configData, element) {
+    if (configData.DataSourceName == "MySql") {
+        const options = {
+            client: configData.DataSourceName.toLowerCase(),
+            connection: {
+                host: configData.Host,
+                port: configData.Port,
+                user: configData.UserName,
+                password: configData.Password,
+                database: configData.DatabaseName
+            }
+        }
+        const knex = require('knex')(options);
+        knex.raw(element.Location).then(data => {
+            if (data && data.length > 0) {
+                var dbData = data[0];
+                console.log("table data:", dbData[0]);
+                debugger
+                JSONToCSVConvertor(dbData[0], element);
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+
+    }
+}
 // // get Excel file
 // function getExcelFile(alertLocation, element) {
 //     var selectedSheetValue;

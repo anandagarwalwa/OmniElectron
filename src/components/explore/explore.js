@@ -10,6 +10,7 @@ var { addLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails
 
 //var ForceGraph3D = require('3d-force-graph'); //Enable for 3D graph
 var ForceGraph = require('force-graph');
+var d3 = require("d3");
 var codeLink = '';
 var reportLink = '';
 var alertLocation = '';
@@ -680,6 +681,10 @@ function Bind2DForceGraph() {
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(2, 2000);
         });
+
+    Graph.d3Force('collide', d3.forceCollide((d) => {
+        return 40;
+    }));
 }
 
 function updateHighlight(filterColor) {
