@@ -660,6 +660,9 @@ function Bind2DForceGraph() {
         .onNodeHover(node => {
             elem.style.cursor = node ? 'pointer' : null
         })
+        .d3Force('collide', d3.forceCollide((d) => {
+            return 30;
+        }))
         .onNodeClick(node => {
             // if (isNodeFilter) {
             $('#myModal').modal('show');
@@ -682,9 +685,9 @@ function Bind2DForceGraph() {
             Graph.zoom(2, 2000);
         });
 
-    Graph.d3Force('collide', d3.forceCollide((d) => {
-        return 40;
-    }));
+    // Graph.d3Force('collide', d3.forceCollide((d) => {
+    //     return 40;
+    // }));
 }
 
 function updateHighlight(filterColor) {
