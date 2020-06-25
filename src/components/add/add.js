@@ -11,7 +11,7 @@ var { getLocales } = require(__dirname + '\\server\\controllers\\locales_control
 var { addTests, updateTestsbyid } = require(__dirname + '\\server\\controllers\\tests_controller.js');
 var { addLogsDetails }=require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
 document.getElementById("loader").style.display = "none";
-
+$('#modeAddDataPoint').modal({backdrop: 'static', keyboard: false}); 
 $('#modeAddDataPoint').modal('show');
 //Add Link form in Previous button click event 
 $("#btnPreviousDataLinkBlock").click(function() {
@@ -51,6 +51,11 @@ $("#btnPreviousTestBlock").click(function() {
 
 
 /*close button event */
+
+$("#btnCloseAddDataPoint").click(function() {
+    $('#modeAddDataPoint').modal('hide');
+});
+
 $("#btnBackAddDataPoint").click(function() {
     $('#modeAddLink').modal('hide');
     $('#modeAddDataPoint').modal('show');

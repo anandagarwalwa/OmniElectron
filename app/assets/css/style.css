@@ -995,19 +995,21 @@ a.article:hover {
 .form-main-section {
     float: left;
     width: 100%;
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 
 .add-link-form .form-group {
     margin-bottom: 7px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .form-main-section label {
     text-transform: capitalize;
     font-size: 15px;
     line-height: 15px;
+    margin-bottom: 0px;
 }
 
 .submit-btn .btn {
@@ -2639,4 +2641,50 @@ label.error {
 }
 .dataTables_info{
     margin-left: 15px !important;
+}
+
+/*=========Btn-Gray============*/
+.btn-gray {
+    background: #D3D3D3;
+    border-color: #D3D3D3;
+    color: #000;
+}
+
+.btn-gray:hover ,.btn-gray:focus{
+    background: #D3D3D3;
+    border-color: #D3D3D3;
+    color: #000; 
+}
+#modeAddLink .modal-header,#modeAddAnalysis .modal-header, #modeAddTest .modal-header, #modeAddDataPoint .modal-header{
+    padding: 6px 1rem;
+}
+#modeAddLink h6 ,#modeAddAnalysis h6 , #modeAddTest h6, #modeAddDataPoint h6{
+    margin-bottom: 0;
+    text-transform: capitalize;
+}
+#modeAddLink .modal-header .close ,#modeAddAnalysis  .modal-header .close ,#modeAddTest .modal-header .close,
+#modeAddDataPoint .modal-header .close
+
+{
+    padding: 0rem 1rem;
+    margin: 0rem -1rem 0rem auto;
+}
+#modeAddAnalysis .submit-btn .btn , #modeAddTest .submit-btn .btn, #modeAddLink .submit-btn .btn{
+    margin-top: 0px;
+}
+#modeAddAnalysis .modal-footer, #modeAddTest .modal-footer,#modeAddLink .modal-footer{
+    padding: 5px 5px !important;
+}
+
+.space-form {
+    margin-bottom: 7px;
+}
+
+.check-box-btn-pading {
+    padding-left: 5px;
+    float: left;
+}
+
+.bootstrap-tagsinput{
+    width: 100%;
 }

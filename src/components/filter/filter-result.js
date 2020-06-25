@@ -11,13 +11,13 @@ var csv = require('csv2json-convertor');
 // var schedule = require('node-schedule');
 var getAlertLocationFileData = [];
 var columnList = [];
-$(document).ready(function() {
+$(document).ready(function () {
     $('#modelFilterResult').modal('show');
-    $("#btnFilterWeeklyReport").click(function() {
+    $("#btnFilterWeeklyReport").click(function () {
         $('#modelFilterResult').modal('hide');
         $('#modeFitlerScratch').modal('show');
     });
-    $("#btnBackFilterHome").click(function() {
+    $("#btnBackFilterHome").click(function () {
         $('#modelFilterResult').modal('hide');
         $('#myModal').modal('show');
 
@@ -40,17 +40,17 @@ $(document).ready(function() {
         from: -10,
         to: -2,
         grid: false,
-        onStart: function(data) {
+        onStart: function (data) {
             $tFrom.prop("value", data.from);
             $tTo.prop("value", data.to);
         },
-        onChange: function(data) {
+        onChange: function (data) {
             $tFrom.prop("value", data.from);
             $tTo.prop("value", data.to);
         }
     });
     instance = $timeFrame.data("ionRangeSlider");
-    $tFrom.on("change keyup", function() {
+    $tFrom.on("change keyup", function () {
         var val = $(this).prop("value");
 
         // validate
@@ -64,7 +64,7 @@ $(document).ready(function() {
             from: val
         });
     });
-    $tTo.on("change keyup", function() {
+    $tTo.on("change keyup", function () {
         var val = $(this).prop("value");
 
         // validate
@@ -82,6 +82,7 @@ $(document).ready(function() {
     var slider = $(".js-range").data("ionRangeSlider");
 
     // read location file
+    document.getElementById("loader").style.display = "block";
     var fileExtention = alertLocation.substr((alertLocation.lastIndexOf('.') + 1));
     var listOfgoogleSheet = [];
     var googleSpreadsheetId = alertLocation.substring(39, 83);
@@ -144,9 +145,9 @@ $(document).ready(function() {
         displaysheetdetails(data);
         getAlertLocationFileData = data;
         selectedHeaderValueDisplay();
-        $('#tablist').on('change', function(e) {
+        $('#tablist').on('change', function (e) {
             $("#tablist").val()
-                //selectedSheetValue=$(this).text();
+            //selectedSheetValue=$(this).text();
             var excelData = [];
             var worksheet = workbook.Sheets[$("#tablist").val()];
             var headers = {};
@@ -198,9 +199,9 @@ $(document).ready(function() {
     // get Googlesheet
     function getGoogleSheet() {
         gshelper.getWorksheets({
-                spreadsheetId: googleSpreadsheetId,
-            })
-            .then(function(res) {
+            spreadsheetId: googleSpreadsheetId,
+        })
+            .then(function (res) {
                 res.forEach(value => {
                     listOfgoogleSheet.push(value.title);
                 });
@@ -211,25 +212,25 @@ $(document).ready(function() {
                 }
                 $("#tablist").html(html);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log(err.stack)
             });
 
         gshelper.spreadsheetToJson({
             spreadsheetId: googleSpreadsheetId,
             allWorksheets: true
-        }).then(function(googleSheetObj) {
+        }).then(function (googleSheetObj) {
             googleSheetObj = googleSheetObj[0];
             displaysheetdetails(googleSheetObj);
             getAlertLocationFileData = googleSheetObj;
         });
         selectedHeaderValueDisplay();
-        $('#tablist').on('change', function(e) {
+        $('#tablist').on('change', function (e) {
             $("#tablist").val()
             gshelper.spreadsheetToJson({
                 spreadsheetId: googleSpreadsheetId,
                 allWorksheets: true
-            }).then(function(googleSheetObj) {
+            }).then(function (googleSheetObj) {
                 googleSheetObj = googleSheetObj[parseInt($("#tablist").val())];
                 displaysheetdetails(googleSheetObj);
                 getAlertLocationFileData = googleSheetObj;
@@ -239,6 +240,7 @@ $(document).ready(function() {
 
     // get Json Result from from excel/csv & google sheet
     function displaysheetdetails(data) {
+        document.getElementById("loader").style.display = "block";
         // EXTRACT VALUE FOR HTML HEADER. 
         var col = [];
         for (var i = 1; i < data.length; i++) {
@@ -281,10 +283,15 @@ $(document).ready(function() {
         }
 
         // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+        setTimeout(showPage, 500);
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+        }
         var divContainer = document.getElementById("dtable");
         divContainer.innerHTML = "";
         divContainer.appendChild(table);
         $(table).addClass('table table-striped');
+       
     }
 
     // get header from excel/csv & google sheet
@@ -310,20 +317,20 @@ $(document).ready(function() {
 
     // set dropdown value for excel/csv & google sheet
     function selectedHeaderValueDisplay() {
-        $(document).on('click', 'a.dropdown-item.bookingsList', function() {
+        $(document).on('click', 'a.dropdown-item.bookingsList', function () {
             $('#bookingsChangeName').html($(this).text());
             $("#setmetricid").show();
             $("#errorbookings").html("");
         });
 
-        $(document).on('click', 'a.dropdown-item.orderDataList', function() {
+        $(document).on('click', 'a.dropdown-item.orderDataList', function () {
             $('#orderDateChangeName').html($(this).text());
             $("#setalertid").show();
             $("#errororderDate").html("");
 
         });
 
-        $(document).on('click', 'a.dropdown-item.addAlertList', function() {
+        $(document).on('click', 'a.dropdown-item.addAlertList', function () {
             $('#addAlertName').html($(this).text());
             $("#addAlerticid").show();
             var html = '<option value="0">select</option>';
@@ -375,7 +382,7 @@ $(document).ready(function() {
     }
 
     // Set Alert schedular
-    $.validator.addMethod("valueNotEquals", function(value, element, arg) {
+    $.validator.addMethod("valueNotEquals", function (value, element, arg) {
         return arg !== value;
     }, "Value must not equal arg.");
 
@@ -475,7 +482,7 @@ $(document).ready(function() {
     // });
 
 
-    $("#btnFilterResultReport").click(function() {
+    $("#btnFilterResultReport").click(function () {
 
         if ($("#orderDateChangeName").text() == "Click here to add") {
             $("#errororderDate").removeAttr("style");
@@ -528,10 +535,10 @@ $(document).ready(function() {
                         textAlign: 'left', // Text alignment i.e. left, right or center
                         loader: false, // Whether to show loader or not. True by default
                         loaderBg: '#9EC600', // Background color of the toast loader
-                        beforeShow: function() {}, // will be triggered before the toast is shown
-                        afterShown: function() {}, // will be triggered after the toat has been shown
-                        beforeHide: function() {}, // will be triggered before the toast gets hidden
-                        afterHidden: function() {} // will be triggered after the toast has been hidden
+                        beforeShow: function () { }, // will be triggered before the toast is shown
+                        afterShown: function () { }, // will be triggered after the toat has been shown
+                        beforeHide: function () { }, // will be triggered before the toast gets hidden
+                        afterHidden: function () { } // will be triggered after the toast has been hidden
                     });
                     $("#orderDate").val("0");
                     $("#granularity").val("0");

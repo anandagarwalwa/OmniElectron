@@ -159,12 +159,12 @@
         </div>
     </div> -->
     <div class="modal fade bd-example-modal-lg" id="modeAddDataPoint">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog"><!--modal-lg-->
             <div class="modal-content">
                 <div class="modal-header">
                     <h6>Add data point</h6>
                     <!-- data-dismiss="modal" -->
-                    <!-- <button type="button" class="close" id="btnBackFilterResult" >&times;</button>-->
+                    <button type="button" class="close" id="btnCloseAddDataPoint" >&times;</button>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
@@ -327,8 +327,8 @@
         </div>
     </div>
 </div> -->
-<div class="modal fade bd-example-modal-lg" id="modeAddLink">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modeAddLink" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md"><!---modal-lg-->
         <div class="modal-content">
             <div class="modal-header">
                 <h6>Add Link</h6>
@@ -337,86 +337,142 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <div class="form-main-section add-link-form" style="height: 540px;overflow-y: auto;">
+                <div class="form-main-section add-link-form" style="height:73vh;overflow-y: auto; overflow-x: hidden;">
                     <form id="addDataLinkForm" method="post">
                         <input id="hdnDataLinkId" type="hidden">
-                        <div class="form-group">
-                            <label class="col-xl-3 col-lg-3 col-md-3 pl-0" for="text" for="linkdesc">Description</label>
-                            <input type="text" class="form-control  col-xl-7 col-lg-7 col-md-7" name="linkdesc" placeholder="" id="linkdesc">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label  for="text" for="linkdesc">Description</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" name="linkdesc" placeholder="" id="linkdesc">
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Owner</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkUserSelect" id="DataLinkUserSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Owner</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="DataLinkUserSelect" id="DataLinkUserSelect">
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
-                            <select class="form-control  col-xl-7 col-lg-7 col-md-7" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Team</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="DataLinkTeamSelect" id="DataLinkTeamSelect">
+                                </select>
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Data Source</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Data Source</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="DataLinkDatasourceSelect" id="DataLinkDatasourceSelect">
+                                </select>
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group" id="dataConfigId">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Data Source Config</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DatasourceConfigSelect" id="DatasourceConfigSelect">
-                        </select>
+                        <div class="row space-form" id="dataConfigId">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Data Source Config</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="DatasourceConfigSelect" id="DatasourceConfigSelect">
+                                </select>
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Location</label>
-                            <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkLocation" id="datalinkLocation">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Location</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" placeholder="" name="datalinkLocation" id="datalinkLocation">
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Channel</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Channel</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="DataLinkChannelsSelect" id="DataLinkChannelsSelect"></select>
+                            </div>
+                            
+                        
                         </div>
 
-                        <div class="form-group slecmulti">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Links To</label>
-                            <div class="col-xl-7 col-lg-7 col-md-7 p-0">
+                        <div class="row space-form slecmulti">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Links To</label>
+                            </div>
+                            
+                            <div class="col-lg-9 col-md-9">
                                 <select class="form-control SlectBox" multiple name="DataLinkToSelect" id="DataLinkToSelect">
                                     <option value="0">No record</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="form-group slecmulti">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Links From</label>
-                            <div class="col-xl-7 col-lg-7 col-md-7 p-0">
+                        <div class="row space-form slecmulti">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Links From</label>
+                            </div>
+                            
+                            <div class="col-lg-9 col-md-9">
                                 <select class="form-control SlectBox" multiple name="DataLinkFromSelect" id="DataLinkFromSelect">
                                     <option value="0">No record</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Tag</label>
-                            <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" data-role="tagsinput" placeholder="Add tags" name="datalinkTag" id="datalinkTag">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Tag</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" data-role="tagsinput" placeholder="Add tags" name="datalinkTag" id="datalinkTag">
+                            </div>
+                           
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Codelink</label>
-                            <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkCode" id="datalinkCode">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Codelink</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" placeholder="" name="datalinkCode" id="datalinkCode">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">ReportLink</label>
-                            <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="datalinkReport" id="datalinkReport">
+
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">ReportLink</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" placeholder="" name="datalinkReport" id="datalinkReport">
+                            </div>
+                            
                         </div>
 
-                        <div class="confluge-title col-xl-3 col-lg-3  col-md-5 pl-0">
+                        <div class="row space-form">
+                        <div class="confluge-title col-lg-3 col-md-3">
                             <h6>Confluence Page</h6>
                         </div>
-                        <div class="check-box-btn">
+                        <div class="check-box-btn col-lg-9 col-md-9">
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label" for="check2">
                               <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
@@ -430,14 +486,23 @@
                                 <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="ConfluenceYes" name="Confluence" gr value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
+                    </div>
 
-                        <div class="submit-btn">
+                        <!-- <div class="submit-btn">
                             <button type="button" id="btnDataLink" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                            <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
-                        </div>
+                            <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right btn-gray">Back</button>
+                        </div> -->
                     </form>
                 </div>
+                
             </div>
+            <div class="modal-footer">
+                <div class="submit-btn">
+                    <button type="button" id="btnDataLink" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                    <button type="button" href="#" id="btnPreviousDataLinkBlock" class="btn btn-primary mr-1 mt-3 float-right btn-gray">Back</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
@@ -525,8 +590,8 @@
     </div>
 </div> -->
 
-<div class="modal fade bd-example-modal-lg" id="modeAddAnalysis">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade " id="modeAddAnalysis" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h6>Add Analysis</h6>
@@ -539,50 +604,78 @@
                 <form id="addAnalysisForm" method="post">
                     <div class="form-main-section add-link-form">
                         <input id="hdnAnalysisId" type="hidden">
-                        <div class="form-group">
-                            <label for="email" class="col-xl-3 col-lg-3 col-md-3 pl-0">Description:</label>
-                            <input type="text" id="analysisDescription" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" name="analysisDescription">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="email">Description:</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" id="analysisDescription" class="form-control" placeholder="" name="analysisDescription">
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="email" class="col-xl-3 col-lg-3 col-md-3 pl-0">Owner:</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisUserSelect" id="analysisUserSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="email">Owner:</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="analysisUserSelect" id="analysisUserSelect">
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisTeamSelect" id="analysisTeamSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Team</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="analysisTeamSelect" id="analysisTeamSelect">
+                                </select>
+                            </div>
+                           
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Channel</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisChannelsSelect" id="analysisChannelsSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Channel</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="analysisChannelsSelect" id="analysisChannelsSelect">
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Locale</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="analysisLocalesSelect" id="analysisLocalesSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Locale</label>
+                            </div>
+                           
+                           <div class="col-lg-9 col-md-9">
+                            <select class="form-control" name="analysisLocalesSelect" id="analysisLocalesSelect">
+                            </select>
+                           </div>
                         </div>
 
                         <div class="date-picker-sec">
-                            <div class="form-group">
-                                <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
-                                <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2 col-xl-12 col-lg-12" size="16" type="date" id="analysisDate" name="analysisDate">
-                                    <!-- <i class="fas fa-calendar-alt"></i> -->
+                            <div class="row space-form">
+                                <div class="col-lg-3 col-md-3">
+                                    <label for="sel1">Date</label>
+                                </div>
+                                
+                                <div class="col-lg-9 col-md-9">
+                                    <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                        <input class="span2 col-xl-12 col-lg-12" size="16" type="date" id="analysisDate" name="analysisDate">
+                                        <!-- <i class="fas fa-calendar-alt"></i> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="confluge-title pt-1 col-xl-3 col-md-5 pl-0">
+                    <div class="confluge-title pt-1 col-xl-3 col-md-3 pl-0">
                         <h6>Confluence page</h6>
                     </div>
-                    <div class="check-box-btn">
+                    <div class="check-box-btn check-box-btn-pading">
                         <div class="form-check-inline">
                             <!-- <label class="form-check-label" for="check2">
                               <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
@@ -597,12 +690,16 @@
                         </div>
                     </div>
 
-                    <div class="submit-btn">
-                        <button type="button" href="#" id="btnAnalysis" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                        <button type="button" href="#" id="btnPreviousAnalysisBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
-                    </div>
+                   
                 </form>
 
+            </div>
+            <!---Modal-Footer-->
+            <div class="modal-footer">
+                <div class="submit-btn">
+                    <button type="button" href="#" id="btnAnalysis" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                    <button type="button" href="#" id="btnPreviousAnalysisBlock" class="btn btn-primary mr-1 mt-3 float-right btn-gray">Back</button>
+                </div>
             </div>
         </div>
     </div>
@@ -710,8 +807,8 @@
         </div>
     </div>
 </div> -->
-<div class="modal fade bd-example-modal-lg" id="modeAddTest">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modeAddTest" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h6>Add Test</h6>
@@ -724,15 +821,20 @@
                 <div class="form-main-section add-link-form">
                     <form id="addTestForm" method="post">
                         <input id="hdnTestId" type="hidden">
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Description:</label>
-                            <input type="text" class="form-control col-xl-7 col-lg-7 col-md-7" placeholder="" id="testDescription" name="testDescription">
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text">Description:</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <input type="text" class="form-control" placeholder="" id="testDescription" name="testDescription">
+                            </div>
+                            
                         </div>
-
-                        <div class="confluge-title col-xl-3 col-lg-3 col-md-5 pl-0">
+                        <div class="row space-form">
+                        <div class="confluge-title  col-lg-3 col-md-3">
                             <h6>Did Test Win</h6>
                         </div>
-                        <div class="check-box-btn pb-3">
+                        <div class="check-box-btn col-lg-9 col-md-9">
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label" for="check2">
                             <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
@@ -746,46 +848,67 @@
                                 <label class="rememberme mt-checkbox mt-checkbox-outline mb-0"> <input type="radio" id="didTestWinYes" name="didTestWin" value="1"> <span></span>&nbsp;</label>Yes
                             </div>
                         </div>
+                    </div>
 
-
-                        <div class="form-group">
-                            <label for="text" class="col-xl-3 col-lg-3 col-md-3 pl-0">Owner</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testUserSelect" id="testUserSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="text" >Owner</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="testUserSelect" id="testUserSelect">
+                                </select>
+                            </div>
+                           
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Team</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testTeamSelect" id="testTeamSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Team</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="testTeamSelect" id="testTeamSelect">
+                                </select>
+                            </div>
+                            
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Channel</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testChannelsSelect" id="testChannelsSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Channel</label>
+                            </div>
+                           <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="testChannelsSelect" id="testChannelsSelect">
+                                </select>
+                           </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Locale</label>
-                            <select class="form-control col-xl-7 col-lg-7 col-md-7" name="testLocalesSelect" id="testLocalesSelect">
-                        </select>
+                        <div class="row space-form">
+                            <div class="col-lg-3 col-md-3">
+                                <label for="exampleFormControlSelect1">Locale</label>
+                            </div>
+                            <div class="col-lg-9 col-md-9">
+                                <select class="form-control" name="testLocalesSelect" id="testLocalesSelect">
+                                </select>
+                            </div>
+                           
                         </div>
 
                         <div class="date-picker-sec">
-                            <div class="form-group">
-                                <label for="sel1" class="col-xl-3 col-lg-3 col-md-3 pl-0">Date</label>
-                                <div class="input-append date col-xl-7 col-lg-7 col-md-7 p-0" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                            <div class="row space-form">
+                               <div class="col-lg-3 col-md-3">
+                                    <label for="sel1">Date</label>
+                               </div>
+                                <div class="input-append date  col-lg-9 col-md-9" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
                                     <input class="span2" size="16" type="date" id="testDate" name="testDate">
                                     <!-- <i class="fas fa-calendar-alt"></i> -->
                                 </div>
                             </div>
                         </div>
 
-                        <div class="confluge-title pt-1 col-xl-3 col-lg-3 col-md-5 pl-0">
+                        <div class="confluge-title pt-1 col-xl-3 col-lg-3 col-md-3 pl-0">
                             <h6>Confluence page</h6>
                         </div>
-                        <div class="check-box-btn">
+                        <div class="check-box-btn check-box-btn-pading">
                             <div class="form-check-inline">
                                 <!-- <label class="form-check-label" for="check2">
                                     <input type="checkbox" class="form-check-input" id="check2" name="vehicle2" value="something">No
@@ -803,13 +926,17 @@
 
 
 
-                        <div class="submit-btn">
-                            <button type="button" href="#" id="btnTest" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
-                            <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right">Back</button>
-                        </div>
+                        
                     </form>
                 </div>
             </div>
+            <div class="modal-footer">
+                <div class="submit-btn">
+                    <button type="button" href="#" id="btnTest" class="btn btn-primary ml-1 mt-3 float-right">publish</button>
+                    <button type="button" href="#" id="btnPreviousTestBlock" class="btn btn-primary mr-1 mt-3 float-right btn-gray">Back</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
