@@ -180,6 +180,8 @@ $("#addMemberForm").validate({
 });
 
 $("#addnewmember").click(function() {
+    $("#changeMemberTitle").text("Add New Member");
+    $("#btnAddMember").text("Add");
     resetUserModel();
 });
 
@@ -374,6 +376,8 @@ function deleteUserClick(obj) {
 }
 
 function editUser(obj) {
+    $("#changeMemberTitle").text("Edit Member");
+    $("#btnAddMember").text("Edit");
     getUsersById(parseInt(obj.getAttribute("category-id"))).then(data => {
         if (data == undefined) {
             return false;
@@ -829,9 +833,13 @@ function AddTeams(Teamsobj) {
     $('.SlectBox option:selected').each(function() {
         $('.SlectBox')[0].sumo.unSelectItem($(this).index());
     });
+    $("#changeTeamsTitle").text("Add Teams");
+    $("#IdAddteams").text("Add");
 }
 
 function EditTeams(Teamsobj) {
+    $("#changeTeamsTitle").text("Edit Teams");
+    $("#IdAddteams").text("Edit");
     $('#TeamsModals').modal('show');
     var id = $(Teamsobj).attr("data-teamid");
     getTeamsByID(id).then(ResponseTeams => {
@@ -1130,6 +1138,8 @@ function deleteDatabadeClick(databaseobj) {
 
 
 function EditDatebase(databaseobj) {
+    $("#changeDatabaseTitle").text("Edit Database");
+    $("#btnSaveDBConfig").text("Edit");
     validator.resetForm();
     $('#DatabaseModals').modal('show');
     var id = $(databaseobj).attr("data-databaseUserid");
@@ -1361,6 +1371,8 @@ function resetDatabaseModel() {
 }
 
 $("#addDatabase").click(function() {
+    $("#changeDatabaseTitle").text("Add Database");
+    $("#btnSaveDBConfig").text("Add");
     $("#dbBlock").hide();
     $("#fileBlock").hide();
     resetDatabaseModel();

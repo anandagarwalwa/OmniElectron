@@ -17,10 +17,15 @@ $(document).ready(function () {
         $('#modelFilterResult').modal('hide');
         $('#modeFitlerScratch').modal('show');
     });
-    $("#btnBackFilterHome").click(function () {
+    function backFileterHome() {
         $('#modelFilterResult').modal('hide');
         $('#myModal').modal('show');
-
+    }
+    $("#btnBackFilterHome").click(function () {
+        backFileterHome()
+    });
+    $("#btnBackAddAlert").click(function () {
+        backFileterHome()
     });
     $("#setalertid").hide();
     $("#setmetricid").hide();
@@ -96,6 +101,10 @@ $(document).ready(function () {
             dataSourceConfigData(configData[0]);
         });
     } else {
+        setTimeout(showPage, 500);
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+        }
         getGoogleSheet();
     }
     // get Excel file
@@ -291,7 +300,7 @@ $(document).ready(function () {
         divContainer.innerHTML = "";
         divContainer.appendChild(table);
         $(table).addClass('table table-striped');
-       
+
     }
 
     // get header from excel/csv & google sheet
@@ -333,7 +342,7 @@ $(document).ready(function () {
         $(document).on('click', 'a.dropdown-item.addAlertList', function () {
             $('#addAlertName').html($(this).text());
             $("#addAlerticid").show();
-            var html = '<option value="0">select</option>';
+            var html = '<option value="">select</option>';
             for (var i = 1; i < getAlertLocationFileData.length; i++) {
                 if (html.toLowerCase().indexOf(getAlertLocationFileData[i][$(this).text()]) == -1)
                     html += '<option value="' + getAlertLocationFileData[i][$(this).text()] + '">' + getAlertLocationFileData[i][$(this).text()] + '</option>';
@@ -382,50 +391,50 @@ $(document).ready(function () {
     }
 
     // Set Alert schedular
-    $.validator.addMethod("valueNotEquals", function (value, element, arg) {
-        return arg !== value;
-    }, "Value must not equal arg.");
-
+    // $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+    //     return arg !== value;
+    // }, "Value must not equal arg.");
+    //valueNotEquals: "0"
     $("#addFilterResultForm").validate({
         ignore: [],
         rules: {
             // orderDatesheetList: { required: true },
-            granularity: { valueNotEquals: "0" },
+            granularity: { required: true },
             // my_range:{
             //     required:true
             // },
             matricConditionList: {
-                valueNotEquals: "0"
+                required: true
             },
             matricValue: {
                 required: true
             },
             filterConditionList: {
-                valueNotEquals: "0"
+                required: true
             },
             selectcoloumnId: {
-                valueNotEquals: "0"
+                required: true
             }
         },
         messages: {
             // orderDatesheetList: {
             //     required: "This field is required"
             // },
-            granularity: { valueNotEquals: "Please select" },
+            granularity: { valueNotEquals: "This field is required" },
             // my_range:{
             //     required:"This field is required"
             // },
             matricConditionList: {
-                valueNotEquals: "Please select"
+                valueNotEquals: "This field is required"
             },
             matricValue: {
                 required: "This field is required"
             },
             filterConditionList: {
-                valueNotEquals: "Please select"
+                valueNotEquals: "This field is required"
             },
             selectcoloumnId: {
-                valueNotEquals: "Please select"
+                valueNotEquals: "This field is required"
             }
         }
     });
@@ -483,17 +492,83 @@ $(document).ready(function () {
 
 
     $("#btnFilterResultReport").click(function () {
-
+        debugger
         if ($("#orderDateChangeName").text() == "Click here to add") {
             $("#errororderDate").removeAttr("style");
             $("#errororderDate").html("Please click here to add");
-        } else if ($("#bookingsChangeName").text() == "Click here to add") {
-            $("#errorbookings").removeAttr("style");
-            $("#errorbookings").html("Please click here to add");
-        } else if ($("#addAlertName").text() == "Click here to add") {
-            $("#erroraddAlertName").removeAttr("style");
-            $("#erroraddAlertName").html("Please click here to add");
-        } else {
+        }
+        else {
+            if ($("#bookingsChangeName").text() != "Click here to add" && $("#addAlertName").text() != "Click here to add") {
+                $('#matricConditionList').rules('add', {
+                    required: true
+                });
+                $('#matricValue').rules('add', {
+                    required: true
+                });
+                $('#filterConditionList').rules('add', {
+                    required: true
+                });
+                $('#selectcoloumnId').rules('add', {
+                    required: true
+                });
+            }
+            else if ($("#bookingsChangeName").text() != "Click here to add") {
+                $('#matricConditionList').rules('add', {
+                    required: true
+                });
+                $('#matricValue').rules('add', {
+                    required: true
+                });
+                $('#filterConditionList').rules('add', {
+                    required: false
+                });
+                $('#selectcoloumnId').rules('add', {
+                    required: false
+                });
+            } else if ($("#addAlertName").text() != "Click here to add") {
+                $('#filterConditionList').rules('add', {
+                    required: true
+                });
+                $('#selectcoloumnId').rules('add', {
+                    required: true
+                });
+                $('#matricConditionList').rules('add', {
+                    required: false
+                });
+                $('#matricValue').rules('add', {
+                    required: false
+                });
+            }
+            else {
+                $('#matricConditionList').rules('add', {
+                    required: false
+                });
+                $('#matricValue').rules('add', {
+                    required: false
+                });
+                $('#filterConditionList').rules('add', {
+                    required: false
+                });
+                $('#selectcoloumnId').rules('add', {
+                    required: false
+                });
+            }
+            // if($("#bookingsChangeName").text() != "Click here to add" && $("#addAlertName").text() != "Click here to add")
+            // {
+            //     $('#matricConditionList').rules('add', {
+            //         required: true
+            //     });
+            //     $('#matricValue').rules('add', {
+            //         required: true
+            //     });
+            //     $('#filterConditionList').rules('add', {
+            //         required: true
+            //     });
+            //     $('#selectcoloumnId').rules('add', {
+            //         required: true
+            //     });
+            // }
+
             var addFilterResultDetails = $('form[id="addFilterResultForm"]').valid();
             if (addFilterResultDetails == true) {
                 addAlertschedule({
@@ -503,10 +578,10 @@ $(document).ready(function () {
                     Granularity: $("#granularity").val(),
                     TimeframeFrom: parseInt($("#tFrom").val()),
                     TimeframeTo: parseInt($("#tTo").val()),
-                    AlertToMetric: $("#bookingsChangeName").text(),
+                    AlertToMetric: $("#bookingsChangeName").text() == "Click here to add" ? null : $("#bookingsChangeName").text(),
                     MetricCriteria: $("#matricConditionList").val(),
-                    MetricValue: parseInt($("#matricValue").val()),
-                    AlertFilter: $("#addAlertName").text(),
+                    MetricValue: $("#matricValue").val() ? parseInt($("#matricValue").val()) : null,
+                    AlertFilter: $("#addAlertName").text() == "Click here to add" ? null : $("#addAlertName").text(),
                     FilterCriteria: $("#filterConditionList").val(),
                     FilterValue: $("#selectcoloumnId").val(),
                     CreatedDate: new Date(),
@@ -540,24 +615,133 @@ $(document).ready(function () {
                         beforeHide: function () { }, // will be triggered before the toast gets hidden
                         afterHidden: function () { } // will be triggered after the toast has been hidden
                     });
-                    $("#orderDate").val("0");
-                    $("#granularity").val("0");
-                    $("#booking").val("0");
-                    $("#tFrom").val("0");
-                    $("#tTo").val("100");
-                    $("#matricConditionList").val("0");
-                    $("#matricValue").val("");
-                    $("#product").val("0");
-                    slider.reset();
-                    $("#filterConditionList").val("0");
-                    $("#selectcoloumnId").val("0");
-                    $("#filterValue").val("");
+                    // $("#orderDate").val("0");
+                    // $("#granularity").val("");
+                    // $("#booking").val("0");
+                    // $("#tFrom").val("-10");
+                    // $("#tTo").val("-2");
+                    // $("#matricConditionList").val("");
+                    // $("#matricValue").val("");
+                    // $("#product").val("0");
+                    // slider.reset();
+                    // $("#filterConditionList").val("");
+                    // $("#selectcoloumnId").val("0");
+                    // $("#filterValue").val("");
                     $('#modelFilterResult').modal('hide');
                     $('#modeFitlerScratch').modal('show');
+                    alertDynamicMessage();
                 }).catch(err => {
                     console.error(err);
                 });
             }
         }
     });
+
+    function alertDynamicMessage() {
+        if ($("#granularity").val() == "day") {
+            var today = new Date();
+            var tffrom, tfto = '';
+            tffrom = new Date().setDate(new Date().getDate() + parseInt($("#tFrom").val()));
+            tfto = new Date().setDate(new Date().getDate() + parseInt($("#tTo").val()));
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom.setHours(0, 0, 0, 0);
+            if ($("#bookingsChangeName").text() == "Click here to add" && $("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            else if ($("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + "."
+            }
+            else {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#addAlertName").text() + " is " + $("#filterConditionList").val() + " to " + $("#selectcoloumnId").val() + "  and  " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            localStorage.setItem("alertMessage", alertMessage);
+            $("#alertmessage").text(localStorage.getItem("alertMessage"));
+        } else if ($("#granularity").val() == "week") {
+            var today = new Date();
+            var dayOfWeek = today.getDay();
+            var weekend = new Date().setDate(new Date().getDate() + (7 - dayOfWeek))
+            tffrom = weekend;
+            tfto = weekend;
+            weekend = new Date(weekend);
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom = tffrom.setDate(weekend.getDate() + (parseInt($("#tFrom").val()) * 7));
+            tfto = tfto.setDate(weekend.getDate() + (parseInt($("#tTo").val() * 7)));
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom.setHours(0, 0, 0, 0);
+            if ($("#bookingsChangeName").text() == "Click here to add" && $("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            else if ($("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + "."
+            }
+            else {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#addAlertName").text() + " is " + $("#filterConditionList").val() + " to " + $("#selectcoloumnId").val() + "  and  " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            localStorage.setItem("alertMessage", alertMessage);
+            $("#alertmessage").text(localStorage.getItem("alertMessage"));
+        } else if ($("#granularity").val() == "month") {
+            var today = new Date();
+            var tffrom, tfto = '';
+            tffrom = new Date().setMonth(new Date().getMonth() + parseInt($("#tFrom").val()));
+            tfto = new Date().setMonth(new Date().getMonth() + parseInt($("#tTo").val()));
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom.setHours(0, 0, 0, 0);
+            if ($("#bookingsChangeName").text() == "Click here to add" && $("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            else if ($("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + "."
+            }
+            else {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#addAlertName").text() + " is " + $("#filterConditionList").val() + " to " + $("#selectcoloumnId").val() + "  and  " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            localStorage.setItem("alertMessage", alertMessage);
+            $("#alertmessage").text(localStorage.getItem("alertMessage"));
+        } else if ($("#granularity").val() == "quarter") {
+            var tffrom, tfto = '';
+            var today = new Date();
+            var currentQuarterDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            tffrom = currentQuarterDate.getTime();
+            tfto = currentQuarterDate.getTime();
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom = tffrom.setMonth(tffrom.getMonth() + (parseInt($("#tFrom").val()) * 3));
+            tfto = tfto.setMonth(tfto.getMonth() + (parseInt($("#tTo").val()) * 3));
+            // tffrom.setHours(0, 0, 0, 0);
+            if ($("#bookingsChangeName").text() == "Click here to add" && $("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            else if ($("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + "."
+            }
+            else {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#addAlertName").text() + " is " + $("#filterConditionList").val() + " to " + $("#selectcoloumnId").val() + "  and  " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            localStorage.setItem("alertMessage", alertMessage);
+            $("#alertmessage").text(localStorage.getItem("alertMessage"));
+        } else if ($("#granularity").val() == "year") {
+            var today = new Date();
+            var tffrom, tfto = '';
+            tffrom = new Date().setFullYear(new Date().getFullYear() + parseInt($("#tFrom").val()));
+            tfto = new Date().setFullYear(new Date().getFullYear() + parseInt($("#tTo").val()));
+            tffrom = new Date(tffrom);
+            tfto = new Date(tfto);
+            tffrom.setHours(0, 0, 0, 0);
+            if ($("#bookingsChangeName").text() == "Click here to add" && $("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            else if ($("#addAlertName").text() == "Click here to add") {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + "."
+            }
+            else {
+                var alertMessage = "As on " + today.getDate() + "th " + today.getMonthAbbr() + " " + today.getFullYear() + ",When " + $("#addAlertName").text() + " is " + $("#filterConditionList").val() + " to " + $("#selectcoloumnId").val() + "  and  " + $("#bookingsChangeName").text() + " is " + $("#matricConditionList").val() + " " + $("#matricValue").val() + " and OrderDate between " + tffrom.getDate() + "th " + tffrom.getMonthAbbr() + " " + today.getFullYear() + " to " + tfto.getDate() + "th " + tfto.getMonthAbbr() + " " + today.getFullYear() + ".";
+            }
+            localStorage.setItem("alertMessage", alertMessage);
+            $("#alertmessage").text(localStorage.getItem("alertMessage"));
+        }
+    }
 });

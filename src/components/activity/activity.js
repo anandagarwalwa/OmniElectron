@@ -1,5 +1,8 @@
 'use strict';
-var { getLogsDetails, addLogsDetails, deleteLogsDetails } = require(__dirname + '\\server\\controllers\\logsdetails_controller.js');
+var platform = window.navigator.platform;
+var PlatformsName = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+var setPathSlash = PlatformsName.indexOf(platform) !== -1 ? "/server/controllers/" : "\\server\\controllers\\"
+var { getLogsDetails, addLogsDetails, deleteLogsDetails } = require(__dirname + setPathSlash + 'logsdetails_controller.js');
 
 var current = new Date();
 function timeDifference(current, previous) {
@@ -38,12 +41,14 @@ function timeDifference(current, previous) {
 }
 
 
-
 Viewlogsdetails();
 function Viewlogsdetails() {
     getLogsDetails().then(data => {
-        console.log(data);
+        $("#loader").show();
         var logsdetails = data[0]
+        setTimeout(() => {
+            $("#loader").hide();
+        }, 2500);
         $("#logsDetails").html("");
         var html = "";
         for (var i = 0; i < logsdetails.length; i++) {
@@ -51,13 +56,10 @@ function Viewlogsdetails() {
             var Name = logsdetails[i].FirstName + " " + logsdetails[i].LastName;
             var splitDate = logsdetails[i].CreatedDate.toDateString().split(' ');
             var splitTime = logsdetails[i].CreatedDate.toLocaleTimeString();
-            //var splitUserCreatedDate = logsdetails[i].userCreatedDate.toLocaleDateString().split(' ');
-            //var userCreatedDate = splitUserCreatedDate[0];
-            //console.log(userCreatedDate);
+            var splitUserCreatedDate = logsdetails[i].userCreatedDate.toLocaleDateString().split(' ');
+            var userCreatedDate = splitUserCreatedDate[0];
             var createdDate = splitDate[1] + ' ' + splitDate[2] + ', ' + splitDate[3];
             var createdTime = splitTime;
-            //console.log(splitDate[1]+' '+splitDate[2]+', '+splitDate[3]);
-            //console.log(splitTime);
             html += '<tr>' +
                 '<td class="red">' +
                 '<div class="table-pic-coman-section">' +
@@ -65,7 +67,7 @@ function Viewlogsdetails() {
                 '<img src=' + logsdetails[i].Photo + ' class="rounded-circle img-fluid">' +
                 '</div>' +
                 '<div class="table-title">' +
-                '<h6>' + logsdetails[i].LogsMessage + '</h6>' +
+                '<h6 >' + logsdetails[i].LogsMessage + '</h6>' +
                 '<p>' + timeDifference(current, logsdetails[i].CreatedDate) + '</p>' +
                 '</div>' +
                 '</div>' +
@@ -73,7 +75,7 @@ function Viewlogsdetails() {
                 '<td class="red">' +
                 '<div class="Onear-section">' +
                 '<h6>' + Name + '</h6>' +
-                '<p>on </p>' +
+                '<p>on ' + userCreatedDate + ' </p>' +
                 '</div>' +
                 '</td>' +
                 '<td class="red">' +
@@ -88,7 +90,7 @@ function Viewlogsdetails() {
                 '<i class="fas fa-ellipsis-v"></i>' +
                 '</button>' +
                 '<div class="dropdown-menu">' +
-                '<a class="dropdown-item" href="javascript:void(0)" data-LogUserid=' + logsdetails[i].Id + ' rv-data-category-TeamId=' + logsdetails[i].Id + ' onclick="deleteLogClick(this)"><i class="fas fa-trash-alt"></i>  Delete</a>' +
+                '<a class="dropdown-item" href="javascript:void(0)" data-LogUserid=' + logsdetails[i].Id + ' rv-data-category-TeamId=' + logsdetails[i].Id + ' onclick="deleteLogClick(this)" data-name="' + logsdetails[i].LogsMessage + '"><i class="fas fa-trash-alt"></i>  Delete</a>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -96,28 +98,31 @@ function Viewlogsdetails() {
                 '</td>' +
                 '</tr>';
         }
-        $("#logsDetails").html(html);
+        $("#logsDetails").append(html);
         $('#logstable').DataTable({
             "pageLength": 5,
             "bLengthChange": false,
             "bAutoWidth": false,
             "searching": true,
-            "ordering": true,    
+            "ordering": true,
             "info": true,
             "destroy": true,
-            
         });
     }).catch(err => {
+        // $("#loader").hide();
         console.error(err);
     });
-
 }
 
 function deleteLogClick(logobj) {
-    var id = $(logobj).attr("data-LogUserid");;
+    // setTimeout(() => {
+    //     $("#loader").hide();
+    // }, 2500);
+    var id = $(logobj).attr("data-LogUserid");
+    var deleteLogname = $(logobj).attr("data-name");
     $.confirm({
         title: 'Delete Confirmation?',
-        content: 'Are you sure you want to delete this log?',
+        content: 'Are you sure you want to delete ' + deleteLogname + ' log?',
         type: 'green',
         buttons: {
             ok: {
@@ -125,6 +130,9 @@ function deleteLogClick(logobj) {
                 btnClass: 'btn-primary',
                 keys: ['enter'],
                 action: function () {
+                    // setTimeout(() => {
+                    //     $("#loader").hide();
+                    // }, 3000);
                     deleteLogsDetails(id).then(data => {
                         var logTable = $('#logstable').DataTable();
                         var removingRow = $(logobj).closest('tr');

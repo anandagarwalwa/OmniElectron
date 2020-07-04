@@ -1,4 +1,7 @@
-var { getUsersById } = require(__dirname + '\\server\\controllers\\user_controller.js');
+var platform = window.navigator.platform;
+var PlatformsName = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+var setPathSlash = PlatformsName.indexOf(platform) !== -1 ? "/server/controllers/" : "\\server\\controllers\\"
+var { getUsersById } = require(__dirname + setPathSlash +'user_controller.js');
 /*======height======*/
 
 

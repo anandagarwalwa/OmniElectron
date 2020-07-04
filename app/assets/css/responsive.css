@@ -36,6 +36,12 @@
     float: left;
     width: 100%;
 }
+  #addAlerticid {
+    float: left !important;
+    margin-top: 1rem !important;
+    width: 145px !important;
+    margin-left: 100px !important;
+  }
 
 }
 
@@ -311,6 +317,7 @@
     
   }
   .login-main-section{padding: 10px !important;}
+   
   
 }
 @media all and (max-width: 768px) {
@@ -341,6 +348,12 @@
 #TeamList h6 {
   font-size: 13px;
   line-height: 13px;
+}
+#addAlerticid {
+  float: left !important;
+  margin-top: 1rem !important;
+  width: 145px !important;
+  margin-left: 0px !important;
 }
 
 }
@@ -374,3 +387,4 @@
     padding: .1rem !important;
   }
 }
+

@@ -33,18 +33,19 @@ getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
     console.error(err);
 });
 
-$(function() {
+$(function () {
     BindFilters();
     BindSearchPanel();
 
-    $("#ddlBreakDown").change(function() {
+    $("#ddlBreakDown").change(function () {
         BindSearchPanel(true);
         // breakDownNodeFilter();
     });
-    $('#txtSearch').keyup(function(e) {
+    $('#txtSearch').keyup(function (e) {
         if (e.keyCode != 13) {
             serchExplore();
-        } else {
+        }
+        else {
             $("#filterBlockContainer").append(getFilterTag($('#txtSearch').val()));
             FilterGraphBySearchPanel(null, $('#txtSearch').val());
             // if (isNodeFilter) {
@@ -59,7 +60,7 @@ $(function() {
     var isClearClick = false,
         filterId = '';
 
-    $('body').on('click', 'a.dynamic-box', function() {
+    $('body').on('click', 'a.dynamic-box', function () {
         debugger
         $("#divSearchPanel").find(".active").removeClass("active");
         $("#divTeamPanel").find(".active").removeClass("active");
@@ -84,7 +85,7 @@ $(function() {
                 //    graphData.nodes = nodes;
 
                 Graph
-                // .graphData(graphData)
+                    // .graphData(graphData)
                     .nodeColor(d => {
                         return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
                     })
@@ -101,7 +102,7 @@ $(function() {
 
             filterId = $(this).attr("data-val");
             if (isNodeFilter && !$("#filterBlockContainer")[0].innerText.includes($(this).text().trim())) {
-                //$("#filterBlockContainer span").remove();                
+                //$("#filterBlockContainer span").remove();
                 $("#divFilterBlock").show();
                 var isNewKey = false;
                 var selectedVal = parseInt($('#ddlBreakDown').val());
@@ -118,9 +119,9 @@ $(function() {
                             }
                             break;
                         }
-                        // case BreakdownEnum.Domain: {
-                        //     break;
-                        // }
+                    // case BreakdownEnum.Domain: {
+                    //     break;
+                    // }
                     case BreakdownEnum.Team:
                         {
                             breakdownKey = "TeamId";
@@ -157,7 +158,7 @@ $(function() {
             // }
         }
     });
-    $("#explorenode").click(function() {
+    $("#explorenode").click(function () {
         //Bind2DForceGraph();
         // removeNodeFilterBreakdown();
         $("#divSearchPanel").find(".active").removeClass("active");
@@ -165,7 +166,7 @@ $(function() {
         isNodeFilter = false;
         isClearClick = true;
     });
-    $("#filternode").click(function() {
+    $("#filternode").click(function () {
         isNodeFilter = true;
         //NodeFilterGraphData();
         removeNodeFilterBreakdown();
@@ -179,12 +180,12 @@ $(function() {
 
 function NodeFilterGraphData(selId, searchText) {
     debugger
-    //var searchText = $('#txtSearch').val();   
+    //var searchText = $('#txtSearch').val();
     if (searchText) {
-        highlightNodes = $.grep(nodes, function(n, i) {
+        highlightNodes = $.grep(nodes, function (n, i) {
             return (n.id.indexOf(searchText) > -1);
         });
-        highlightLink = $.grep(links, function(n, i) {
+        highlightLink = $.grep(links, function (n, i) {
             return (n.value.indexOf(searchText) > -1);
         });
     } else if (selId) {
@@ -202,14 +203,14 @@ function NodeFilterGraphData(selId, searchText) {
                 prop = "dataToolId";
                 break;
         }
-        var filteredLinks = $.grep(links, function(v) {
+        var filteredLinks = $.grep(links, function (v) {
             return v[prop] === selId;
         });
         highlightNodes = [], highlightLink = [];
         if (filteredLinks) {
             var linkColor = '';
             filteredLinks.forEach(element => {
-                var filteredLNode = $.grep(nodes, function(v) {
+                var filteredLNode = $.grep(nodes, function (v) {
                     return v.nodeId === element.nodeId;
                 });
                 highlightNodes.push(filteredLNode[0]);
@@ -312,7 +313,7 @@ function removeNodeFilterBreakdown() {
     Bind2DForceGraph();
 
     Graph
-    // .graphData(graphData)
+        // .graphData(graphData)
         .nodeColor(d => {
 
             return hex2rgb(tempnodes.find(x => x.nodeId == d.nodeId).nodeColor, 1);
@@ -332,7 +333,7 @@ function removeTag(obj) {
     if (isNodeFilter) {
         var filterDataId = $(obj).attr("data-id");
         var filterDataKey = $(obj).attr("data-val");
-        exploreFilterCriteria.forEach(function(e, index) {
+        exploreFilterCriteria.forEach(function (e, index) {
             if (filterDataKey == "ChannelId") {
                 if (filterDataId == e.ChannelId) {
                     exploreFilterCriteria.splice(index, 1);
@@ -362,9 +363,77 @@ function removeTag(obj) {
 
 function serchExplore() {
     var value = $('#txtSearch').val().toLowerCase();
-    $("#divSearchPanel .dynamic-box").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
+    if (value) {
+        debugger
+        $("#divSearchPanel .dynamic-box").filter(function () {
+            if($('#ddlBreakDown').val() != 1)
+            {
+            $("#divSearchPanel .dynamic-box").find('svg').css('display','none');
+            }
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("#channelList").collapse("show");
+        });
+        $("#divTeamPanel .dynamic-box").filter(function () {
+            if($('#ddlBreakDown').val() != 3)
+            {
+            $("#divTeamPanel .dynamic-box").find('svg').css('display','none');
+            }
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("#teamList").collapse("show");
+        });
+        $("#divDataPanel .dynamic-box").filter(function () {
+            if($('#ddlBreakDown').val() != 4)
+            {
+            $("#divDataPanel .dynamic-box").find('svg').css('display','none');
+            }
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            $("#dataList").collapse("show");
+        });
+    }
+    else {
+         var html = '';
+        if ($('#ddlBreakDown').val() == 1) {
+            getChannels().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divSearchPanel').html(html);
+                }
+            });
+            $("#channelList").collapse("show");
+            $("#teamList").collapse("hide");
+            $("#dataList").collapse("hide");
+         }
+          if ($('#ddlBreakDown').val() == 3) {
+            getTeamsList().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
+                    });
+                    $('#divTeamPanel').html(html);
+                }
+            });
+            $("#teamList").collapse("show");
+            $("#channelList").collapse("hide");
+            $("#dataList").collapse("hide");
+        }
+        if ($('#ddlBreakDown').val() == 4) {
+            getDatasource().then(data => {
+                if (data) {
+                    $.each(data, function (key, val) {
+                        html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
+                    });
+                    $('#divDataPanel').html(html);
+                }
+            });
+            $("#dataList").collapse("show");
+            $("#channelList").collapse("hide");
+            $("#teamList").collapse("hide");
+        } 
+    
+    }
+
 }
 
 function BindSearchPanel(isFromBreakDown) {
@@ -377,7 +446,7 @@ function BindSearchPanel(isFromBreakDown) {
             {
                 getChannels().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divSearchPanel').html(html);
@@ -391,23 +460,23 @@ function BindSearchPanel(isFromBreakDown) {
                 });
                 break;
             }
-        case BreakdownEnum.Domain:
-            {
-                getDomainList().then(data => {
-                    if (data) {
-                        $.each(data, function(key, val) {
-                            html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
-                        });
-                        $('#divSearchPanel').html(html);
-                    }
-                });
-                break;
-            }
+        // case BreakdownEnum.Domain:
+        //     {
+        //         getDomainList().then(data => {
+        //             if (data) {
+        //                 $.each(data, function(key, val) {
+        //                     html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
+        //                 });
+        //                 $('#divSearchPanel').html(html);
+        //             }
+        //         });
+        //         break;
+        //     }
         case BreakdownEnum.Team:
             {
                 getTeamsList().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                         });
                         $('#divTeamPanel').html(html);
@@ -426,7 +495,7 @@ function BindSearchPanel(isFromBreakDown) {
 
                 getDatasource().then(data => {
                     if (data) {
-                        $.each(data, function(key, val) {
+                        $.each(data, function (key, val) {
                             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                         });
                         $('#divDataPanel').html(html);
@@ -454,26 +523,27 @@ function BindFilters() {
     getChannels().then(data => {
         var html = '';
         if (data) {
-            $.each(data, function(key, val) {
+            $.each(data, function (key, val) {
                 html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
             });
             $('#divSearchPanel').html(html);
         }
     });
-    getDomainList().then(data => {
-        var html = '';
+    // getDomainList().then(data => {
+    //     var html = '';
 
-        if (data) {
-            $.each(data, function(key, val) {
-                html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
-            });
-            $('#divSearchPanel').html(html);
-        }
-    });
+    //     if (data) {
+    //         $.each(data, function(key, val) {
+    //             html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.Domain + '</a>';
+    //         });
+    //         $('#divSearchPanel').html(html);
+    //         console.log("Domain:",html);
+    //     }
+    // });
     getTeamsList().then(data => {
         var html = '';
         if (data) {
-            $.each(data, function(key, val) {
+            $.each(data, function (key, val) {
                 html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
             });
             $('#divTeamPanel').html(html);
@@ -483,7 +553,7 @@ function BindFilters() {
     getDatasource().then(data => {
         var html = '';
         if (data) {
-            $.each(data, function(key, val) {
+            $.each(data, function (key, val) {
                 html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
             });
             $('#divDataPanel').html(html);
@@ -591,7 +661,7 @@ function GetNodes(isFromBreakDown) {
             allNodes = nodes;
         }
         if (isFromBreakDown) {
-            //Filter Node and Links            
+            //Filter Node and Links
             BreakDownNodeFilter();
         } else {
             Bind2DForceGraph();
@@ -605,13 +675,13 @@ function getNodeLinkObject(nodeId) {
     var colors = '#cccccc';
     var objNode = {};
     var len = 3;
-    var nodeObj = $.grep(links, function(v) {
+    var nodeObj = $.grep(links, function (v) {
         return v.nodeId == nodeId;
     });
     if (nodeObj && nodeObj.length > 0) {
         colors = nodeObj[0].linkColor;
     }
-    var nodeSizeObj = $.grep(links, function(v) {
+    var nodeSizeObj = $.grep(links, function (v) {
         return v.linksFrom == nodeId || v.linksTo == nodeId;
     });
     if (nodeSizeObj && nodeSizeObj.length > 0) {
@@ -668,19 +738,19 @@ function Bind2DForceGraph() {
             $('#myModal').modal('show');
 
             getNodeFilterData(node.nodeId).then(data => {
-                    var filterData = data[0];
-                    $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
-                    $("#nodeDescription").text(filterData[0].nDescription);
-                    $("#filterDescription").text(filterData[0].lLinkDescription);
-                    $("#filterTags").text(filterData[0].lTags);
-                    alertLocation = filterData[0].Location;
-                    dataConfigId = filterData[0].DataSourceConfig;
-                    codeLink = filterData[0].lCodeLink;
-                    reportLink = filterData[0].lReportLink;
-                    alertNodeId = node.nodeId;
-                })
-                // }
-                // Center/zoom on node
+                var filterData = data[0];
+                $("#filterusername").text(filterData[0].uFirstname + " " + filterData[0].uLastName);
+                $("#nodeDescription").text(filterData[0].nDescription);
+                $("#filterDescription").text(filterData[0].lLinkDescription);
+                $("#filterTags").text(filterData[0].lTags);
+                alertLocation = filterData[0].Location;
+                dataConfigId = filterData[0].DataSourceConfig;
+                codeLink = filterData[0].lCodeLink;
+                reportLink = filterData[0].lReportLink;
+                alertNodeId = node.nodeId;
+            })
+            // }
+            // Center/zoom on node
             Graph.centerAt(node.x, node.y, 1000);
             Graph.zoom(2, 2000);
         });
@@ -696,7 +766,7 @@ function updateHighlight(filterColor) {
         // Center/zoom on node
         Graph
             .nodeColor(node => {
-                var resultNode = $.grep(highlightNodes, function(v) {
+                var resultNode = $.grep(highlightNodes, function (v) {
                     return v.nodeId === node.nodeId;
                 });
                 if (resultNode.length <= 0) {
@@ -707,7 +777,7 @@ function updateHighlight(filterColor) {
                 //return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0.2) : filterColor
             })
             .linkColor(link => {
-                var resultLink = $.grep(highlightLink, function(v) {
+                var resultLink = $.grep(highlightLink, function (v) {
                     return v.nodeId === link.nodeId;
                 });
                 if (resultLink.length <= 0) {
@@ -730,7 +800,7 @@ function updateFilteredNode(filterColor) {
         // Center/zoom on node
         Graph
             .nodeColor(node => {
-                var resultNode = $.grep(highlightNodes, function(v) {
+                var resultNode = $.grep(highlightNodes, function (v) {
                     return v.nodeId === node.nodeId;
                 });
                 if (resultNode.length <= 0) {
@@ -741,7 +811,7 @@ function updateFilteredNode(filterColor) {
                 // return highlightNodes.indexOf(node) === -1 ? hex2rgb(node.nodeColor, 0) : filterColor
             })
             .linkColor(link => {
-                var resultLink = $.grep(highlightLink, function(v) {
+                var resultLink = $.grep(highlightLink, function (v) {
                     return v.nodeId === link.nodeId;
                 });
                 if (resultLink.length <= 0) {
@@ -794,17 +864,17 @@ function FilterGraphBySearchPanel(selId) {
         for (var i = 0; i < exploreFilterCriteria.length; i++) {
             var element = exploreFilterCriteria[i];
             if (element.ChannelId) {
-                filteredLinks = $.grep(filteredLinks, function(v) {
+                filteredLinks = $.grep(filteredLinks, function (v) {
                     return v["channelId"] === element.ChannelId;
                 });
             }
             if (element.TeamId) {
-                filteredLinks = $.grep(filteredLinks, function(v) {
+                filteredLinks = $.grep(filteredLinks, function (v) {
                     return v["teamId"] === element.TeamId;
                 });
             }
             if (element.DataToolId) {
-                filteredLinks = $.grep(filteredLinks, function(v) {
+                filteredLinks = $.grep(filteredLinks, function (v) {
                     return v["dataToolId"] === element.DataToolId;
                 });
             }
@@ -825,7 +895,7 @@ function FilterGraphBySearchPanel(selId) {
                 prop = "dataToolId";
                 break;
         }
-        filteredLinks = $.grep(filteredLinks, function(v) {
+        filteredLinks = $.grep(filteredLinks, function (v) {
             return v[prop] === selId;
         });
     }
@@ -835,7 +905,7 @@ function FilterGraphBySearchPanel(selId) {
         var linkColor = '';
         if (filteredLinks.length > 0) {
             filteredLinks.forEach(element => {
-                var filteredLNode = $.grep(allNodes, function(v) {
+                var filteredLNode = $.grep(allNodes, function (v) {
                     return v.nodeId === element.nodeId;
                 });
 
@@ -860,7 +930,7 @@ function FilterGraphBySearchPanel(selId) {
             links = highlightLink.filter((val, index) => {
                 debugger
                 if (val) {
-                    if (typeof(val.source) == "string") {
+                    if (typeof (val.source) == "string") {
                         var nodeSource = nodes.filter(n => n.id == val.source);
                         var nodeTarget = nodes.filter(n => n.id == val.target);
                         if (nodeSource.length > 0 && nodeTarget.length > 0) {
@@ -889,18 +959,18 @@ function FilterGraphBySearchPanel(selId) {
 }
 
 // Code link path
-$("#codelink").click(function() {
+$("#codelink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
     shell.showItemInFolder(codeLink)
 });
 
 // Report link path
-$("#reportlink").click(function() {
+$("#reportlink").click(function () {
     const { shell } = require('electron') // deconstructing assignment
     shell.showItemInFolder(reportLink)
 });
 
-$("#addAlert").click(function() {
+$("#addAlert").click(function () {
     addLogsDetails({
         'LogsMessage': "Add alert details",
         'CreatedBy': parseInt(localStorage.getItem("UserId")),
@@ -953,7 +1023,7 @@ function BreakDownNodeFilter() {
         })
 }
 
-$('.a-elem').click(function() {
+$('.a-elem').click(function () {
     var html = '';
     // $("#channelBox").css("order", "1");
     // $("#teamBox").css("order", "2");
@@ -962,19 +1032,19 @@ $('.a-elem').click(function() {
         if ($('#ddlBreakDown').val() == 1) {
             getChannels().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
                 }
             });
             // $("#channelList").collapse("show");
-            // $("#teamList").collapse("hide");   
+            // $("#teamList").collapse("hide");
             // $("#dataList").collapse("hide");
         } else {
             getChannels().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '">  ' + val.Name + '</a>';
                     });
                     $('#divSearchPanel').html(html);
@@ -990,7 +1060,7 @@ $('.a-elem').click(function() {
         if ($('#ddlBreakDown').val() == 3) {
             getTeamsList().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> <i class="fas fa-circle" style="color:#f88317"></i> ' + val.TeamName + '</a>';
                     });
                     $('#divTeamPanel').html(html);
@@ -999,7 +1069,7 @@ $('.a-elem').click(function() {
         } else {
             getTeamsList().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.TeamId + '"> ' + val.TeamName + '</a>';
                     });
                     $('#divTeamPanel').html(html);
@@ -1018,7 +1088,7 @@ $('.a-elem').click(function() {
         if ($('#ddlBreakDown').val() == 4) {
             getDatasource().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '"> <i class="fas fa-circle" style="color:' + val.Color + '"></i> ' + val.Name + '</a>';
                     });
                     $('#divDataPanel').html(html);
@@ -1027,7 +1097,7 @@ $('.a-elem').click(function() {
         } else {
             getDatasource().then(data => {
                 if (data) {
-                    $.each(data, function(key, val) {
+                    $.each(data, function (key, val) {
                         html += '<a href="#" class="dynamic-box" data-val="' + val.Id + '">' + val.Name + '</a>';
                     });
                     $('#divDataPanel').html(html);

@@ -1,5 +1,5 @@
 <!-- The Modal -->
-<div class="modal fade bd-example-modal-lg" id="modelFilterResult">
+<div class="modal fade bd-example-modal-lg" id="modelFilterResult" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg">
     <form id="addFilterResultForm" method="post">
       <div class="modal-content">
@@ -8,6 +8,7 @@
           <!-- data-dismiss="modal" -->
           <button type="button" class="close" id="btnBackFilterHome">&times;</button>
         </div>
+        <div class="model-body" style="height:73vh;overflow-y: auto; overflow-x: hidden;">
         <div class="row">
 
           <div class="coman-result-section p-3 ">
@@ -39,7 +40,7 @@
                       <div class="form-group">
                         <label for="sel1">Granularity</label>
                         <select class="form-control" id="granularity" name="granularity">
-                          <option value="0">select</option>
+                          <option value="">select</option>
                           <option>day</option>
                           <option>week</option>
                           <option>month</option>
@@ -76,7 +77,7 @@
                         <div class="form-group">
 
                           <select class="form-control" id="matricConditionList" name="matricConditionList">
-                            <option value="0">select</option>
+                            <option value="">select</option>
                             <option value="less than">less than</option>
                             <option value="greater than">greater than</option>
 
@@ -105,12 +106,12 @@
                     </div>
 
                   </div>
-                  <div class="alert-dropdown-section" id="addAlerticid">
-                    <div class="alert-form-one">
+                  <div  id="addAlerticid"><!--class="alert-dropdown-section"-->
+                    <!-- <div class="alert-form-one"> -->
                         <div class="form-group">
 
                           <select class="form-control" id="filterConditionList" name="filterConditionList">
-                            <option value="0">select</option>
+                            <option value="">select</option>
                             <option value="equals">equals</option>
                             <option value="does not equal">does not equal</option>
                             <option value="contains">contains</option>
@@ -118,9 +119,9 @@
                           </select>
                         </div>
                       
-                    </div>
+                    <!-- </div> -->
 
-                    <div class="alert-form-Two">
+                    <!-- <div class="alert-form-Two"> -->
                       
                         <div class="form-group">
                           <select class="form-control" id="selectcoloumnId" name="selectcoloumnId">
@@ -128,13 +129,13 @@
                           </select>
                         </div>
                       
-                    </div>
+                    <!-- </div> -->
                   </div>
 
                   <!-- route-link  route-href="filterScratch" -->
                   <div class="filter-footer-btn">
-                    <button type="button" style="margin-top: 15px;" href="#" id="btnFilterResultReport" class="btn btn-group-lg">Set
-                      Schedule</button>
+                    <button type="button" style="margin-top: 15px;" href="#" id="btnFilterResultReport" class="btn btn-group-lg">Set Schedule</button><br/>
+                    <button type="button" style="margin-top: 15px;background: gray; color:#fff;" href="#" id="btnBackAddAlert" class="btn btn-gray btn-group-lg">Back</button>
                   </div>
                 </div>
               </div>
@@ -149,6 +150,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </form>

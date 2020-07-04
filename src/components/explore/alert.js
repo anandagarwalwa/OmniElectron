@@ -12,6 +12,7 @@ var googleshelper = require(__dirname + '\\server\\helpers\\googlesheet-helper.j
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 const { columns } = require('mssql');
+const { set } = require('d3');
 
 var slackUserList = [];
 
@@ -34,7 +35,7 @@ var transporter = nodemailer.createTransport({
         pass: config.EmailSettings.NotifyEmail.NotifyFromPassword
     }
 });
-
+//runScheduler();
 function runScheduler() {
     schedule.scheduleJob('*/1 * * * *', function(fireDate) {
         getSchedulerList();
@@ -184,7 +185,6 @@ function checkFile(element) {
 }
 
 function JSONToCSVConvertor(JSONData, getdata) {
-    debugger
     var setLessOrGreater, equalCondition, timeFrameCondition = false;
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
@@ -320,7 +320,6 @@ function JSONToCSVConvertor(JSONData, getdata) {
             //     break;
             // }
         }
-
         debugger
         var CSVsecond = '';
         var rowsecond = "";
@@ -360,7 +359,6 @@ function JSONToCSVConvertor(JSONData, getdata) {
                             tffrom.setHours(0, 0, 0, 0);
                             if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
                                 timeFrameCondition = true;
-                                console.log('timeFrameCondition:', timeFrameCondition);
                             }
                         } else if (getdata.Granularity == "week") {
                             debugger
@@ -380,7 +378,6 @@ function JSONToCSVConvertor(JSONData, getdata) {
                             var fileRecords = new Date(arrData[i][key]);
                             if ((fileRecords - tffrom) >= 0 && (tfto - fileRecords) >= 0) {
                                 timeFrameCondition = true;
-                                console.log('timeFrameCondition:', timeFrameCondition);
                             }
                         } else if (getdata.Granularity == "month") {
                             var tffrom, tfto = '';
@@ -454,7 +451,7 @@ function JSONToCSVConvertor(JSONData, getdata) {
                 }
             }
 
-            if (equalCondition && setLessOrGreater) {
+            if (timeFrameCondition && equalCondition && setLessOrGreater) {
                 for (var index in arrData[i]) {
                     row += '"' + arrData[i][index] + '",';
                 }
