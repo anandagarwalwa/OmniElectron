@@ -20,6 +20,7 @@ document.getElementById("loader").style.display = "none";
 var isNodeFilter = false;
 var exploreFilterCriteria = [];
 var token = 'xoxb-358222557168-1159582113046-xde0rM0NZSkOIqJ1K6LbDwpR';
+var selectedBreakdown="";
 
 $("#divFilterBlock").hide();
 // Get User Login Data
@@ -39,6 +40,7 @@ $(function () {
 
     $("#ddlBreakDown").change(function () {
         BindSearchPanel(true);
+        selectedBreakdown="";
         // breakDownNodeFilter();
     });
     $('#txtSearch').keyup(function (e) {
@@ -60,8 +62,9 @@ $(function () {
     var isClearClick = false,
         filterId = '';
 
-    $('body').on('click', 'a.dynamic-box', function () {
+    $('body').on('click', 'a.dynamic-box', function (e) {
         debugger
+        selectedBreakdown = $(e.currentTarget.parentElement).attr("data-value");
         $("#divSearchPanel").find(".active").removeClass("active");
         $("#divTeamPanel").find(".active").removeClass("active");
         $("#divDataPanel").find(".active").removeClass("active");
@@ -105,7 +108,10 @@ $(function () {
                 //$("#filterBlockContainer span").remove();
                 $("#divFilterBlock").show();
                 var isNewKey = false;
-                var selectedVal = parseInt($('#ddlBreakDown').val());
+                if(!selectedBreakdown){
+                    selectedBreakdown = $('#ddlBreakDown').val();
+                }
+                var selectedVal = parseInt(selectedBreakdown);
                 var breakdownKey = "";
                 filterId = parseInt(filterId);
                 console.log('filterId ', filterId)
@@ -145,10 +151,9 @@ $(function () {
                     $("#filterBlockContainer").append(getFilterTag($(this).text(), filterId, breakdownKey)); //We can use this later
                 }
             }
-
             $(this).addClass("active");
             isClearClick = true;
-
+            
             FilterGraphBySearchPanel(filterId, null);
             // if (isNodeFilter) {
             //     NodeFilterGraphData(filterId, null);
@@ -329,6 +334,7 @@ function getFilterTag(tagtext, tagId, breakdown) {
 }
 
 function removeTag(obj) {
+    debugger
     obj.closest(".tag").remove();
     if (isNodeFilter) {
         var filterDataId = $(obj).attr("data-id");
@@ -570,11 +576,13 @@ var nodes = [],
 
 
 function InitGraphData(isFromBreakDown) {
+    debugger
     nodes = [], links = [];
     GetLinks(isFromBreakDown);
 }
 
 function GetLinks(isFromBreakDown) {
+    debugger
     var userId = undefined;
     if (SessionManager.IsAdmin)
         userId = SessionManager.UserId;
@@ -585,7 +593,12 @@ function GetLinks(isFromBreakDown) {
             var linkData = data[0];
             var linkColor = '';
             var fromLinkColor = '';
-            var selectedVal = parseInt($('#ddlBreakDown').val());
+
+            if(!selectedBreakdown){
+                selectedBreakdown = $('#ddlBreakDown').val();
+            }
+
+            var selectedVal = parseInt(selectedBreakdown);
             for (var u = 0; u < linkData.length; u++) {
                 linkColor = '';
                 switch (selectedVal) {
@@ -634,6 +647,7 @@ function GetLinks(isFromBreakDown) {
             }
             allLinks = links;
         }
+        debugger
         GetNodes(isFromBreakDown);
     }).catch(err => {
         console.error(err);
@@ -641,7 +655,7 @@ function GetLinks(isFromBreakDown) {
 }
 
 function GetNodes(isFromBreakDown) {
-
+    debugger
     var userId = undefined;
     if (SessionManager.IsAdmin)
         userId = SessionManager.UserId;
@@ -700,6 +714,7 @@ var allNodes = [];
 var allLinks = [];
 
 function Bind2DForceGraph() {
+    debugger
     highlightNodes = [], highlightLink = [];
     graphData.nodes = nodes;
     graphData.links = links;
@@ -720,7 +735,7 @@ function Bind2DForceGraph() {
             const fontSize = 12 / globalScale;
             ctx.font = `${fontSize}px Arial`;
             const textWidth = ctx.measureText(label).width;
-            const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
+            const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.9); // some padding
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = node.color;
@@ -841,6 +856,7 @@ function updateFilteredNode(filterColor) {
 var filteredLinkColor = '';
 
 function FilterGraphBySearchPanel(selId) {
+    debugger
     // var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
     // var prop = "";
     // selId = parseInt(selId);
@@ -881,7 +897,11 @@ function FilterGraphBySearchPanel(selId) {
         }
         //formattedData = result;
     } else {
-        var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
+        // var selectedBreakDownVal = parseInt($('#ddlBreakDown').val());
+        if(!selectedBreakdown){
+            selectedBreakdown = $('#ddlBreakDown').val();
+        }
+        var selectedBreakDownVal = parseInt(selectedBreakdown);
         var prop = "";
         selId = parseInt(selId);
         switch (selectedBreakDownVal) {
@@ -948,7 +968,6 @@ function FilterGraphBySearchPanel(selId) {
                 //     return val;
                 // }
             });
-
             console.log('links', links);
             Bind2DForceGraph();
             //updateFilteredNode(linkColor);

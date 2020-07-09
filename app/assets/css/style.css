@@ -632,7 +632,8 @@ a.article:hover {
     overflow-x: hidden;
     padding: 8px 0;
     box-shadow: 0 0 5px #000;
-    height: 100%;
+    /* height: 100%; */
+    height: 95vh;
 }
 
 .main-sidebar .sidenav a {
@@ -1319,6 +1320,8 @@ a.article:hover {
 }
 
 .upload-image-section {
+    position: relative;
+    margin-top: -90px;
     float: left;
     width: 100%;
 }
@@ -2733,4 +2736,32 @@ label.error {
 #addAlerticid .form-control{
     border-radius: 0px !important;
     height: calc(1.2em + .75rem + 2px);
+}
+/*--------------set default User Profile-----------------*/
+#profileImage {
+    width: 60px;
+  height: 60px;
+  border-radius: 30%;
+  background: #512DA8;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  line-height: 55px;
+  margin: 20px 0;
+  text-transform:uppercase;
+  visibility: hidden;
+}
+/*------------set close icon ----------*/
+.position-div {
+    position: relative;
+}
+#btnImageClear
+{
+    color: red;
+    display: none;
+    float: left;
+    width: 7%;
+    position: absolute;
+    right: -20px;
+    top: 35px;
 }

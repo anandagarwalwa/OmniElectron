@@ -70,28 +70,30 @@
                                                                     <div class="upload-pic">
                                                                         <div class="upload-image-section">
                                                                             <input id="hdnUserId" type="hidden">
+                                                                            <div id="profileImage"></div>
                                                                             <img src="assets/images/40306.jpg" id="addUserImage" class="img-fluid rounded-circle">
                                                                             <label id="fileError" class="error"></label>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-7">
-                                                                    <div class="form-group">
+                                                                    <div class="form-group position-div">
                                                                         <label for="exampleFormControlFile1">Upload
                                                                             photo</label>
                                                                         <input type="file" class="form-control-file" name="uploadPhoto" id="uploadPhoto" onchange="encodeImageFileAsURL(this)" accept="image/x-png,image/gif,image/jpeg">
+                                                                        <a  id="btnImageClear" style="color: red; display: none;"><i class="fas fa-times"></i></a>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="member-form-section">
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">First Name</label>
-                                                                    <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="">
+                                                                    <input type="text" class="form-control defaultimage" id="firstName" name="firstName" aria-describedby="emailHelp" placeholder="">
                                                                 </div>
 
                                                                 <div class="form-group">
                                                                     <label for="exampleInputPassword1">Last Name</label>
-                                                                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="">
+                                                                    <input type="text" class="form-control defaultimage" id="lastName" name="lastName" placeholder="">
                                                                 </div>
 
                                                                 <div class="form-group">
@@ -461,3 +463,4 @@
 <script src="assets/js/jquery-confirm.min.js"></script>
 <script src="../src/components/explore/explore.js"></script>
 <script src="../src/components/setting/slackAuthentication.js"></script>
+<!-- <script src= "../../../app/assets/js/html2canvas.js"> </script> -->

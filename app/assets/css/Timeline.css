@@ -631,7 +631,8 @@ a.article:hover {
 }
 
 .main-sidebar .sidenav a {
-    padding: 15px 8px 15px 16px !important;
+    /* padding: 15px 8px 15px 16px !important; */
+    padding: 8px!important;
     text-decoration: none;
     font-size: 16px !important;
     color: #fff;
