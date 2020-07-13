@@ -21,7 +21,8 @@ var isNodeFilter = false;
 var exploreFilterCriteria = [];
 var token = 'xoxb-358222557168-1159582113046-xde0rM0NZSkOIqJ1K6LbDwpR';
 var selectedBreakdown="";
-
+var isClearClick = false,
+filterId = '';
 $("#divFilterBlock").hide();
 // Get User Login Data
 getUsersById(parseInt(localStorage.getItem("UserId"))).then(data => {
@@ -59,8 +60,8 @@ $(function () {
             // }
         }
     });
-    var isClearClick = false,
-        filterId = '';
+    // var isClearClick = false,
+    //     filterId = '';
 
     $('body').on('click', 'a.dynamic-box', function (e) {
         debugger
@@ -284,7 +285,7 @@ function NodeFilterGraphData(selId, searchText) {
 }
 
 function removeNodeFilterBreakdown() {
-
+    isClearClick=false;
     $("#divSearchPanel").find(".active").removeClass("active");
     $("#divTeamPanel").find(".active").removeClass("active");
     $("#divDataPanel").find(".active").removeClass("active");
